@@ -1,5 +1,7 @@
 module;
 #include <vector>
+#include <string>
+#include <stdexcept>
 
 export module serde.targets.string.string_utils.from_structure.split_by_tokens_sequence;
 

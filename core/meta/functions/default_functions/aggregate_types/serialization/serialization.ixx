@@ -2,7 +2,6 @@ module;
 #include <concepts>
 #include <vector>
 #include <stdexcept>
-#include <__type_traits/is_aggregate.h>
 
 export module serde.core.meta.functions.default_functions.aggregate_types.serialization;
 
@@ -19,7 +18,7 @@ export namespace serde::functions {
 
     template <typename Output, typename Input>
     requires std::is_aggregate_v<Input>
-    void tag_invoke(serialize_tag, Output& out, const Input& input){
+    void default_serialize_fn(serialize_tag, Output& out, const Input& input){
         constexpr std::size_t fields_count = AggregateFieldsGetter::template field_count<Input>();
 
         std::vector<Output> output_vector;

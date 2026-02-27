@@ -2,7 +2,6 @@ module;
 #include <concepts>
 #include <vector>
 #include <stdexcept>
-#include <__type_traits/is_aggregate.h>
 
 export module serde.core.meta.functions.default_functions.aggregate_types.deserialization;
 
@@ -16,7 +15,7 @@ export namespace serde::functions {
 
     template <typename Output, typename Input>
     requires std::is_aggregate_v<Output>
-    void tag_invoke(deserialize_tag, Output& out, const Input& input){
+    void default_deserialize_fn(Output& out, const Input& input){
         std::vector<Input> input_vector;
         decompose_sequentially(input_vector, input);
 

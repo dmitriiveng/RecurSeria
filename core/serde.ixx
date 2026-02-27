@@ -24,10 +24,6 @@ export import serde.core.meta.functions.types.deserialization;
 export import serde.core.meta.functions.data_structures.sequence.grouping;
 export import serde.core.meta.functions.data_structures.sequence.decomposing;
 
-//associative
-export import serde.core.meta.functions.data_structures.associative.grouping;
-export import serde.core.meta.functions.data_structures.associative.decomposing;
-
 //default
 
 //containers

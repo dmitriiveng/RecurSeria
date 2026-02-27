@@ -7,7 +7,7 @@ export namespace serde::functions {
     void tag_invoke();
 
     template<class Tag, class... Args>
-    concept tag_invocable = requires(Tag tag, Args&&... args) {
+    concept TagInvokable = requires(Tag tag, Args&&... args) {
         tag_invoke(tag, std::forward<Args>(args)...);
     };
 
