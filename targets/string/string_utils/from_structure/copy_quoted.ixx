@@ -1,8 +1,9 @@
-export module serde.targets.string.string_utils.from_structure.copy_quoted;
+module;
+#include <optional>
+#include <stdexcept>
+#include <string>
 
-export import <optional>;
-export import <stdexcept>;
-export import <string>;
+export module serde.targets.string.string_utils.from_structure.copy_quoted;
 
 //TODO nested string
 export namespace str_utils {

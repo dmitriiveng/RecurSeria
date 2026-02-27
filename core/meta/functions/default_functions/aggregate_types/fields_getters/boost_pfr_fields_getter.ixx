@@ -1,6 +1,7 @@
-export module serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;
+module;
+#include <boost/pfr.hpp>
 
-import <boost/pfr.hpp>;
+export module serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;
 
 export namespace serde{
     struct PfrFieldsGetter {

@@ -1,8 +1,8 @@
+module;
+#include <utility>
+#include <memory>
+
 export module serde.core.runtime.type_erasure.void_ptr_any;
-
-import <utility>;
-import <memory>;
-
 
 export namespace serde {
     class VoidPtrAny final {

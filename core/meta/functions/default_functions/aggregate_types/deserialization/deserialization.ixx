@@ -1,8 +1,11 @@
+module;
+#include <concepts>
+#include <vector>
+#include <stdexcept>
+#include <__type_traits/is_aggregate.h>
+
 export module serde.core.meta.functions.default_functions.aggregate_types.deserialization;
 
-import <concepts>;
-import <vector>;
-import <stdexcept>;
 import serde.core.meta.functions.data_structures.sequence.decomposing;
 import serde.core.meta.functions.types.deserialization;
 import serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;
@@ -21,7 +24,8 @@ export namespace serde::functions {
 
         if (input_vector.size() != fields_count) {
             throw std::logic_error(
-                std::string("Input size (") + std::to_string(input_vector.size())
+                std::string("Input size (") 
+                + std::to_string(input_vector.size())
                 + ") does not match number of fields ("
                 + std::to_string(fields_count)
                 + ") in aggregate of type: "

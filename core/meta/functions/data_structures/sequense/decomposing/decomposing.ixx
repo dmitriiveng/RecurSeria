@@ -1,6 +1,8 @@
+module;
+#include <vector>
+
 export module serde.core.meta.functions.data_structures.sequence.decomposing;
 
-import <vector>;
 export import serde.core.meta.functions.tag_invokable;
 
 export namespace serde::functions {

@@ -1,6 +1,7 @@
-export module serde.core.runtime.type_erasure.functions.serialization;
+module;
+#include <functional>
 
-import <functional>;
+export module serde.core.runtime.type_erasure.functions.serialization;
 
 export namespace serde::srlz {
     template <typename OutputV>

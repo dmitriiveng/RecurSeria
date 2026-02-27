@@ -1,7 +1,9 @@
+module;
+#include <map>
+#include <ranges>
+
 export module serde.targets.string.data_structures.associative.decomposing;
 
-import <map>;
-import <ranges>;
 import serde.targets.string.string_utils.from_structure.split_by_tokens_associative;
 import serde.core.meta.functions.data_structures.associative.decomposing;
 import serde.target.string.wrapped_string;
@@ -24,6 +26,9 @@ export namespace serde::targets::string {
             '"'
         );
 
+
+
+        /*
         out = str_map
             | std::views::transform([](const auto& kv) {
                 return std::pair{
@@ -32,5 +37,8 @@ export namespace serde::targets::string {
                 };
             })
             | std::ranges::to<std::map<WrappedString, WrappedString>>();
+        */
+
+        //TODO rewrite
     }
 }

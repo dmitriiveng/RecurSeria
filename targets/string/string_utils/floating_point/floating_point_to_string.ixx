@@ -1,6 +1,7 @@
-export module serde.targets.string.string_utils.floating_point.floating_point_to_string;
+module;
+#include <string>
 
-import <string>;
+export module serde.targets.string.string_utils.floating_point.floating_point_to_string;
 
 export namespace str_utils {
     template<typename T>

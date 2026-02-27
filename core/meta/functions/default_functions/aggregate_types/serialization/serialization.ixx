@@ -1,8 +1,11 @@
+module;
+#include <concepts>
+#include <vector>
+#include <stdexcept>
+#include <__type_traits/is_aggregate.h>
+
 export module serde.core.meta.functions.default_functions.aggregate_types.serialization;
 
-import <concepts>;
-import <vector>;
-import <stdexcept>;
 import serde.core.meta.functions.data_structures.sequence.grouping;
 import serde.core.meta.functions.types.serialization;
 import serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;

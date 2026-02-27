@@ -1,11 +1,13 @@
+module;
+#include <string>
+#include <optional>
+#include <stdexcept>
+#include <utility>
+#include <iterator>
+
 export module serde.targets.string.string_utils.from_structure.split_by_tokens_pair;
 
-import <string>;
-import <stdexcept>;
-import <utility>;
-import <iterator>;
-
-import targets.string.string_utils.from_structure.extract_token;
+import serde.targets.string.string_utils.from_structure.extract_token;
 
 export namespace str_utils {
     template <std::input_iterator It, std::sentinel_for<It> End>

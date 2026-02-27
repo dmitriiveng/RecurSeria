@@ -1,7 +1,9 @@
+module;
+#include <vector>
+#include <ranges>
+
 export module serde.targets.string.data_structures.sequence.decomposing;
 
-import <vector>;
-import <ranges>;
 import serde.targets.string.string_utils.from_structure.split_by_tokens_sequence;
 import serde.core.meta.functions.data_structures.sequence.decomposing;
 import serde.target.string.wrapped_string;

@@ -1,10 +1,8 @@
+module;
+#include <unordered_map>
+#include <stdexcept>
+
 export module serde.core.runtime.mapper;
-
-export import :serialization;
-export import :deserialization;
-
-import <unordered_map>;
-import <stdexcept>;
 
 export namespace serde {
     /**

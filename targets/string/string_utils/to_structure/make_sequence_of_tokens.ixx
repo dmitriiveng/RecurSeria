@@ -1,9 +1,10 @@
+module;
+#include <vector>
+#include <string>
+
 export module serde.targets.string.string_utils.to_structure.make_sequence_of_tokens;
 
 import serde.targets.string.string_utils.to_structure.make_token;
-
-import <vector>;
-export import <string>;
 
 export namespace str_utils {
     inline std::string make_sequence_of_tokens(

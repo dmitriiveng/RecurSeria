@@ -1,6 +1,8 @@
+module;
+#include <vector>
+
 export module serde.targets.string.string_utils.from_structure.split_by_tokens_sequence;
 
-import <vector>;
 import serde.targets.string.string_utils.from_structure.extract_token;
 
 export namespace str_utils {

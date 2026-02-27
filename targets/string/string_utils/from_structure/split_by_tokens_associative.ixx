@@ -1,10 +1,11 @@
-export module serde.targets.string.string_utils.from_structure.split_by_tokens_associative;
+module;
+#include <map>
+#include <stdexcept>
+#include <vector>
+#include <string>
+#include <iterator>
 
-import <map>;
-import <stdexcept>;
-import <vector>;
-import <string>;
-import <iterator>;
+export module serde.targets.string.string_utils.from_structure.split_by_tokens_associative;
 
 import serde.targets.string.string_utils.from_structure.split_by_tokens_sequence;
 import serde.targets.string.string_utils.from_structure.split_by_tokens_pair;

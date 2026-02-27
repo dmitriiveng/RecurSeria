@@ -1,3 +1,7 @@
+module;
+#include <string>
+#include <optional>
+
 export module serde.targets.string.types.deserialization;
 
 import serde.target.string.wrapped_string;

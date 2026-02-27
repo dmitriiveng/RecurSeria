@@ -1,6 +1,7 @@
-export module serde.core.meta.functions.tag_invokable;
+module;
+#include <utility>
 
-import <utility>;
+export module serde.core.meta.functions.tag_invokable;
 
 export namespace serde::functions {
     void tag_invoke();

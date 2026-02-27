@@ -1,3 +1,6 @@
+module;
+#include <string>
+
 export module serde.targets.string.string_utils.to_structure.make_pair_of_tokens;
 
 export import serde.targets.string.string_utils.to_structure.make_token;

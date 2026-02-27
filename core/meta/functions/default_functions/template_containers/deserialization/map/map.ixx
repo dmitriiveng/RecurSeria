@@ -1,6 +1,8 @@
+module;
+#include <map>
+
 export module serde.core.meta.functions.default_functions.template_containers.deserialization:map;
 
-import <map>;
 import serde.core.meta.functions.data_structures.associative.decomposing;
 import serde.core.meta.functions.types.deserialization;
 

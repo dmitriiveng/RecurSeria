@@ -1,7 +1,9 @@
+module;
+#include <functional>
+
 export module serde.core.runtime.type_erasure.functions.deserialization;
 
 import serde.core.runtime.type_erasure.void_ptr_any;
-import <functional>;
 
 export namespace serde::dsrlz {
     template <typename InputV>

@@ -1,6 +1,8 @@
+module;
+#include <map>
+
 export module serde.core.meta.functions.data_structures.associative.grouping;
 
-import <map>;
 export import serde.core.meta.functions.tag_invokable;
 
 export namespace serde::functions {

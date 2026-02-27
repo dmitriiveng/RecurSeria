@@ -1,6 +1,8 @@
+module;
+#include <map>
+
 export module serde.core.meta.functions.default_functions.template_containers.serialization:map;
 
-import <map>;
 import serde.core.meta.functions.data_structures.associative.grouping;
 import serde.core.meta.functions.types.serialization;
 

@@ -1,7 +1,10 @@
-export module serde.targets.string.string_utils.from_structure.extract_token;
+module;
+#include <optional>
+#include <string>
+#include <stdexcept>
+#include <__iterator/concepts.h>
 
-export import <optional>;
-export import <stdexcept>;
+export module serde.targets.string.string_utils.from_structure.extract_token;
 
 import serde.targets.string.string_utils.from_structure.copy_quoted;
 

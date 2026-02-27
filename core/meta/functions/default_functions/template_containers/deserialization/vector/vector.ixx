@@ -1,6 +1,8 @@
+module;
+#include <vector>
+
 export module serde.core.meta.functions.default_functions.template_containers.deserialization:vector;
 
-import <vector>;
 import serde.core.meta.functions.data_structures.sequence.decomposing;
 import serde.core.meta.functions.types.deserialization;
 
