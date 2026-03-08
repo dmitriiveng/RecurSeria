@@ -6,6 +6,7 @@ module;
 export module serde.core.meta.functions.default_functions.aggregate_types.deserialization;
 
 import serde.core.meta.functions.data_structures.sequence.decomposing;
+import serde.core.meta.functions.types.default_deserializable;
 import serde.core.meta.functions.types.deserialization;
 import serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;
 
@@ -15,7 +16,7 @@ export namespace serde::functions {
 
     template <typename Output, typename Input>
     requires std::is_aggregate_v<Output>
-    void default_deserialize_fn(Output& out, const Input& input){
+    void tag_invoke(default_deserialize_tag, Output& out, const Input& input){
         std::vector<Input> input_vector;
         decompose_sequentially(input_vector, input);
 

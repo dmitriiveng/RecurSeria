@@ -6,7 +6,9 @@ export module serde.targets.string.data_structures.sequence.decomposing;
 
 import serde.targets.string.string_utils.from_structure.split_by_tokens_sequence;
 import serde.core.meta.functions.data_structures.sequence.decomposing;
-namespace serde::functions {
+
+export namespace serde::functions {
+
     void tag_invoke(
         decompose_sequentially_tag, 
         std::vector<std::string>& out, 

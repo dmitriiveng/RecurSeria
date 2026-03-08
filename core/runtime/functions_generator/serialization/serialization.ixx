@@ -3,16 +3,16 @@ export module serde.core.runtime.functions_generator.serialization;
 import serde.core.meta.functions.types.serialization;
 import serde.core.runtime.type_erasure.functions.serialization;
 
-namespace serde::srlz {
+export namespace serde {
     template<
         typename Output,
-        typename Input
+        typename T
     >
     [[nodiscard]] type_erased_srlz_func<Output>
     gen_simple_type_srlz_func() {
-        auto serialization = [](const void* input) {
+        auto serialization = [](const void* input) -> Output {
             Output result{};
-            serialize(result, *static_cast<const Input*>(input));
+            functions::serialize(result, *static_cast<const T*>(input));
 
             return result;
         };

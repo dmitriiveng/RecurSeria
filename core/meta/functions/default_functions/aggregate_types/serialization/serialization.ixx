@@ -6,6 +6,7 @@ module;
 export module serde.core.meta.functions.default_functions.aggregate_types.serialization;
 
 import serde.core.meta.functions.data_structures.sequence.grouping;
+import serde.core.meta.functions.types.default_serializable;
 import serde.core.meta.functions.types.serialization;
 import serde.core.meta.functions.default_functions.aggregate_types.fields_getters.boost_pfr_fields_getter;
 
@@ -18,7 +19,7 @@ export namespace serde::functions {
 
     template <typename Output, typename Input>
     requires std::is_aggregate_v<Input>
-    void default_serialize_fn(serialize_tag, Output& out, const Input& input){
+    void tag_invoke(default_serialize_tag, Output& out, const Input& input){
         constexpr std::size_t fields_count = AggregateFieldsGetter::template field_count<Input>();
 
         std::vector<Output> output_vector;
