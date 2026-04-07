@@ -6,7 +6,6 @@ export module serde.core.runtime.facade;
 export import serde.core.runtime.mapper;
 
 export namespace serde {
-
     // serde
 
     template <typename Output, typename Key>
