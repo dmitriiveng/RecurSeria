@@ -15,7 +15,7 @@ export namespace serde::functions {
 
     inline constexpr struct deserialize_fn {
         template<typename Output, typename Input>
-            /*requires TagInvokeDeserializable<Output, Input> || DefaultDeserializable<Output, Input>*/
+            requires TagInvokeDeserializable<Output, Input> || DefaultDeserializable<Output, Input>
         constexpr void operator()(Output& out, const Input& value) const {
             if constexpr (TagInvokeDeserializable<Output, Input>){
                 tag_invoke(deserialize_tag{}, out, value);
@@ -26,4 +26,3 @@ export namespace serde::functions {
         }
     } deserialize;
 }
-

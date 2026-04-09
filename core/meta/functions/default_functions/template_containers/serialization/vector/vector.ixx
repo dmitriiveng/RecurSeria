@@ -5,8 +5,9 @@ export module serde.core.meta.functions.default_functions.template_containers.se
 
 import serde.core.meta.functions.data_structures.sequence.grouping;
 import serde.core.meta.functions.types.default_serializable;
+import serde.core.meta.functions.types.serialization;
 
-namespace serde::functions {
+export namespace serde::functions {
     template <typename Output, typename Input>
     void tag_invoke(default_serialize_tag, Output& out, const std::vector<Input>& input){
         std::vector<Output> output_vector;

@@ -16,7 +16,7 @@ export namespace serde::functions {
 
     inline constexpr struct decompose_sequentially_fn {
         template<typename T>
-            /*requires SequentiallyDecomposable<T> || DefaultSequentiallyDecomposable<T>*/
+            requires SequentiallyDecomposable<T> || DefaultSequentiallyDecomposable<T>
         constexpr void operator()(std::vector<T>& out, const T& value) const {
             if constexpr (SequentiallyDecomposable<T>){
                 tag_invoke(decompose_sequentially_tag{}, out, value);
@@ -27,4 +27,3 @@ export namespace serde::functions {
         }
     } decompose_sequentially;
 }
-

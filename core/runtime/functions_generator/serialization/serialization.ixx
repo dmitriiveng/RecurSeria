@@ -10,9 +10,9 @@ export namespace serde {
     >
     [[nodiscard]] type_erased_srlz_func<Output>
     gen_simple_type_srlz_func() {
-        auto serialization = [](const void* input) -> Output {
+        auto serialization = [](const TypeErasedValuePtr input) -> Output {
             Output result{};
-            functions::serialize(result, *static_cast<const T*>(input));
+            functions::serialize(result, input.get<T>());
 
             return result;
         };

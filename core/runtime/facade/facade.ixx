@@ -1,20 +1,21 @@
 module;
-#include <any>
 
 export module serde.core.runtime.facade;
 
 export import serde.core.runtime.mapper;
 
+export import serde.core.runtime.type_erasure.types;
+
 export namespace serde {
     // serde
 
     template <typename Output, typename Key>
-    Output serialize(ISrlzFuncMapper<Output, Key>& mapper, Key& key, const void* data){
+    Output serialize(ISrlzFuncMapper<Output, Key>& mapper, Key& key, const TypeErasedValuePtr data){
         return mapper.get_function(key)(data);
     }
 
     template <typename Input, typename Key>
-    std::any deserialize(IDsrlzFuncMapper<Input, Key>& mapper, Key& key, const Input& data){
+    TypeErasedValueOwner deserialize(IDsrlzFuncMapper<Input, Key>& mapper, Key& key, const Input& data){
         return mapper.get_function(key)(data);
     }
 

@@ -16,7 +16,7 @@ namespace serde::functions {
 
     export inline constexpr struct group_sequentially_fn {
         template<typename T>
-            /*requires SequentiallyGroupable<T> || DefaultSequentiallyGroupable<T>*/
+            requires SequentiallyGroupable<T> || DefaultSequentiallyGroupable<T>
         constexpr void operator()(T& out, const std::vector<T>& value) const {
             if constexpr (SequentiallyGroupable<T>){
                 tag_invoke(group_sequentially_tag{}, out, value);
@@ -27,4 +27,3 @@ namespace serde::functions {
         }
     } group_sequentially;
 }
-

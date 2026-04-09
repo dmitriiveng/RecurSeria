@@ -5,8 +5,9 @@ export module serde.core.meta.functions.default_functions.template_containers.de
 
 import serde.core.meta.functions.data_structures.sequence.decomposing;
 import serde.core.meta.functions.types.default_deserializable;
+import serde.core.meta.functions.types.deserialization;
 
-namespace serde::functions {
+export namespace serde::functions {
     template <typename Output, typename Input>
     void tag_invoke(default_deserialize_tag, std::vector<Output>& out, const Input& input){
         std::vector<Input> elements;
@@ -24,4 +25,3 @@ namespace serde::functions {
         out = std::move(result);
     }
 }
-

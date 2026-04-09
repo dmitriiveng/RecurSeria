@@ -1,5 +1,4 @@
 module;
-#include <concepts>
 #include <vector>
 #include <stdexcept>
 
@@ -24,7 +23,7 @@ export namespace serde::functions {
 
         if (input_vector.size() != fields_count) {
             throw std::logic_error(
-                std::string("Input size (") 
+                std::string("Input size (")
                 + std::to_string(input_vector.size())
                 + ") does not match number of fields ("
                 + std::to_string(fields_count)

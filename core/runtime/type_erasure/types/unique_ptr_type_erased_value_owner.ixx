@@ -9,10 +9,12 @@ export namespace serde {
     class UniquePtrTypeErasedValueOwner {
         std::unique_ptr<void, void(*)(void*)> value;
     public:
-    template<typename U>
+        template<typename U>
         UniquePtrTypeErasedValueOwner(U&& object)
-            : value(std::make_unique<std::remove_cvref_t<U>>(std::forward<U>(object)),
-                [](void* ptr) { delete static_cast<std::remove_cvref_t<U>*>(ptr); })
+            : value(
+                new std::remove_cvref_t<U>(std::forward<U>(object)),
+                [](void* ptr) { delete static_cast<std::remove_cvref_t<U>*>(ptr); }
+            )
             {}
 
         template<typename U>

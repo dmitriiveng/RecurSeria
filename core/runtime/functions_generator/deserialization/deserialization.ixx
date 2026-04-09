@@ -1,5 +1,4 @@
 module;
-#include <any>
 
 export module serde.core.runtime.functions_generator.deserialization;
 
@@ -13,11 +12,11 @@ export namespace serde {
     >
     [[nodiscard]] type_erased_dsrlz_func<Input>
     gen_simple_dsrlz_func() {
-        auto deserialization = [](const Input& input) -> std::any {
+        auto deserialization = [](const Input& input) -> TypeErasedValueOwner {
             T result{};
             functions::deserialize(result, input);
 
-            return std::any(result);
+            return TypeErasedValueOwner(result);
         };
 
         return deserialization;

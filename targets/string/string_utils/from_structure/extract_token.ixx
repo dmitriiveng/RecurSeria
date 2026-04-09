@@ -2,7 +2,6 @@ module;
 #include <optional>
 #include <string>
 #include <stdexcept>
-#include <concepts>
 
 export module serde.targets.string.string_utils.from_structure.extract_token;
 

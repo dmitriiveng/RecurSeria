@@ -14,7 +14,7 @@ export namespace serde::functions {
 
     inline constexpr struct serialize_fn {
         template<typename Output, typename Input>
-            /*requires TagInvokeSerializable<Output, Input> || DefaultSerializable<Output, Input>*/
+            requires TagInvokeSerializable<Output, Input> || DefaultSerializable<Output, Input>
         constexpr void operator()(Output& out, const Input& value) const {
             if constexpr (TagInvokeSerializable<Output, Input>){
                 tag_invoke(serialize_tag{}, out, value);
@@ -25,4 +25,3 @@ export namespace serde::functions {
         }
     } serialize;
 }
-
