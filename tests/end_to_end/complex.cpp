@@ -13,6 +13,8 @@ struct Person {
     std::string name;
 };
 
+using Type = std::vector<Person>;
+
 TEST(SerdeEndToEnd, Complex)
 {
     using Key = std::string;
@@ -20,19 +22,22 @@ TEST(SerdeEndToEnd, Complex)
     serde::SrlzFuncMapper<std::string, Key> srlz_mapper;
     serde::DsrlzFuncMapper<std::string, Key> dsrlz_mapper;
 
-    Key key = "Person";
+    Key key = "PersonVector";
 
     srlz_mapper.add_function(
         key,
-        serde::gen_simple_type_srlz_func<std::string, Person>()
+        serde::gen_simple_type_srlz_func<std::string, Type>()
     );
 
     dsrlz_mapper.add_function(
         key,
-        serde::gen_simple_dsrlz_func<Person, std::string>()
+        serde::gen_simple_dsrlz_func<Type, std::string>()
     );
 
-    Person original{42, 3.14, "AWAWAWAWAW"};
+    Type original{};
+    for (int i = 0; i < 10; ++i) {
+        original.push_back(Person{i, i + 3.14, "AWAWAWAWAW" + std::to_string(i)});
+    }
 
     // serialize
     std::string serialized =
@@ -42,12 +47,12 @@ TEST(SerdeEndToEnd, Complex)
     serde::TypeErasedValueOwner result_te =
         serde::deserialize(dsrlz_mapper, key, serialized);
 
-    Person result = result_te.cast_and_release<Person>();
+    Type result = result_te.cast_and_release<Type>();
 
     // verify
-    EXPECT_EQ(result.id, original.id);
-
-    EXPECT_DOUBLE_EQ(result.score, original.score);
-
-    EXPECT_EQ(result.name, original.name);
+    for (int i = 0; i < original.size(); i++){
+        EXPECT_EQ(result[i].id, original[i].id);
+        EXPECT_DOUBLE_EQ(result[i].score, original[i].score);
+        EXPECT_EQ(result[i].name, original[i].name);
+    }
 }

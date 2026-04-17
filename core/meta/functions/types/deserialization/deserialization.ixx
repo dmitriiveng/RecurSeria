@@ -1,7 +1,7 @@
 export module serde.core.meta.functions.types.deserialization;
 
 import serde.core.meta.functions.tag_invokable;
-import serde.core.meta.functions.types.default_deserializable;
+export import serde.core.meta.functions.types.default_deserializable;
 
 
 export namespace serde::functions {

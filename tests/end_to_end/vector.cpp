@@ -27,7 +27,10 @@ TEST(SerdeEndToEnd, Vector)
         serde::gen_simple_dsrlz_func<std::vector<int>, std::string>()
     );
 
-    std::vector<int> original = {1, 2, 3, 4, 5};
+    std::vector<int> original{};
+    for (int i = 0; i < 1000; ++i) {
+        original.push_back(i);
+    }
 
     // serialize
     std::string serialized =

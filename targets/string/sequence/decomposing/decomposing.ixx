@@ -1,7 +1,7 @@
 module;
 
 #include <vector>
-#include <ranges>
+#include <string>
 
 export module serde.targets.string.data_structures.sequence.decomposing;
 

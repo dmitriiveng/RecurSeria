@@ -15,7 +15,10 @@ export namespace serde::functions {
     template <typename Output, typename InputContainer>
     requires
         SerializableContainer<InputContainer> &&
-        TagInvokeSerializable<Output, std::ranges::range_value_t<InputContainer>>
+        (
+            TagInvokeSerializable<Output, std::ranges::range_value_t<InputContainer>> ||
+            DefaultSerializable<Output, std::ranges::range_value_t<InputContainer>>
+        )
     void tag_invoke(default_serialize_tag, Output& out, const InputContainer& input){
         std::vector<Output> output_vector;
 

@@ -15,7 +15,10 @@ export namespace serde::functions {
     template <typename OutputContainer, typename Input>
     requires
         DeserializableContainer<OutputContainer> &&
-        TagInvokeDeserializable<std::ranges::range_value_t<OutputContainer>, Input>
+        (
+            TagInvokeDeserializable<std::ranges::range_value_t<OutputContainer>, Input> ||
+            DefaultDeserializable<std::ranges::range_value_t<OutputContainer>, Input>
+        )
     void tag_invoke(default_deserialize_tag, OutputContainer& out, const Input& input){
         // getting input elements
         // TODO replace with views based later
