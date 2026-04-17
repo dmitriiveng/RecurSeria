@@ -1,4 +1,5 @@
 module;
+
 #include <vector>
 #include <ranges>
 
@@ -10,8 +11,8 @@ import serde.core.meta.functions.data_structures.sequence.decomposing;
 export namespace serde::functions {
 
     void tag_invoke(
-        decompose_sequentially_tag, 
-        std::vector<std::string>& out, 
+        decompose_sequentially_tag,
+        std::vector<std::string>& out,
         const std::string& input
     ) {
         auto it_pair_begin = input.begin();

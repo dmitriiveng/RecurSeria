@@ -29,6 +29,8 @@ export import serde.core.meta.functions.types.deserialization;
 export import serde.core.meta.functions.data_structures.sequence.grouping;
 export import serde.core.meta.functions.data_structures.sequence.decomposing;
 
+export import serde.core.meta.functions.default_functions.template_containers.inserting;
+
 //default
 
 //containers
