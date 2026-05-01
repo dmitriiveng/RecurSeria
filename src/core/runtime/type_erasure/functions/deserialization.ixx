@@ -1,11 +1,11 @@
 module;
 #include <functional>
 
-export module serde.core.runtime.type_erasure.functions.deserialization;
+export module recurseria.core.runtime.type_erasure.functions:dsrlz;
 
-export import serde.core.runtime.type_erasure.types;
+export import recurseria.core.runtime.type_erasure.types;
 
-export namespace serde {
+export namespace recurseria::core::runtime {
     template <typename InputV>
     using type_erased_dsrlz_func = std::function<TypeErasedValueOwner(const InputV&)>;
 }

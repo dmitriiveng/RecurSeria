@@ -1,14 +1,10 @@
-module;
+export module recurseria.core.runtime.facade;
 
-export module serde.core.runtime.facade;
+export import recurseria.core.runtime.mapper;
+export import recurseria.core.runtime.type_erasure.types;
 
-export import serde.core.runtime.mapper;
-
-export import serde.core.runtime.type_erasure.types;
-
-export namespace serde {
-    // serde
-
+export namespace recurseria::core::runtime {
+    // serialization deserialization
     template <typename Output, typename Key>
     Output serialize(ISrlzFuncMapper<Output, Key>& mapper, Key& key, const TypeErasedValuePtr data){
         return mapper.get_function(key)(data);
@@ -20,7 +16,6 @@ export namespace serde {
     }
 
     // new types
-
     template <typename T, typename Output, typename Key, typename SrlzGenFunc>
     void register_serializable_type(IDsrlzFuncMapper<Output, Key>& mapper, Key& key) {
         mapper.add_function(key, gen_simple_type_srlz_func<Output, T>());

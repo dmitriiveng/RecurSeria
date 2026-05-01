@@ -2,12 +2,11 @@ module;
 #include <unordered_map>
 #include <stdexcept>
 
-export module serde.core.runtime.mapper:implementation;
+export module recurseria.core.runtime.mapper:implementation;
 
 import :interface;
 
-export namespace serde {
-
+export namespace recurseria::core::runtime {
     template <typename Func, typename Key>
     class SerDeFuncMapper : public ISerDeFuncMapper<Func, Key> {
         std::unordered_map<Key, Func> data;

@@ -1,4 +1,4 @@
-export module serde.core.runtime.mapper;
+export module recurseria.core.runtime.mapper;
 
 export import :interface;
 export import :implementation;

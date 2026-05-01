@@ -1,11 +1,9 @@
 module;
-
 #include <memory>
 
-export module serde.core.runtime.type_erasure.types:unique_ptr_type_erased_value_owner;
+export module recurseria.core.runtime.type_erasure.types:unique_ptr_type_erased_value_owner;
 
-export namespace serde {
-
+export namespace recurseria::core::runtime {
     class UniquePtrTypeErasedValueOwner {
         std::unique_ptr<void, void(*)(void*)> value;
     public:

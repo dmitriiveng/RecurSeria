@@ -1,9 +1,6 @@
-module;
+export module recurseria.core.runtime.type_erasure.types:raw_type_erased_value_ptr;
 
-export module serde.core.runtime.type_erasure.types:raw_type_erased_value_ptr;
-
-export namespace serde {
-
+export namespace recurseria::core::runtime {
     class RawTypeErasedValuePtr {
         void* ptr;
     public:

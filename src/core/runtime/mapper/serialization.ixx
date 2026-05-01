@@ -1,9 +1,9 @@
-export module serde.core.runtime.mapper:serialization;
+export module recurseria.core.runtime.mapper:serialization;
 
 import :implementation;
-import serde.core.runtime.type_erasure.functions.serialization;
+export import recurseria.core.runtime.type_erasure.functions;
 
-export namespace serde {
+export namespace recurseria::core::runtime {
     template <typename OutputV, typename Key>
     using ISrlzFuncMapper = ISerDeFuncMapper<type_erased_srlz_func<OutputV>, Key>;
 

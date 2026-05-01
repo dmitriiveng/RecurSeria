@@ -1,8 +1,6 @@
-module;
+export module recurseria.core.runtime.mapper:interface;
 
-export module serde.core.runtime.mapper:interface;
-
-export namespace serde {
+export namespace recurseria::core::runtime {
     /**
      * @brief Maps types to functions.
      *
