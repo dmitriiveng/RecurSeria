@@ -15,11 +15,11 @@ export namespace recurseria::core::meta {
     //TODO find another way to set this
     using AggregateFieldsGetter = PfrFieldsGetter;
 
-    template <typename Output, typename Input>
+    template <typename FormatTag, typename Output, typename Input>
     requires std::is_aggregate_v<Output>
-    void tag_invoke(default_deserialize_tag, Output& out, const Input& input){
+    Output tag_invoke(FormatTag, default_deserialize_tag, type_tag<Output>, const Input& input){
         std::vector<Input> input_vector;
-        decompose_sequentially(input_vector, input);
+        decompose_sequentially(FormatTag{}, input_vector, input);
 
         constexpr std::size_t fields_count = AggregateFieldsGetter::template field_count<Output>();
 
@@ -39,25 +39,19 @@ export namespace recurseria::core::meta {
 
         // Making a tuple of fields from a vector of InputV
         auto tuple_filled = [&]<std::size_t... I>(std::index_sequence<I...>) {
-            // Removing cv & ref
-            auto result = std::tuple<
+            return std::tuple<
                 std::remove_cv_t<std::remove_reference_t<std::tuple_element_t<I, TupleType>>>...
-            >{};
-
-            // Filling with elements
-            (
-                deserialize(
-                    std::get<I>(result),
-                    input_vector[I]
-                ),
-                ...
-            );
-
-            return result;
+            >{
+                deserialize.as<
+                    FormatTag,
+                    std::remove_cv_t<std::remove_reference_t<std::tuple_element_t<I, TupleType>>>,
+                    Input
+                >(input_vector[I])...
+            };
         }(std::make_index_sequence<fields_count>{});
 
         // Using aggregate constructor
-        out = std::apply(
+        return std::apply(
             []<typename... Args>(Args&&... args) {
                 return Output{std::forward<Args>(args)...};
             },

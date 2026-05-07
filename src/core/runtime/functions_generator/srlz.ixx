@@ -5,18 +5,14 @@ import recurseria.core.runtime.type_erasure.functions;
 
 export namespace recurseria::core::runtime {
     template<
+        typename FormatTag,
         typename Output,
-        typename T
+        typename Input
     >
     [[nodiscard]] type_erased_srlz_func<Output>
-    gen_simple_type_srlz_func() {
-        auto serialization = [](const TypeErasedValuePtr input) -> Output {
-            Output result{};
-            recurseria::core::meta::serialize(result, input.get<T>());
-
-            return result;
+    gen_simple_srlz_func() {
+        return [](const TypeErasedValuePtr input) -> Output {
+            return recurseria::core::meta::serialize.as<FormatTag, Output, Input>(input.get<Input>());
         };
-
-        return serialization;
     }
 }

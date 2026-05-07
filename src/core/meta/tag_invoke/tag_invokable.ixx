@@ -6,6 +6,11 @@ export module recurseria.core.meta.tag_invokable;
 export namespace recurseria::core::meta {
     void tag_invoke();
 
+    template <typename T>
+    struct type_tag {
+        using type = T;
+    };
+
     template<class Tag, class... Args>
     concept TagInvokable = requires(Tag tag, Args&&... args) {
         tag_invoke(tag, std::forward<Args>(args)...);

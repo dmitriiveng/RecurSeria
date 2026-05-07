@@ -10,3 +10,7 @@ export import :aggregate_types_srlz;
 // containers
 export import :containers_dsrlz;
 export import :containers_srlz;
+
+// tuple types
+export import :tuple_types_dsrlz;
+export import :tuple_types_srlz;

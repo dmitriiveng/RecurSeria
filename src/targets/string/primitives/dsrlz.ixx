@@ -7,75 +7,81 @@ export module recurseria.targets.string:primitives_dsrlz;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 import recurseria.targets.string.utils;
+import :format_tag;
 
-export namespace recurseria::core::meta {
+export namespace recurseria::target::string {
+    using deserialize_tag = recurseria::core::meta::deserialize_tag;
+
+    template<typename T>
+    using type_tag = recurseria::core::meta::type_tag<T>;
+
     // int
-    void tag_invoke(deserialize_tag, int& out, const std::string& input) {
-        out = std::stoi(input);
+    int tag_invoke(default_string_format_tag, deserialize_tag, type_tag<int>, const std::string& input) {
+        return std::stoi(input);
     }
 
     // long
-    void tag_invoke(deserialize_tag, long& out, const std::string& input) {
-        out = std::stol(input);
+    long tag_invoke(default_string_format_tag, deserialize_tag, type_tag<long>, const std::string& input) {
+        return std::stol(input);
     }
 
     // long long
-    void tag_invoke(deserialize_tag, long long& out, const std::string& input) {
-        out = std::stoll(input);
+    long long tag_invoke(default_string_format_tag, deserialize_tag, type_tag<long long>, const std::string& input) {
+        return std::stoll(input);
     }
 
     // unsigned int
-    void tag_invoke(deserialize_tag, unsigned int& out, const std::string& input) {
-        out = static_cast<unsigned int>(std::stoul(input));
+    unsigned int tag_invoke(default_string_format_tag, deserialize_tag, type_tag<unsigned int>, const std::string& input) {
+        return static_cast<unsigned int>(std::stoul(input));
     }
 
     // unsigned long
-    void tag_invoke(deserialize_tag, unsigned long& out, const std::string& input) {
-        out = std::stoul(input);
+    unsigned long tag_invoke(default_string_format_tag, deserialize_tag, type_tag<unsigned long>, const std::string& input) {
+        return std::stoul(input);
     }
 
     // unsigned long long
-    void tag_invoke(deserialize_tag, unsigned long long& out, const std::string& input) {
-        out = std::stoull(input);
+    unsigned long long tag_invoke(default_string_format_tag, deserialize_tag, type_tag<unsigned long long>, const std::string& input) {
+        return std::stoull(input);
     }
 
     // float
-    void tag_invoke(deserialize_tag, float& out, const std::string& input) {
-        out = std::stof(input);
+    float tag_invoke(default_string_format_tag, deserialize_tag, type_tag<float>, const std::string& input) {
+        return std::stof(input);
     }
 
     // double
-    void tag_invoke(deserialize_tag, double& out, const std::string& input) {
-        out = std::stod(input);
+    double tag_invoke(default_string_format_tag, deserialize_tag, type_tag<double>, const std::string& input) {
+        return std::stod(input);
     }
 
     // long double
-    void tag_invoke(deserialize_tag, long double& out, const std::string& input) {
-        out = std::stold(input);
+    long double tag_invoke(default_string_format_tag, deserialize_tag, type_tag<long double>, const std::string& input) {
+        return std::stold(input);
     }
 
     // bool
-    void tag_invoke(deserialize_tag, bool& out, const std::string& input) {
+    bool tag_invoke(default_string_format_tag, deserialize_tag, type_tag<bool>, const std::string& input) {
         const auto& v = input;
         if (v == "true" || v == "1") {
-            out = true;
+            return true;
         } else if (v == "false" || v == "0") {
-            out = false;
+            return false;
         } else {
             throw std::invalid_argument("Invalid boolean value: " + v);
         }
     }
 
     // char
-    void tag_invoke(deserialize_tag, char& out, const std::string& input) {
+    char tag_invoke(default_string_format_tag, deserialize_tag, type_tag<char>, const std::string& input) {
         if (input.size() != 1) {
             throw std::invalid_argument("Invalid char value: " + input);
         }
-        out = input[0];
+        return input[0];
     }
 
     // std::string
-    void tag_invoke(deserialize_tag, std::string& out, const std::string& input) {
+    std::string tag_invoke(default_string_format_tag, deserialize_tag, type_tag<std::string>, const std::string& input) {
         auto b = input.begin();
         const auto e = input.end();
 
@@ -85,6 +91,6 @@ export namespace recurseria::core::meta {
         }
         std::string res_str = result.value();
         res_str.pop_back();
-        out = std::string(++res_str.begin(), res_str.end());
+        return std::string(++res_str.begin(), res_str.end());
     }
 }

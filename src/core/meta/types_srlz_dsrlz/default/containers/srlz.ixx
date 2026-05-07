@@ -15,27 +15,25 @@ import :default_srlz;
 import :srlz;
 
 export namespace recurseria::core::meta {
-    template <typename Output, typename InputContainer>
+    template <typename FormatTag, typename Output, typename InputContainer>
     requires
         SerializableContainer<InputContainer> &&
         (
-            TagInvokeSerializable<Output, std::ranges::range_value_t<InputContainer>> ||
-            DefaultSerializable<Output, std::ranges::range_value_t<InputContainer>>
+            TagInvokeSerializable<FormatTag, Output, std::ranges::range_value_t<InputContainer>> ||
+            DefaultSerializable<FormatTag, Output, std::ranges::range_value_t<InputContainer>>
         )
-    void tag_invoke(default_serialize_tag, Output& out, const InputContainer& input){
+    Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputContainer& input){
         std::vector<Output> output_vector;
 
         auto transformed_input = input | std::ranges::views::transform([](const auto& element){
-            Output value{};
-            serialize(value, element);
-            return value;
+            return serialize.as<FormatTag, Output, std::ranges::range_value_t<InputContainer>>(element);
         });
 
         std::ranges::copy(transformed_input, get_output_iterator(output_vector));
 
         Output result{};
-        group_sequentially(result, output_vector);
+        group_sequentially(FormatTag{}, result, output_vector);
 
-        out = std::move(result);
+        return result;
     }
 }

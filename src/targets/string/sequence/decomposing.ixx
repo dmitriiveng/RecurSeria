@@ -6,9 +6,13 @@ export module recurseria.targets.string:sequence_decomposing;
 
 import recurseria.core.meta.helpers.sequence_ops;
 import recurseria.targets.string.utils;
+import :format_tag;
 
-export namespace recurseria::core::meta {
+export namespace recurseria::target::string {
+    using decompose_sequentially_tag = recurseria::core::meta::decompose_sequentially_tag;
+
     void tag_invoke(
+        default_string_format_tag,
         decompose_sequentially_tag,
         std::vector<std::string>& out,
         const std::string& input

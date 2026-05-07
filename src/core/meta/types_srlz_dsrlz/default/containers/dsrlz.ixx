@@ -15,35 +15,32 @@ import :default_dsrlz;
 import :dsrlz;
 
 export namespace recurseria::core::meta {
-    template <typename OutputContainer, typename Input>
+    template <typename FormatTag, typename OutputContainer, typename Input>
     requires
         DeserializableContainer<OutputContainer> &&
         (
-            TagInvokeDeserializable<std::ranges::range_value_t<OutputContainer>, Input> ||
-            DefaultDeserializable<std::ranges::range_value_t<OutputContainer>, Input>
+            TagInvokeDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input> ||
+            DefaultDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input>
         )
-    void tag_invoke(default_deserialize_tag, OutputContainer& out, const Input& input){
+    OutputContainer tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputContainer>, const Input& input){
         // getting input elements
         // TODO replace with views based later
         std::vector<Input> elements;
-        decompose_sequentially(elements, input);
+        decompose_sequentially(FormatTag{}, elements, input);
 
         // deserializing every element
         // TODO replace with pipe notation
         auto deserialized_input = std::views::transform(elements, [](const Input& element) {
-            std::ranges::range_value_t<OutputContainer> value{};
-            deserialize(value, element);
-            return value;
+            return deserialize.as<FormatTag, std::ranges::range_value_t<OutputContainer>, Input>(element);
         });
 
-        // creating output container and output iterator for it
+        // creating output container and getting output iterator for it
         OutputContainer result;
         auto output_it = get_output_iterator(result);
 
         // copying deserialized elements into output container
         std::ranges::copy(deserialized_input, output_it);
 
-        // moving output container into output reference
-        out = std::move(result);
+        return result;
     }
 }

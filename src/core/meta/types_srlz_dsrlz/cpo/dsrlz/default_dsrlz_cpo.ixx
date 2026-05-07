@@ -1,3 +1,6 @@
+module;
+#include <concepts>
+
 export module recurseria.core.meta.types_srlz_dsrlz:default_dsrlz;
 
 export import recurseria.core.meta.tag_invokable;
@@ -5,8 +8,13 @@ export import recurseria.core.meta.tag_invokable;
 export namespace recurseria::core::meta {
     struct default_deserialize_tag {};
 
-    template <typename Output, typename Input>
-    concept DefaultDeserializable = requires(Output& out, const Input& value) {
-        tag_invoke(default_deserialize_tag{}, out, value);
-    };
+    template <typename FormatTag, typename Output, typename Input>
+    concept DefaultDeserializable =
+        // Output value shopuld not be const or refence
+        (!std::is_reference_v<Output>) &&
+        (!std::is_const_v<Output>) &&
+        // tag_invoke
+        requires(const Input& value) {
+            {tag_invoke(FormatTag{}, default_deserialize_tag{}, type_tag<Output>{}, value)} -> std::same_as<Output>;
+        };
 }

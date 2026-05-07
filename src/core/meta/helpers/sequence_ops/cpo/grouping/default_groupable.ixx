@@ -8,8 +8,8 @@ export import recurseria.core.meta.tag_invokable;
 export namespace recurseria::core::meta {
     struct default_group_sequentially_tag{};
 
-    template <typename T>
+    template <typename FormatTag, typename T>
     concept DefaultSequentiallyGroupable = requires(T& out, const std::vector<T>& value) {
-        tag_invoke(default_group_sequentially_tag{}, out, value);
+        tag_invoke(FormatTag{}, default_group_sequentially_tag{}, out, value);
     };
 }

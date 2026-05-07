@@ -16,13 +16,13 @@ export namespace recurseria::core::runtime {
     }
 
     // new types
-    template <typename T, typename Output, typename Key, typename SrlzGenFunc>
+    template <typename FormatTag, typename Output, typename Input, typename Key, typename SrlzGenFunc>
     void register_serializable_type(IDsrlzFuncMapper<Output, Key>& mapper, Key& key) {
-        mapper.add_function(key, gen_simple_type_srlz_func<Output, T>());
+        mapper.add_function(key, gen_simple_type_srlz_func<FormatTag, Output, Input>());
     }
 
-    template <typename T, typename Input, typename Key, typename SrlzGenFunc>
+    template <typename FormatTag, typename Output, typename Input, typename Key, typename SrlzGenFunc>
     void register_deserializable_type(IDsrlzFuncMapper<Input, Key>& mapper, Key& key) {
-        mapper.add_function(key, gen_simple_type_dsrlz_func<Input, T>());
+        mapper.add_function(key, gen_simple_type_dsrlz_func<FormatTag, Output, Input>());
     }
 }

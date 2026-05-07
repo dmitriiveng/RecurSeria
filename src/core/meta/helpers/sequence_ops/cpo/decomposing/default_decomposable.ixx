@@ -8,8 +8,8 @@ export import recurseria.core.meta.tag_invokable;
 export namespace recurseria::core::meta {
     struct default_decompose_sequentially_tag{};
 
-    template <typename T>
+    template <typename FormatTag, typename T>
     concept DefaultSequentiallyDecomposable = requires(std::vector<T>& out, const T& value) {
-        tag_invoke(default_decompose_sequentially_tag{}, out, value);
+        tag_invoke(FormatTag{}, default_decompose_sequentially_tag{}, out, value);
     };
 }

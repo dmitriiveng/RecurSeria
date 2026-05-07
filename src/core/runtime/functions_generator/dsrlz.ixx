@@ -5,18 +5,14 @@ import recurseria.core.runtime.type_erasure.functions;
 
 export namespace recurseria::core::runtime {
     template<
-        typename T,
+        typename FormatTag,
+        typename Output,
         typename Input
     >
     [[nodiscard]] type_erased_dsrlz_func<Input>
     gen_simple_dsrlz_func() {
-        auto deserialization = [](const Input& input) -> TypeErasedValueOwner {
-            T result{};
-            recurseria::core::meta::deserialize(result, input);
-
-            return TypeErasedValueOwner(result);
+        return [](const Input& input) -> TypeErasedValueOwner {
+            return TypeErasedValueOwner(recurseria::core::meta::deserialize.as<FormatTag, Output, Input>(input));
         };
-
-        return deserialization;
     }
 }
