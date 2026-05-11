@@ -3,9 +3,10 @@ module;
 #include <iterator>
 #include <ranges>
 
-export module recurseria.core.meta.helpers.output_iterator_getter:dafault_back_inserter_inserting;
+export module recurseria.core.meta.helpers.output_iterator_getter:default_back_inserter_inserting;
 
 import :cpo;
+import :default_cpo;
 
 export namespace recurseria::core::meta {
 

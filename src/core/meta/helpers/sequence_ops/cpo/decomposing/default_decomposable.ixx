@@ -1,6 +1,7 @@
 module;
 
 #include <ranges>
+#include <utility>
 
 export module recurseria.core.meta.helpers.sequence_ops:default_decomposable;
 

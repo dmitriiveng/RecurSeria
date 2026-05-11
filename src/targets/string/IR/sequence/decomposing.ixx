@@ -3,7 +3,7 @@ module;
 #include <span>
 #include <stdexcept>
 
-export module recurseria.targets.string.intermediate_representation:sequence_decomposing;
+export module recurseria.target.string.intermediate_representation:sequence_decomposing;
 
 import recurseria.core.meta.helpers.sequence_ops;
 import :format_tag;

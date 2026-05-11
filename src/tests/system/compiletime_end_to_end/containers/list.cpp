@@ -2,7 +2,7 @@
 #include <list>
 
 import recurseria.core;
-import recurseria.targets.string.intermediate_representation;
+import recurseria.target.string.intermediate_representation;
 
 TEST(CompileTimeEndToEnd, List)
 {

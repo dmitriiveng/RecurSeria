@@ -4,7 +4,7 @@ module;
 #include <vector>
 #include <variant>
 
-export module recurseria.targets.string.intermediate_representation:tree_node;
+export module recurseria.target.string.intermediate_representation:tree_node;
 
 export namespace recurseria::target::string {
     struct StringIRTreeNode final {

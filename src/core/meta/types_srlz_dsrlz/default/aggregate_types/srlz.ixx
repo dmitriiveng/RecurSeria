@@ -5,14 +5,12 @@ export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_srlz;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
-import recurseria.core.meta.helpers.fields_getter;
 // default dsrlz
 import :default_srlz;
 import :srlz;
+import :aggregate_fields_getter_setter;
 
 export namespace recurseria::core::meta {
-    //TODO find another way to set this
-    using AggregateFieldsGetter = PfrFieldsGetter;
 
     template <typename T>
     using clean_type = std::remove_cv_t<std::remove_reference_t<T>>;

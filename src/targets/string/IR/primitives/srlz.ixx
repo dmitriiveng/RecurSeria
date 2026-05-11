@@ -2,7 +2,7 @@ module;
 
 #include <string>
 
-export module recurseria.targets.string.intermediate_representation:primitives_srlz;
+export module recurseria.target.string.intermediate_representation:primitives_srlz;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 import :format_tag;

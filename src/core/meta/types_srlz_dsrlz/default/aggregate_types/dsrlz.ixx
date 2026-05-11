@@ -1,21 +1,21 @@
 module;
-#include <stdexcept>
+#include <tuple>
+#include <utility>
+#include <type_traits>
 
 export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_dsrlz;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
-import recurseria.core.meta.helpers.fields_getter;
 // default dsrlz
 import :default_dsrlz;
 import :dsrlz;
+import :aggregate_fields_getter_setter;
 
-namespace recurseria::core::meta {
-    //TODO find another way to set this
-    using AggregateFieldsGetter = PfrFieldsGetter;
+export namespace recurseria::core::meta {
 
     // tag_invoke
-    export template <typename FormatTag, typename Output, typename Input>
+    template <typename FormatTag, typename Output, typename Input>
         requires std::is_aggregate_v<Output>
     Output tag_invoke(FormatTag, default_deserialize_tag, type_tag<Output>, const Input& input){
         using TupleType = AggregateFieldsGetter::template tuple_type<Output>;

@@ -2,7 +2,7 @@
 #include <string>
 
 import recurseria.core;
-import recurseria.targets.string.intermediate_representation;
+import recurseria.target.string.intermediate_representation;
 
 namespace {
     struct Person {

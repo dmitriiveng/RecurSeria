@@ -1,4 +1,4 @@
-export module recurseria.targets.string.intermediate_representation;
+export module recurseria.target.string.intermediate_representation;
 
 export import :format_tag;
 export import :tree_node;
