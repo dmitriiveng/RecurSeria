@@ -2,7 +2,7 @@
 #include <string>
 
 import recurseria.core;
-import recurseria.targets.string;
+import recurseria.targets.string.intermediate_representation;
 
 namespace {
     struct Person {
@@ -21,9 +21,9 @@ namespace {
         }
 
         Type result = recurseria::core::meta::srlz_dsrlz_round_trip<
-            recurseria::target::string::default_string_format_tag,
+            recurseria::target::string::string_intermediate_representation_format_tag,
             Type,
-            std::string
+            recurseria::target::string::StringIRTreeNode
         >(original);
 
         // verify

@@ -23,14 +23,8 @@ export namespace recurseria::core::meta {
             DefaultDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input>
         )
     OutputContainer tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputContainer>, const Input& input){
-        // getting input elements
-        // TODO replace with views based later
-        std::vector<Input> elements;
-        decompose_sequentially(FormatTag{}, elements, input);
 
-        // deserializing every element
-        // TODO replace with pipe notation
-        auto deserialized_input = std::views::transform(elements, [](const Input& element) {
+        auto deserialized_input = std::views::transform(decompose_sequentially(FormatTag{}, input), [](const Input& element) {
             return deserialize.as<FormatTag, std::ranges::range_value_t<OutputContainer>, Input>(element);
         });
 

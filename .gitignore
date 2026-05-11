@@ -1,0 +1,35 @@
+# Build
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+.ninja_deps
+.ninja_log
+build.ninja
+
+# Cache
+.cache/
+
+# Object / library files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exp
+*.pdb
+*.ilk
+
+# Executables
+*.exe
+*.out
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -20,6 +20,8 @@ export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename Input>
     requires std::is_aggregate_v<Input>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
+
+        //TODO rewrite without vector
         constexpr std::size_t fields_count = AggregateFieldsGetter::template field_count<Input>();
 
         std::vector<Output> output_vector;
@@ -31,8 +33,6 @@ export namespace recurseria::core::meta {
             );
         });
 
-        Output result{};
-        group_sequentially(FormatTag{}, result, output_vector);
-        return result;
+        return group_sequentially(FormatTag{}, output_vector);
     }
 }

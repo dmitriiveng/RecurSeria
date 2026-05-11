@@ -1,6 +1,5 @@
 module;
 
-#include <vector>
 #include <ranges>
 
 export module recurseria.core.meta.types_srlz_dsrlz:containers_srlz;
@@ -23,16 +22,11 @@ export namespace recurseria::core::meta {
             DefaultSerializable<FormatTag, Output, std::ranges::range_value_t<InputContainer>>
         )
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputContainer& input){
-        std::vector<Output> output_vector;
-
         auto transformed_input = input | std::ranges::views::transform([](const auto& element){
             return serialize.as<FormatTag, Output, std::ranges::range_value_t<InputContainer>>(element);
         });
 
-        std::ranges::copy(transformed_input, get_output_iterator(output_vector));
-
-        Output result{};
-        group_sequentially(FormatTag{}, result, output_vector);
+        Output result = group_sequentially(FormatTag{}, transformed_input);
 
         return result;
     }

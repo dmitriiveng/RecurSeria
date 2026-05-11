@@ -1,18 +1,17 @@
 #include <gtest/gtest.h>
 #include <list>
-#include <string>
 
 import recurseria.core;
-import recurseria.targets.string;
+import recurseria.targets.string.intermediate_representation;
 
 TEST(CompileTimeEndToEnd, List)
 {
     std::list<int> original = {1, 2, 3, 4, 5};
 
     std::list<int> result = recurseria::core::meta::srlz_dsrlz_round_trip<
-        recurseria::target::string::default_string_format_tag,
+        recurseria::target::string::string_intermediate_representation_format_tag,
         std::list<int>,
-        std::string
+        recurseria::target::string::StringIRTreeNode
     >(original);
 
     // verify

@@ -19,6 +19,7 @@ export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename InputTuple>
     requires TupleLike<InputTuple>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputTuple& input) {
+        //TODO rewrite without vector
         constexpr std::size_t N = std::tuple_size_v<std::remove_cvref_t<InputTuple>>;
         std::vector<Output> output_vector;
         output_vector.reserve(N);
@@ -34,8 +35,6 @@ export namespace recurseria::core::meta {
             );
         }(std::make_index_sequence<N>{});
 
-        Output result{};
-        group_sequentially(FormatTag{}, result, output_vector);
-        return result;
+        return group_sequentially(FormatTag{}, output_vector);
     }
 }

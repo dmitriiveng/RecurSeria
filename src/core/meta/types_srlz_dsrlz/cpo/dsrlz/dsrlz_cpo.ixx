@@ -27,13 +27,14 @@ export namespace recurseria::core::meta {
     // CPO
     inline constexpr struct deserialize_fn {
         template<typename FormatTag, typename Output, typename Input>
-            requires Deserializable<FormatTag, Output, Input>
-        constexpr Output as(const Input& value) const {
-            if constexpr (TagInvokeDeserializable<FormatTag, Output, Input>){
-                return tag_invoke(FormatTag{}, deserialize_tag{}, type_tag<Output>{}, value);
+            requires Deserializable<FormatTag, std::remove_cvref_t<Output>, Input>
+        constexpr std::remove_cvref_t<Output> as(const Input& value) const {
+            using CleanOutput = std::remove_cvref_t<Output>;
+            if constexpr (TagInvokeDeserializable<FormatTag, CleanOutput, Input>){
+                return tag_invoke(FormatTag{}, deserialize_tag{}, type_tag<CleanOutput>{}, value);
             }
-            else if constexpr(DefaultDeserializable<FormatTag, Output, Input>){
-                return tag_invoke(FormatTag{}, default_deserialize_tag{}, type_tag<Output>{}, value);
+            else if constexpr(DefaultDeserializable<FormatTag, CleanOutput, Input>){
+                return tag_invoke(FormatTag{}, default_deserialize_tag{}, type_tag<CleanOutput>{}, value);
             }
         }
     } deserialize;

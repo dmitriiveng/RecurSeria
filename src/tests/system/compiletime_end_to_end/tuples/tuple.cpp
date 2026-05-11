@@ -3,7 +3,7 @@
 #include <string>
 
 import recurseria.core;
-import recurseria.targets.string;
+import recurseria.targets.string.intermediate_representation;
 
 TEST(CompileTimeEndToEnd, Tuple)
 {
@@ -12,9 +12,9 @@ TEST(CompileTimeEndToEnd, Tuple)
     MyTuple original{42, 3.14159, "Tuple"};
 
     bool equals = recurseria::core::meta::srlz_dsrlz_round_trip_validation<
-        recurseria::target::string::default_string_format_tag,
+        recurseria::target::string::string_intermediate_representation_format_tag,
         MyTuple,
-        std::string
+        recurseria::target::string::StringIRTreeNode
     >(original);
 
     EXPECT_TRUE(equals);

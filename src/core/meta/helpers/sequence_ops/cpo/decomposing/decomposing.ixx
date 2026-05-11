@@ -1,5 +1,5 @@
 module;
-#include <vector>
+#include <ranges>
 
 export module recurseria.core.meta.helpers.sequence_ops:decomposing;
 
@@ -9,19 +9,22 @@ export namespace recurseria::core::meta {
     struct decompose_sequentially_tag {};
 
     template <typename FormatTag, typename T>
-    concept SequentiallyDecomposable = requires(std::vector<T>& out, const T& value) {
-        tag_invoke(FormatTag{}, decompose_sequentially_tag{}, out, value);
-    };
+    concept SequentiallyDecomposable =
+        requires(T&& value) {
+            {
+                tag_invoke(FormatTag{}, decompose_sequentially_tag{}, std::forward<T>(value))
+            } -> std::ranges::view;
+        };
 
     inline constexpr struct decompose_sequentially_fn {
         template<typename FormatTag, typename T>
             requires SequentiallyDecomposable<FormatTag, T> || DefaultSequentiallyDecomposable<FormatTag, T>
-        constexpr void operator()(FormatTag, std::vector<T>& out, const T& value) const {
+        constexpr auto operator()(FormatTag, const T& value) const {
             if constexpr (SequentiallyDecomposable<FormatTag, T>){
-                tag_invoke(FormatTag{}, decompose_sequentially_tag{}, out, value);
+                return tag_invoke(FormatTag{}, decompose_sequentially_tag{}, value);
             }
             else if constexpr (DefaultSequentiallyDecomposable<FormatTag, T>){
-                tag_invoke(FormatTag{}, default_decompose_sequentially_tag{}, out, value);
+                return tag_invoke(FormatTag{}, default_decompose_sequentially_tag{}, value);
             }
         }
     } decompose_sequentially;
