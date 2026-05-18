@@ -1,3 +1,5 @@
+#TODO add GCC compiler support
+
 cmake_minimum_required(VERSION 4.2.3)
 
 project(RecurSeria LANGUAGES CXX)

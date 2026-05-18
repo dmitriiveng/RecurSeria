@@ -6,6 +6,7 @@ module;
 export module recurseria.core.meta.types_srlz_dsrlz:srlz;
 
 export import recurseria.core.meta.tag_invokable;
+export import recurseria.core.meta.chain;
 export import recurseria.core.meta.exceptions;
 import :default_srlz;
 
@@ -52,6 +53,19 @@ export namespace recurseria::core::meta {
                     throw tag_invoke_error("serialize", typeid(Input).name(), e.what());
                 }
             }
+        }
+
+        template<typename FormatTag, typename Chain, typename Output, typename Input>
+            requires IsChain<Chain>
+        constexpr Output as(const Input& value) const {
+            auto last = fold_left(
+                [this]<typename T>(const auto& v) {
+                    return this->template as<FormatTag, T>(v);
+                },
+                value,
+                Chain{}
+            );
+            return this->template as<FormatTag, Output>(last);
         }
     } serialize;
 }
