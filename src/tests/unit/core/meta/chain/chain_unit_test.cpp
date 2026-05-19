@@ -29,6 +29,29 @@ namespace {
         static_assert(!IsChain<void>);
     }
 
+    // chain_reverse
+
+    TEST(ChainTest, ReverseSingleType) {
+        static_assert(std::same_as<chain_reverse_t<chain<int>>, chain<int>>);
+    }
+
+    TEST(ChainTest, ReverseTwoTypes) {
+        static_assert(std::same_as<chain_reverse_t<chain<int, double>>, chain<double, int>>);
+    }
+
+    TEST(ChainTest, ReverseThreeTypes) {
+        static_assert(std::same_as<chain_reverse_t<chain<int, double, std::string>>, chain<std::string, double, int>>);
+    }
+
+    TEST(ChainTest, ReverseIsSelfInverse) {
+        using Original = chain<int, std::string, double>;
+        using Reversed = chain_reverse_t<Original>;
+        using Back    = chain_reverse_t<Reversed>;
+        static_assert(std::same_as<Back, Original>);
+    }
+
+    // fold_left, single type
+
     TEST(ChainTest, FoldLeftSingleType) {
         auto result = fold_left(
             []<typename T>(int x) -> int { return x + 1; },

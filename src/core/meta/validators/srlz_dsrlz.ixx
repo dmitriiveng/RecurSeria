@@ -21,4 +21,19 @@ export namespace recurseria::core::meta {
             serialize.as<FormatTag, SerializationType, OriginalType>(object)
         );
     }
+
+    //TODO put chain inside template parameters
+    template <typename FormatTag, typename OriginalType, typename SerializationType, typename... ChainTypes>
+        requires (sizeof...(ChainTypes) > 0)
+    OriginalType srlz_dsrlz_round_trip(OriginalType& object) {
+        using SerChain = chain<ChainTypes...>;
+        auto serialized = serialize.as<FormatTag, SerChain, SerializationType>(object);
+        return deserialize.as<FormatTag, chain_reverse_t<SerChain>, OriginalType>(serialized);
+    }
+
+    template <typename FormatTag, typename OriginalType, typename SerializationType, typename... ChainTypes>
+        requires (sizeof...(ChainTypes) > 0) && std::equality_comparable<OriginalType>
+    bool srlz_dsrlz_round_trip_validation(OriginalType& object) {
+        return object == srlz_dsrlz_round_trip<FormatTag, OriginalType, SerializationType, ChainTypes...>(object);
+    }
 }

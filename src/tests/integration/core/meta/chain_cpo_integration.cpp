@@ -71,12 +71,15 @@ namespace {
         EXPECT_EQ(result, 42);
     }
 
-    TEST(ChainCpoIntegrationTest, RoundTripThroughChain) {
-        // serialize: int -> Wrap -> string -> Vec
-        auto vec = serialize.as<ChainTestFormat, chain<Wrap, std::string>, Vec>(42);
-        // deserialize: Vec -> string -> Wrap -> int (reverse pipeline)
-        auto back = deserialize.as<ChainTestFormat, chain<std::string, Wrap>, int>(vec);
-        EXPECT_EQ(back, 42);
-    }
+TEST(ChainCpoIntegrationTest, RoundTripThroughChain) {
+    using SerChain = chain<Wrap, std::string>;
+    using DeserChain = chain_reverse_t<SerChain>;
+
+    // serialize: int -> Wrap -> string -> Vec
+    auto vec = serialize.as<ChainTestFormat, SerChain, Vec>(42);
+    // deserialize: Vec -> string -> Wrap -> int (reverse pipeline)
+    auto back = deserialize.as<ChainTestFormat, DeserChain, int>(vec);
+    EXPECT_EQ(back, 42);
+}
 
 }
