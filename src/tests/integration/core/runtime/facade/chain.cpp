@@ -55,7 +55,7 @@ namespace {
 
     TEST(FacadeChainTest, RegisterAndSerializeTwoStepChain) {
         // int -> Wrap -> string
-        using SrlzArgs = arg_pack<ChainTestFormat, chain<Wrap>, std::string, int>;
+        using SrlzArgs = arg_pack<ChainTestFormat, std::string, int, chain<Wrap>>;
         SrlzFuncMapper<std::string, Key> mapper;
         register_serializable<SrlzArgs>(mapper, kKey);
 
@@ -68,7 +68,7 @@ namespace {
 
     TEST(FacadeChainTest, RegisterAndSerializeThreeStepChain) {
         // int -> Wrap -> string -> Vec
-        using SrlzArgs = arg_pack<ChainTestFormat, chain<Wrap, std::string>, Vec, int>;
+        using SrlzArgs = arg_pack<ChainTestFormat, Vec, int, chain<Wrap, std::string>>;
         SrlzFuncMapper<Vec, Key> mapper;
         register_serializable<SrlzArgs>(mapper, kKey);
 
@@ -81,7 +81,7 @@ namespace {
 
     TEST(FacadeChainTest, RegisterAndDeserializeTwoStepChain) {
         // Vec -> string -> Wrap
-        using DsrlzArgs = arg_pack<ChainTestFormat, chain<std::string>, Wrap, Vec>;
+        using DsrlzArgs = arg_pack<ChainTestFormat, Wrap, Vec, chain<std::string>>;
         DsrlzFuncMapper<Vec, Key> mapper;
         register_deserializable<DsrlzArgs>(mapper, kKey);
 
@@ -93,7 +93,7 @@ namespace {
 
     TEST(FacadeChainTest, RegisterAndDeserializeThreeStepChain) {
         // Vec -> string -> Wrap -> int
-        using DsrlzArgs = arg_pack<ChainTestFormat, chain<std::string, Wrap>, int, Vec>;
+        using DsrlzArgs = arg_pack<ChainTestFormat, int, Vec, chain<std::string, Wrap>>;
         DsrlzFuncMapper<Vec, Key> mapper;
         register_deserializable<DsrlzArgs>(mapper, kKey);
 
@@ -107,8 +107,8 @@ namespace {
         using SerChain = chain<Wrap, std::string>;
         using DeserChain = chain<std::string, Wrap>;
 
-        using SrlzArgs = arg_pack<ChainTestFormat, SerChain, Vec, int>;
-        using DsrlzArgs = arg_pack<ChainTestFormat, DeserChain, int, Vec>;
+        using SrlzArgs = arg_pack<ChainTestFormat, Vec, int, SerChain>;
+        using DsrlzArgs = arg_pack<ChainTestFormat, int, Vec, DeserChain>;
 
         SrlzFuncMapper<Vec, Key> srlz_mapper;
         DsrlzFuncMapper<Vec, Key> dsrlz_mapper;

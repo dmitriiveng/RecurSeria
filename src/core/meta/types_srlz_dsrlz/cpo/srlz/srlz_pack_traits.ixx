@@ -16,8 +16,8 @@ export namespace recurseria::core::meta {
         static_assert(sizeof...(Ts) >= 3);
         using as_tuple = std::tuple<Ts...>;
         using format_tag = std::tuple_element_t<0, as_tuple>;
-        using output_type = std::tuple_element_t<sizeof...(Ts) - 2, as_tuple>;
-        using input_type = std::tuple_element_t<sizeof...(Ts) - 1, as_tuple>;
+        using output_type = std::tuple_element_t<1, as_tuple>;
+        using input_type = std::tuple_element_t<2, as_tuple>;
     };
 
     template <typename, typename = void>
@@ -29,7 +29,7 @@ export namespace recurseria::core::meta {
         std::void_t<typename serialize_args<arg_pack<Ts...>>::format_tag>
     > : std::bool_constant<
         (sizeof...(Ts) >= 3) &&
-        requires(const std::tuple_element_t<sizeof...(Ts) - 1, std::tuple<Ts...>>& v) {
+        requires(const typename serialize_args<arg_pack<Ts...>>::input_type& v) {
             serialize.as<Ts...>(v);
         }
     > {};

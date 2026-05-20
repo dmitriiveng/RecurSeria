@@ -27,8 +27,8 @@ export namespace recurseria::core::meta {
         requires (sizeof...(ChainTypes) > 0)
     OriginalType srlz_dsrlz_round_trip(OriginalType& object) {
         using SerChain = chain<ChainTypes...>;
-        auto serialized = serialize.as<FormatTag, SerChain, SerializationType>(object);
-        return deserialize.as<FormatTag, chain_reverse_t<SerChain>, OriginalType>(serialized);
+        auto serialized = serialize.as<FormatTag, SerializationType, OriginalType, SerChain>(object);
+        return deserialize.as<FormatTag, OriginalType, SerializationType, chain_reverse_t<SerChain>>(serialized);
     }
 
     template <typename FormatTag, typename OriginalType, typename SerializationType, typename... ChainTypes>

@@ -56,7 +56,7 @@ export namespace recurseria::core::meta {
             }
         }
 
-        template<typename FormatTag, typename Chain, typename Output, typename Input>
+        template<typename FormatTag, typename Output, typename Input, typename Chain>
             requires IsChain<Chain>
         constexpr std::remove_cvref_t<Output> as(const Input& value) const {
             using CleanOutput = std::remove_cvref_t<Output>;

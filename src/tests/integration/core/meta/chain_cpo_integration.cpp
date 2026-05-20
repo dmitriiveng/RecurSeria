@@ -45,28 +45,28 @@ namespace {
 
     TEST(ChainCpoIntegrationTest, SerializeTwoStepChain) {
         // int -> Wrap -> string
-        auto result = serialize.as<ChainTestFormat, chain<Wrap>, std::string>(42);
+        auto result = serialize.as<ChainTestFormat, std::string, int, chain<Wrap>>(42);
         static_assert(std::same_as<decltype(result), std::string>);
         EXPECT_EQ(result, "42");
     }
 
     TEST(ChainCpoIntegrationTest, SerializeThreeStepChain) {
         // int -> Wrap -> string -> Vec
-        auto result = serialize.as<ChainTestFormat, chain<Wrap, std::string>, Vec>(42);
+        auto result = serialize.as<ChainTestFormat, Vec, int, chain<Wrap, std::string>>(42);
         static_assert(std::same_as<decltype(result), Vec>);
         EXPECT_EQ(result.data, (std::vector<char>{'4', '2'}));
     }
 
     TEST(ChainCpoIntegrationTest, DeserializeTwoStepChain) {
         // Vec -> string -> Wrap
-        auto result = deserialize.as<ChainTestFormat, chain<std::string>, Wrap>(Vec{{'4', '2'}});
+        auto result = deserialize.as<ChainTestFormat, Wrap, Vec, chain<std::string>>(Vec{{'4', '2'}});
         static_assert(std::same_as<decltype(result), Wrap>);
         EXPECT_EQ(result.value, 42);
     }
 
     TEST(ChainCpoIntegrationTest, DeserializeThreeStepChain) {
         // Vec -> string -> Wrap -> int
-        auto result = deserialize.as<ChainTestFormat, chain<std::string, Wrap>, int>(Vec{{'4', '2'}});
+        auto result = deserialize.as<ChainTestFormat, int, Vec, chain<std::string, Wrap>>(Vec{{'4', '2'}});
         static_assert(std::same_as<decltype(result), int>);
         EXPECT_EQ(result, 42);
     }
@@ -76,9 +76,9 @@ TEST(ChainCpoIntegrationTest, RoundTripThroughChain) {
     using DeserChain = chain_reverse_t<SerChain>;
 
     // serialize: int -> Wrap -> string -> Vec
-    auto vec = serialize.as<ChainTestFormat, SerChain, Vec>(42);
+    auto vec = serialize.as<ChainTestFormat, Vec, int, SerChain>(42);
     // deserialize: Vec -> string -> Wrap -> int (reverse pipeline)
-    auto back = deserialize.as<ChainTestFormat, DeserChain, int>(vec);
+    auto back = deserialize.as<ChainTestFormat, int, Vec, DeserChain>(vec);
     EXPECT_EQ(back, 42);
 }
 
