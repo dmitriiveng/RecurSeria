@@ -8,6 +8,13 @@ using namespace recurseria::core::meta;
 
 namespace {
 
+    struct FmtA {};
+    struct FmtB {};
+
+}
+
+namespace {
+
     TEST(ChainTest, ChainIsEmpty) {
         static_assert(std::is_empty_v<chain<int>>);
         static_assert(std::is_empty_v<chain<int, double, std::string>>);
@@ -130,6 +137,74 @@ namespace {
             chain<int, int, int>{}
         );
         EXPECT_EQ(result, 42);
+    }
+
+    // -- type_format --------------------------------------------------------
+
+    TEST(TypeFormatTest, StoresTypeAndFormat) {
+        static_assert(std::same_as<type_format<int, FmtA>::type, int>);
+        static_assert(std::same_as<type_format<int, FmtA>::format, FmtA>);
+    }
+
+    TEST(TypeFormatTest, IsTypeFormatDetectsTypeFormat) {
+        static_assert(is_type_format_v<type_format<int, FmtA>>);
+        static_assert(is_type_format_v<type_format<std::string, FmtB>>);
+        static_assert(!is_type_format_v<int>);
+        static_assert(!is_type_format_v<std::string>);
+        static_assert(!is_type_format_v<FmtA>);
+    }
+
+    TEST(TypeFormatTest, TypeFormatChainIsStillChain) {
+        static_assert(IsChain<chain<type_format<int, FmtA>>>);
+        static_assert(IsChain<chain<type_format<int, FmtA>, type_format<double, FmtB>>>);
+    }
+
+    TEST(TypeFormatTest, ChainReverseWithTypeFormat) {
+        using Original = chain<type_format<int, FmtA>, type_format<double, FmtB>>;
+        using Reversed = chain_reverse_t<Original>;
+        static_assert(std::same_as<Reversed, chain<type_format<double, FmtB>, type_format<int, FmtA>>>);
+    }
+
+    TEST(TypeFormatTest, FoldLeftSingleTypeFormat) {
+        auto result = fold_left(
+            []<typename T, typename Fmt>(int x) -> int {
+                if constexpr (std::same_as<Fmt, FmtA>) return x + 10;
+                else return x;
+            },
+            5,
+            chain<type_format<int, FmtA>>{}
+        );
+        EXPECT_EQ(result, 15);
+    }
+
+    TEST(TypeFormatTest, FoldLeftMultipleTypeFormats) {
+        auto result = fold_left(
+            []<typename T, typename Fmt>(std::string s) -> std::string {
+                if constexpr (std::same_as<Fmt, FmtA>) return s + "[A]";
+                else if constexpr (std::same_as<Fmt, FmtB>) return s + "[B]";
+                else return s;
+            },
+            std::string{},
+            chain<type_format<int, FmtA>, type_format<double, FmtB>>{}
+        );
+        EXPECT_EQ(result, "[A][B]");
+    }
+
+    TEST(TypeFormatTest, TypeFormatCanMixWithPlain) {
+        auto result = fold_left(
+            []<typename T, typename Fmt = void>(std::string s) -> std::string {
+                if constexpr (std::same_as<Fmt, void>) {
+                    return s + "[plain]";
+                } else if constexpr (std::same_as<Fmt, FmtA>) {
+                    return s + "[A]";
+                } else {
+                    return s;
+                }
+            },
+            std::string{},
+            chain<int, type_format<double, FmtA>>{}
+        );
+        EXPECT_EQ(result, "[plain][A]");
     }
 
 }

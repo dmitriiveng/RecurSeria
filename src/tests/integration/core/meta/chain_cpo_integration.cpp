@@ -82,4 +82,34 @@ TEST(ChainCpoIntegrationTest, RoundTripThroughChain) {
     EXPECT_EQ(back, 42);
 }
 
+// -- type_format chain tests ------------------------------------------------
+
+TEST(ChainCpoIntegrationTest, SerializeWithTypeFormatChain) {
+    using SerChain = chain<type_format<Wrap, ChainTestFormat>, type_format<std::string, ChainTestFormat>>;
+    // int -> Wrap (via ChainTestFormat) -> string (via ChainTestFormat)
+    auto result = serialize.as<ChainTestFormat, Vec, int, SerChain>(42);
+    static_assert(std::same_as<decltype(result), Vec>);
+    EXPECT_EQ(result.data, (std::vector<char>{'4', '2'}));
+}
+
+TEST(ChainCpoIntegrationTest, DeserializeWithTypeFormatChain) {
+    using DserChain = chain<type_format<std::string, ChainTestFormat>, type_format<Wrap, ChainTestFormat>>;
+    // Vec -> string (via ChainTestFormat) -> Wrap (via ChainTestFormat)
+    auto result = deserialize.as<ChainTestFormat, int, Vec, DserChain>(Vec{{'4', '2'}});
+    static_assert(std::same_as<decltype(result), int>);
+    EXPECT_EQ(result, 42);
+}
+
+TEST(ChainCpoIntegrationTest, RoundTripWithTypeFormatChain) {
+    using SerChain = chain<
+        type_format<Wrap, ChainTestFormat>,
+        type_format<std::string, ChainTestFormat>
+    >;
+    using DeserChain = chain_reverse_t<SerChain>;
+
+    auto vec = serialize.as<ChainTestFormat, Vec, int, SerChain>(42);
+    auto back = deserialize.as<ChainTestFormat, int, Vec, DeserChain>(vec);
+    EXPECT_EQ(back, 42);
+}
+
 }

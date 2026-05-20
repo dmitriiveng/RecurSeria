@@ -5,6 +5,7 @@ module;
 export module recurseria.core.meta.chain;
 
 import recurseria.core.meta.tag_invokable;
+export import :type_format;
 
 namespace recurseria::core::meta {
     /// Type-level list of intermediate representations.
@@ -78,16 +79,20 @@ namespace recurseria::core::meta {
     export template <typename... Ts>
     using arg_pack = chain<Ts...>;
 
-    /// Applies `func<T>(value)` for each type `T` in the chain,
-    /// threading the result left-to-right. Returns the value after
-    /// the last type in the chain.
+    /// Applies `func<T>(value)` or `func<T, Fmt>(value)` for each
+    /// element in the chain. Plain types pass `<T>`; `type_format<T, Fmt>`
+    /// entries pass `<T, Fmt>`. Results are threaded left-to-right.
     export template <typename Func, typename Input, typename Last>
     constexpr auto fold_left(
         Func&& func,
         Input&& input,
         chain<Last>
     ) {
-        return func.template operator()<Last>(std::forward<Input>(input));
+        if constexpr (is_type_format_v<Last>) {
+            return func.template operator()<typename Last::type, typename Last::format>(std::forward<Input>(input));
+        } else {
+            return func.template operator()<Last>(std::forward<Input>(input));
+        }
     }
 
     export template <typename Func, typename Input, typename First, typename... Rest>
@@ -97,10 +102,18 @@ namespace recurseria::core::meta {
         Input&& input,
         chain<First, Rest...>
     ) {
-        return fold_left(
-            std::forward<Func>(func),
-            func.template operator()<First>(std::forward<Input>(input)),
-            chain<Rest...>{}
-        );
+        if constexpr (is_type_format_v<First>) {
+            return fold_left(
+                std::forward<Func>(func),
+                func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
+                chain<Rest...>{}
+            );
+        } else {
+            return fold_left(
+                std::forward<Func>(func),
+                func.template operator()<First>(std::forward<Input>(input)),
+                chain<Rest...>{}
+            );
+        }
     }
 }

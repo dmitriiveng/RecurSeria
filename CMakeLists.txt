@@ -10,13 +10,27 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
-# Modules
+# --- Modules ---
+
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_STD 1)
 
-# Dependencies
+# --- Dependencies ---
+
+# Boost
 find_package(Boost REQUIRED)
+
+# GTest
 find_package(GTest REQUIRED)
+
+# YAML cpp
+include(FetchContent)
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(yaml-cpp)
 
 # --- RecurSeria library ---
 
@@ -50,36 +64,65 @@ target_link_libraries(recurseria_core
 
 # String targets
 
-file(GLOB_RECURSE RECURSERIA_STRING_TARGET_INTERFACE_UNITS
+# IR
+file(GLOB_RECURSE RECURSERIA_STRING_IR_TARGET_INTERFACE_UNITS
   CONFIGURE_DEPENDS
-  "src/targets/string/*.ixx"
-  "src/targets/string/*.cppm"
+  "src/targets/string/IR/*.ixx"
+  "src/targets/string/IR/*.cppm"
 )
 
-file(GLOB_RECURSE RECURSERIA_STRING_TARGET_IMPLEMENTATIONS
+file(GLOB_RECURSE RECURSERIA_STRING_IR_TARGET_IMPLEMENTATIONS
   CONFIGURE_DEPENDS
-  "src/targets/string/*.cpp"
+  "src/targets/string/IR/*.cpp"
 )
 
-add_library(recurseria_string_target)
+add_library(recurseria_string_ir_target)
 
-target_sources(recurseria_string_target
+target_sources(recurseria_string_ir_target
   PUBLIC
     FILE_SET CXX_MODULES
-    BASE_DIRS src/targets/string/
-    FILES ${RECURSERIA_STRING_TARGET_INTERFACE_UNITS}
+    BASE_DIRS src/targets/string/IR/
+    FILES ${RECURSERIA_STRING_IR_TARGET_INTERFACE_UNITS}
   PRIVATE
-    ${RECURSERIA_STRING_TARGET_IMPLEMENTATIONS}
+    ${RECURSERIA_STRING_IR_TARGET_IMPLEMENTATIONS}
 )
 
-target_link_libraries(recurseria_string_target
+target_link_libraries(recurseria_string_ir_target
   PUBLIC
     recurseria_core
 )
 
-# Tests
+# YAML
+file(GLOB_RECURSE RECURSERIA_STRING_YAML_TARGET_INTERFACE_UNITS
+  CONFIGURE_DEPENDS
+  "src/targets/string/YAML/*.ixx"
+  "src/targets/string/YAML/*.cppm"
+)
 
-# Core tests
+file(GLOB_RECURSE RECURSERIA_STRING_YAML_TARGET_IMPLEMENTATIONS
+  CONFIGURE_DEPENDS
+  "src/targets/string/YAML/*.cpp"
+)
+
+add_library(recurseria_string_yaml_target)
+
+target_sources(recurseria_string_yaml_target
+  PUBLIC
+    FILE_SET CXX_MODULES
+    BASE_DIRS src/targets/string/YAML/
+    FILES ${RECURSERIA_STRING_YAML_TARGET_INTERFACE_UNITS}
+  PRIVATE
+    ${RECURSERIA_STRING_YAML_TARGET_IMPLEMENTATIONS}
+)
+
+target_link_libraries(recurseria_string_yaml_target
+  PUBLIC
+    recurseria_core
+    recurseria_string_ir_target
+    yaml-cpp::yaml-cpp
+)
+
+# Tests
 
 file(GLOB_RECURSE RECURSERIA_TESTS
   CONFIGURE_DEPENDS
@@ -93,7 +136,8 @@ add_executable(recurseria_tests
 target_link_libraries(recurseria_tests
   PRIVATE
   recurseria_core
-  recurseria_string_target
+  recurseria_string_ir_target
+  recurseria_string_yaml_target
   GTest::gtest
   GTest::gtest_main
 )

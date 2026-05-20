@@ -61,8 +61,8 @@ export namespace recurseria::core::meta {
         constexpr std::remove_cvref_t<Output> as(const Input& value) const {
             using CleanOutput = std::remove_cvref_t<Output>;
             auto last = fold_left(
-                [this]<typename T>(const auto& v) {
-                    return this->template as<FormatTag, T>(v);
+                [this]<typename T, typename Fmt = FormatTag>(const auto& v) -> decltype(auto) {
+                    return this->template as<Fmt, T>(v);
                 },
                 value,
                 Chain{}

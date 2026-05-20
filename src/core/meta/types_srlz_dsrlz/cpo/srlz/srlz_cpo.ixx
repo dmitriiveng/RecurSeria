@@ -59,8 +59,8 @@ export namespace recurseria::core::meta {
             requires IsChain<Chain>
         constexpr Output as(const Input& value) const {
             auto last = fold_left(
-                [this]<typename T>(const auto& v) {
-                    return this->template as<FormatTag, T>(v);
+                [this]<typename T, typename Fmt = FormatTag>(const auto& v) -> decltype(auto) {
+                    return this->template as<Fmt, T>(v);
                 },
                 value,
                 Chain{}
