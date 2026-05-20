@@ -68,6 +68,16 @@ namespace recurseria::core::meta {
         requires IsChain<T>
     using chain_reverse_t = typename chain_reverse<T>::type;
 
+    /// Type-level argument pack for passing multiple CPO arguments as one type.
+    ///
+    /// Simple serialization:
+    ///     arg_pack<FormatTag, Output, Input>
+    ///
+    /// Pipeline serialization:
+    ///     arg_pack<FormatTag, Chain, Output, Input>
+    export template <typename... Ts>
+    using arg_pack = chain<Ts...>;
+
     /// Applies `func<T>(value)` for each type `T` in the chain,
     /// threading the result left-to-right. Returns the value after
     /// the last type in the chain.
