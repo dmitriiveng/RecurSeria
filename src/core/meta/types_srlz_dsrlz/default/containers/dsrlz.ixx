@@ -17,6 +17,7 @@ import :dsrlz;
 export namespace recurseria::core::meta {
     template <typename FormatTag, typename OutputContainer, typename Input>
     requires
+        SerializableContainer<OutputContainer> &&
         DeserializableContainer<OutputContainer> &&
         (
             TagInvokeDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input> ||

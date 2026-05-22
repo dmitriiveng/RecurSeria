@@ -15,8 +15,7 @@ namespace {
     using recurseria::target::string::yaml_bridge_format_tag;
     using recurseria::target::string::string_intermediate_representation_format_tag;
 
-    // -- Leaf round-trip ---------------------------------------------------
-
+    
     TEST(YamlBridgeTest, LeafToYamlAndBack)
     {
         StringIRTreeNode original("hello");
@@ -32,7 +31,6 @@ namespace {
         EXPECT_EQ(result.get_string(), "hello");
     }
 
-    // -- Branch round-trip -------------------------------------------------
 
     TEST(YamlBridgeTest, BranchToYamlAndBack)
     {
@@ -59,8 +57,6 @@ namespace {
         EXPECT_EQ(seq[1].get_string(), "b");
         EXPECT_EQ(seq[2].get_string(), "c");
     }
-
-    // -- Nested branch -----------------------------------------------------
 
     TEST(YamlBridgeTest, NestedToYamlAndBack)
     {
@@ -93,8 +89,6 @@ namespace {
         EXPECT_EQ(nested[1].get_string(), "nested_b");
     }
 
-    // -- YAML map round-trip ----------------------------------------------
-
     TEST(YamlBridgeTest, YamlMapToBranchAndBack)
     {
         YAML::Node map(YAML::NodeType::Map);
@@ -121,8 +115,6 @@ namespace {
         EXPECT_EQ(back[1][1].as<std::string>(), "20");
     }
 
-    // -- YAML null ---------------------------------------------------------
-
     TEST(YamlBridgeTest, NullYamlNode)
     {
         YAML::Node null_node;
@@ -133,30 +125,37 @@ namespace {
         EXPECT_TRUE(ir.get_string().empty());
     }
 
-    // -- End-to-end via StringIR -------------------------------------------
-
     struct Person {
         int id;
         double score;
         std::string name;
     };
 
-    TEST(YamlBridgeTest, EndToEndViaStringIR)
+    TEST(YamlBridgeTest, EndToEndViaChain)
     {
         Person original{42, 3.14, "Alice"};
 
-        auto ir = serialize.as<string_intermediate_representation_format_tag, StringIRTreeNode>(original);
+        using recurseria::core::meta::type_format;
+        using recurseria::core::meta::chain;
 
-        auto yaml = serialize.as<yaml_bridge_format_tag, YAML::Node>(ir);
+        // Serialize: Person -> StringIRTreeNode -> YAML::Node
+        using SerChain = chain<
+            type_format<StringIRTreeNode, string_intermediate_representation_format_tag>
+        >;
+
+        auto yaml = serialize.as<yaml_bridge_format_tag, YAML::Node, Person, SerChain>(original);
 
         ASSERT_TRUE(yaml.IsSequence());
         EXPECT_EQ(yaml[0].as<std::string>(), "42");
         EXPECT_EQ(yaml[1].as<std::string>(), "3.140000");
         EXPECT_EQ(yaml[2].as<std::string>(), "Alice");
 
-        auto ir_back = deserialize.as<yaml_bridge_format_tag, StringIRTreeNode>(yaml);
+        // Deserialize: YAML::Node -> StringIRTreeNode -> Person
+        using DserChain = chain<
+            type_format<StringIRTreeNode, yaml_bridge_format_tag>
+        >;
 
-        Person result = deserialize.as<string_intermediate_representation_format_tag, Person>(ir_back);
+        Person result = deserialize.as<string_intermediate_representation_format_tag, Person, YAML::Node, DserChain>(yaml);
 
         EXPECT_EQ(result.id, original.id);
         EXPECT_DOUBLE_EQ(result.score, original.score);

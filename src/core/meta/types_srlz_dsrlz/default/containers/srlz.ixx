@@ -7,8 +7,10 @@ export module recurseria.core.meta.types_srlz_dsrlz:containers_srlz;
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
 import recurseria.core.meta.helpers.output_iterator_getter;
+
 // concepts
 import :containers_concepts;
+
 // default dsrlz
 import :default_srlz;
 import :srlz;
@@ -16,6 +18,7 @@ import :srlz;
 export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename InputContainer>
     requires
+        DeserializableContainer<InputContainer> &&
         SerializableContainer<InputContainer> &&
         (
             TagInvokeSerializable<FormatTag, Output, std::ranges::range_value_t<InputContainer>> ||
