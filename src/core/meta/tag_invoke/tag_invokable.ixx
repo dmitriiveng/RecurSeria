@@ -1,7 +1,6 @@
-module;
-#include <utility>
-
 export module recurseria.core.meta.tag_invokable;
+
+import std;
 
 export namespace recurseria::core::meta {
     void tag_invoke();

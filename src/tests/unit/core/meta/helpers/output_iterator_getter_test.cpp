@@ -1,8 +1,5 @@
-#include <iterator>
-#include <set>
-#include <stdexcept>
-#include <vector>
 #include <gtest/gtest.h>
+import std;
 
 import recurseria.core.meta.helpers.output_iterator_getter;
 

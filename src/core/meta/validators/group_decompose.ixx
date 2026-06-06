@@ -1,8 +1,6 @@
-module;
-
-#include <concepts>
-
 export module recurseria.core.meta.validators:group_decompose;
+
+import std;
 
 import recurseria.core.meta.helpers.sequence_ops;
 

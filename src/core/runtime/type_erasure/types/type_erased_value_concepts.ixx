@@ -1,7 +1,6 @@
-module;
-#include <concepts>
-
 export module recurseria.core.runtime.type_erasure.types:type_erased_value_concepts;
+
+import std;
 
 namespace recurseria::core::runtime {
     // temporary solution

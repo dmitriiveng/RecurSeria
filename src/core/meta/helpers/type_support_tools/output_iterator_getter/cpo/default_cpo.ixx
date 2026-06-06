@@ -1,8 +1,6 @@
-module;
-#include <iterator>
-#include <ranges>
-
 export module recurseria.core.meta.helpers.output_iterator_getter:default_cpo;
+
+import std;
 
 export import recurseria.core.meta.tag_invokable;
 

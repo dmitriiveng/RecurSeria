@@ -1,8 +1,6 @@
-module;
-
-#include <concepts>
-
 export module recurseria.core.meta.validators:srlz_dsrlz;
+
+import std;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 

@@ -1,8 +1,6 @@
-module;
-
-#include <type_traits>
-
 export module recurseria.core.meta.chain:type_format;
+
+import std;
 
 export namespace recurseria::core::meta {
     template <typename T, typename Fmt>

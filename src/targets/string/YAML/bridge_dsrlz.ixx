@@ -1,10 +1,9 @@
 module;
-
 #include <yaml-cpp/yaml.h>
-#include <stdexcept>
-#include <vector>
 
 export module recurseria.target.string.yaml_bridge:bridge_dsrlz;
+
+import std;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 import recurseria.target.string.intermediate_representation;

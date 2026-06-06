@@ -1,14 +1,10 @@
-module;
-#include <exception>
-#include <iterator>
-#include <ranges>
-#include <typeinfo>
-
 export module recurseria.core.meta.helpers.output_iterator_getter:cpo;
+
+import std;
 
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;
-import :default_cpo;
+export import :default_cpo;
 
 export namespace recurseria::core::meta {
     struct get_output_iterator_tag {};

@@ -1,7 +1,6 @@
-module;
-#include <tuple>
-
 export module recurseria.core.meta.types_srlz_dsrlz:tuple_types_dsrlz;
+
+import std;
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
 // default dsrlz

@@ -1,14 +1,11 @@
-module;
-#include <concepts>
-#include <exception>
-#include <typeinfo>
-
 export module recurseria.core.meta.types_srlz_dsrlz:dsrlz;
+
+import std;
 
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.chain;
 export import recurseria.core.meta.exceptions;
-import :default_dsrlz;
+export import :default_dsrlz;
 
 export namespace recurseria::core::meta {
     struct deserialize_tag {};

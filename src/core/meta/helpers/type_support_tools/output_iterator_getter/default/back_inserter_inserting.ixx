@@ -1,9 +1,6 @@
-module;
-
-#include <iterator>
-#include <ranges>
-
 export module recurseria.core.meta.helpers.output_iterator_getter:default_back_inserter_inserting;
+
+import std;
 
 import :cpo;
 import :default_cpo;

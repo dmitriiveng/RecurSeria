@@ -1,8 +1,6 @@
-module;
-#include <tuple>
-#include <type_traits>
-
 export module recurseria.core.meta.types_srlz_dsrlz:dsrlz_pack_traits;
+
+import std;
 
 import recurseria.core.meta.chain;
 import :dsrlz;

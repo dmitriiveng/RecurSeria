@@ -1,7 +1,6 @@
-module;
-#include <memory>
-
 export module recurseria.core.runtime.type_erasure.types:unique_ptr_type_erased_value_owner;
+
+import std;
 
 export namespace recurseria::core::runtime {
     class UniquePtrTypeErasedValueOwner {

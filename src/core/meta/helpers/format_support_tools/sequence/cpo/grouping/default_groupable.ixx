@@ -1,10 +1,6 @@
-module;
-
-#include <ranges>
-#include <type_traits>
-#include <utility>
-
 export module recurseria.core.meta.helpers.sequence_ops:default_groupable;
+
+import std;
 
 export import recurseria.core.meta.tag_invokable;
 

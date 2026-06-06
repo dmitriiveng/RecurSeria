@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <vector>
+import std;
 
 import recurseria.core;
 import recurseria.target.string.intermediate_representation;

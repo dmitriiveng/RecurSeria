@@ -1,9 +1,6 @@
-module;
-#include <utility>
-#include <concepts>
-
 export module recurseria.core.meta.chain;
 
+import std;
 import recurseria.core.meta.tag_invokable;
 export import :type_format;
 

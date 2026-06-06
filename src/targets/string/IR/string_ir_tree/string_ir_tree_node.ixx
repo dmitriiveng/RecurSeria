@@ -1,10 +1,6 @@
-module;
-
-#include <string>
-#include <vector>
-#include <variant>
-
 export module recurseria.target.string.intermediate_representation:tree_node;
+
+import std;
 
 export namespace recurseria::target::string {
     struct StringIRTreeNode final {

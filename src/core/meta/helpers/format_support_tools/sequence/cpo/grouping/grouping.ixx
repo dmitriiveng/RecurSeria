@@ -1,14 +1,7 @@
-module;
-
-#include <exception>
-#include <ranges>
-#include <type_traits>
-#include <typeinfo>
-#include <utility>
-
 export module recurseria.core.meta.helpers.sequence_ops:grouping;
 
-import :default_groupable;
+import std;
+export import :default_groupable;
 
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;

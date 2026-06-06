@@ -1,7 +1,6 @@
 #include <yaml-cpp/yaml.h>
 #include <gtest/gtest.h>
-#include <string>
-#include <vector>
+import std;
 
 import recurseria.core.meta;
 import recurseria.target.string.intermediate_representation;

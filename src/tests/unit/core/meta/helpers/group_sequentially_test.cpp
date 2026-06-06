@@ -1,7 +1,5 @@
-#include <ranges>
-#include <stdexcept>
-#include <vector>
 #include <gtest/gtest.h>
+import std;
 
 import recurseria.core.meta.helpers.sequence_ops;
 

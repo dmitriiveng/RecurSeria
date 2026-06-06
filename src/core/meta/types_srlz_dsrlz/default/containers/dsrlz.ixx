@@ -1,15 +1,12 @@
-module;
-
-#include <vector>
-#include <ranges>
-
 export module recurseria.core.meta.types_srlz_dsrlz:containers_dsrlz;
+
+import std;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
 import recurseria.core.meta.helpers.output_iterator_getter;
 // concepts
-import :containers_concepts;
+export import :containers_concepts;
 // default dsrlz
 import :default_dsrlz;
 import :dsrlz;

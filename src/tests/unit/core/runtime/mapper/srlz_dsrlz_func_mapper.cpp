@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include <functional>
-#include <string>
+import std;
 
 import recurseria.core.runtime.mapper;
 

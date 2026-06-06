@@ -1,8 +1,6 @@
-module;
-#include <stdexcept>
-#include <string>
-
 export module recurseria.core.meta.exceptions:tag_invoke_exception;
+
+import std;
 
 export namespace recurseria::core::meta {
     /// Exception thrown when a `tag_invoke` call fails inside a CPO.

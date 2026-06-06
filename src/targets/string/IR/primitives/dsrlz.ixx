@@ -1,8 +1,6 @@
-module;
-#include <string>
-#include <stdexcept>
-
 export module recurseria.target.string.intermediate_representation:primitives_dsrlz;
+
+import std;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 import :format_tag;

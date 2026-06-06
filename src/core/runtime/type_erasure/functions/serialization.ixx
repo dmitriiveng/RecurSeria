@@ -1,7 +1,6 @@
-module;
-#include <functional>
-
 export module recurseria.core.runtime.type_erasure.functions:srlz;
+
+import std;
 
 export import recurseria.core.runtime.type_erasure.types;
 

@@ -1,6 +1,6 @@
-#TODO add GCC compiler support
-
 cmake_minimum_required(VERSION 4.2.3)
+
+set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "451f2fe2-a8a2-47c3-bc32-94786d8fc91b")
 
 project(RecurSeria LANGUAGES CXX)
 
@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 # --- Modules ---
 
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_STD 1)
+set(CMAKE_CXX_MODULE_STD ON)
 
 # --- Dependencies ---
 

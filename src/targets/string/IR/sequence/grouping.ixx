@@ -1,9 +1,6 @@
-module;
-
-#include <ranges>
-#include <vector>
-
 export module recurseria.target.string.intermediate_representation:sequence_grouping;
+
+import std;
 
 import recurseria.core.meta.helpers.sequence_ops;
 import :format_tag;

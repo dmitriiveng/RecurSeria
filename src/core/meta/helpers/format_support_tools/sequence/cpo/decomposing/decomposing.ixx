@@ -1,12 +1,7 @@
-module;
-#include <exception>
-#include <ranges>
-#include <typeinfo>
-#include <utility>
-
 export module recurseria.core.meta.helpers.sequence_ops:decomposing;
 
-import :default_decomposable;
+import std;
+export import :default_decomposable;
 
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;

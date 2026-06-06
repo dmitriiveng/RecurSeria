@@ -1,7 +1,6 @@
-module;
-#include <concepts>
-
 export module recurseria.core.runtime.type_erasure.types:raw_type_erased_value_ptr;
+
+import std;
 
 export namespace recurseria::core::runtime {
     class RawTypeErasedValuePtr {

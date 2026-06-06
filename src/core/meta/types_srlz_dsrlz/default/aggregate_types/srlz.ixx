@@ -1,7 +1,6 @@
-module;
-#include <vector>
-
 export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_srlz;
+
+import std;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;

@@ -1,8 +1,6 @@
-module;
-
-#include <ranges>
-
 export module recurseria.core.meta.types_srlz_dsrlz:containers_srlz;
+
+import std;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;

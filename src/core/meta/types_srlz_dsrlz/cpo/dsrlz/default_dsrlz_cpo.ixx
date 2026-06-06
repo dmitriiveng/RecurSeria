@@ -1,7 +1,6 @@
-module;
-#include <concepts>
-
 export module recurseria.core.meta.types_srlz_dsrlz:default_dsrlz;
+
+import std;
 
 export import recurseria.core.meta.tag_invokable;
 

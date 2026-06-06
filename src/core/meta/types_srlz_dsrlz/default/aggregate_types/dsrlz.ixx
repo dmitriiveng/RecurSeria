@@ -1,16 +1,13 @@
-module;
-#include <tuple>
-#include <utility>
-#include <type_traits>
-
 export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_dsrlz;
+
+import std;
 
 // helpers
 import recurseria.core.meta.helpers.sequence_ops;
 // default dsrlz
 import :default_dsrlz;
 import :dsrlz;
-import :aggregate_fields_getter_setter;
+export import :aggregate_fields_getter_setter;
 
 export namespace recurseria::core::meta {
 

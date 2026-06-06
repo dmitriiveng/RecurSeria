@@ -1,5 +1,5 @@
-#include <string>
 #include <gtest/gtest.h>
+import std;
 
 import recurseria.core.meta.helpers.fields_getter;
 
