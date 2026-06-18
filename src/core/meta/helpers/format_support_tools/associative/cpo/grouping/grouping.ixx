@@ -2,7 +2,6 @@ export module recurseria.core.meta.helpers.associative_ops:grouping;
 
 import std;
 export import :default_groupable;
-import :pair_concept;
 
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;
@@ -13,7 +12,6 @@ export namespace recurseria::core::meta {
     template <typename FormatTag, typename Range>
     concept AssociativelyGroupable =
         std::ranges::input_range<Range> &&
-        PairLike<std::ranges::range_value_t<Range>> &&
         requires(Range&& range) {
             {
                 tag_invoke(FormatTag{}, group_associatively_tag{}, std::forward<Range>(range))

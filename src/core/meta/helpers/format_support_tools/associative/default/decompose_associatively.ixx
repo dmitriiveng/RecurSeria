@@ -15,6 +15,13 @@ export namespace recurseria::core::meta {
         for (auto&& elem : flat) {
             vec.push_back(std::forward<decltype(elem)>(elem));
         }
+        if(vec.size % 2 != 0){
+            throw tag_invoke_error(
+                "default_decompose_associatively_tag",
+                "sequentially decomposable range",
+                "size cannot be devided by two"
+            );
+        }
 
         using E = std::ranges::range_value_t<decltype(vec)>;
         auto pair_count = vec.size() / 2;

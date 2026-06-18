@@ -28,8 +28,11 @@ build.ninja
 *.out
 
 # IDE
+*.clangd
+*.zed
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+run-analyzer.sh
