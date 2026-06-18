@@ -5,33 +5,9 @@ import std;
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.chain;
 export import recurseria.core.meta.exceptions;
-export import :default_dsrlz;
+export import :deserializable;
 
 export namespace recurseria::core::meta {
-    struct deserialize_tag {};
-
-    template <typename FormatTag, typename Output, typename Input>
-    concept TagInvokeDeserializable =
-        (!std::is_reference_v<Output>) &&
-        (!std::is_const_v<Output>) &&
-        requires(const Input& value) {
-            {tag_invoke(FormatTag{}, deserialize_tag{}, type_tag<Output>{}, value)} -> std::same_as<Output>;
-        };
-
-    template <typename FormatTag, typename Output, typename Input>
-    concept Deserializable =
-        TagInvokeDeserializable<FormatTag, Output, Input> ||
-        DefaultDeserializable<FormatTag, Output, Input>;
-
-    /// Deserializes a value from the input format.
-    ///
-    /// @tparam FormatTag serialization format tag
-    /// @tparam Output    target C++ type
-    /// @tparam Input     input representation type
-    /// @param  value     input data to deserialize from
-    /// @return the deserialized value of type `Output`
-    ///
-    /// @throws tag_invoke_error if the underlying `tag_invoke` raises an exception.
     inline constexpr struct deserialize_fn {
         template<typename FormatTag, typename Output, typename Input>
             requires Deserializable<FormatTag, std::remove_cvref_t<Output>, Input>
