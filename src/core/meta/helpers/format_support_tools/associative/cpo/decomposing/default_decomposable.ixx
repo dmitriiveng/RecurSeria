@@ -15,5 +15,5 @@ export namespace recurseria::core::meta {
         } &&
         PairLike<std::ranges::range_value_t<
             decltype(tag_invoke(FormatTag{}, default_decompose_associatively_tag{}, std::declval<T>()))
-        >>; // returning sth assosiative
+        >>; // returning sth assoсiative
 }

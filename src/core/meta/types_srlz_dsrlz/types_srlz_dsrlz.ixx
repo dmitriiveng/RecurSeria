@@ -2,6 +2,8 @@ export module recurseria.core.meta.types_srlz_dsrlz;
 
 export import :srlz;
 export import :srlz_pack_traits;
+export import :serializable_noexcept;
+export import :deserializable_noexcept;
 export import :dsrlz;
 export import :dsrlz_pack_traits;
 
