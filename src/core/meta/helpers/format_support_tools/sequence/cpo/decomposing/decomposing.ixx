@@ -31,6 +31,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, decompose_sequentially_tag{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("decompose_sequentially", typeid(T).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("decompose_sequentially", typeid(T).name(), "unknown exception");
                 }
             }
             else {
@@ -38,6 +40,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, default_decompose_sequentially_tag{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("decompose_sequentially", typeid(T).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("decompose_sequentially", typeid(T).name(), "unknown exception");
                 }
             }
         }

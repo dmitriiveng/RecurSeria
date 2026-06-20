@@ -31,6 +31,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, group_associatively_tag{}, std::forward<Range>(range));
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("group_associatively", typeid(std::ranges::range_value_t<Range>).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("group_associatively", typeid(std::ranges::range_value_t<Range>).name(), "unknown exception");
                 }
             }
             else {
@@ -38,6 +40,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, default_group_associatively_tag{}, std::forward<Range>(range));
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("group_associatively", typeid(std::ranges::range_value_t<Range>).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("group_associatively", typeid(std::ranges::range_value_t<Range>).name(), "unknown exception");
                 }
             }
         }

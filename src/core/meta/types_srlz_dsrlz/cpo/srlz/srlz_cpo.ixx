@@ -32,6 +32,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, serialize_tag{}, type_tag<Output>{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("serialize", typeid(Input).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("serialize", typeid(Input).name(), "unknown exception");
                 }
             }
             else {
@@ -39,6 +41,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, default_serialize_tag{}, type_tag<Output>{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("serialize", typeid(Input).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("serialize", typeid(Input).name(), "unknown exception");
                 }
             }
         }

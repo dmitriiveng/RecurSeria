@@ -30,6 +30,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(get_output_iterator_tag{}, container);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("get_output_iterator", typeid(Container).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("get_output_iterator", typeid(Container).name(), "unknown exception");
                 }
             }
             else {
@@ -37,6 +39,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(default_get_output_iterator_tag{}, container);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("get_output_iterator", typeid(Container).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("get_output_iterator", typeid(Container).name(), "unknown exception");
                 }
             }
         }

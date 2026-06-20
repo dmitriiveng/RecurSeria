@@ -34,6 +34,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, deserialize_tag{}, type_tag<CleanOutput>{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("deserialize", typeid(CleanOutput).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("deserialize", typeid(CleanOutput).name(), "unknown exception");
                 }
             }
             else {
@@ -41,6 +43,8 @@ export namespace recurseria::core::meta {
                     return tag_invoke(FormatTag{}, default_deserialize_tag{}, type_tag<CleanOutput>{}, value);
                 } catch (const std::exception& e) {
                     throw tag_invoke_error("deserialize", typeid(CleanOutput).name(), e.what());
+                } catch (...) {
+                    throw tag_invoke_error("deserialize", typeid(CleanOutput).name(), "unknown exception");
                 }
             }
         }
