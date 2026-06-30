@@ -47,6 +47,8 @@ export namespace recurseria::core::meta {
             }
         }
 
+        // А тут просто сделай также как и выше, используя концепты (см serializable_noexcept.ixx)
+        // Chain overloads
         template<typename FormatTag, typename Output, typename Input, typename Chain>
             requires IsChain<Chain>
         constexpr Output as(const Input& value) const {

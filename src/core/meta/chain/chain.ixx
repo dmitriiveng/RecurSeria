@@ -80,37 +80,77 @@ namespace recurseria::core::meta {
     /// element in the chain. Plain types pass `<T>`; `type_format<T, Fmt>`
     /// entries pass `<T, Fmt>`. Results are threaded left-to-right.
     export template <typename Func, typename Input, typename Last>
+        requires (!is_type_format_v<Last>)
     constexpr auto fold_left(
         Func&& func,
         Input&& input,
         chain<Last>
+    ) noexcept(
+        noexcept(func.template operator()<Last>(std::forward<Input>(input)))
     ) {
-        if constexpr (is_type_format_v<Last>) {
-            return func.template operator()<typename Last::type, typename Last::format>(std::forward<Input>(input));
-        } else {
-            return func.template operator()<Last>(std::forward<Input>(input));
-        }
+        return func.template operator()<Last>(
+            std::forward<Input>(input)
+        );
+    }
+
+    export template <typename Func, typename Input, typename Last>
+        requires is_type_format_v<Last>
+    constexpr auto fold_left(
+        Func&& func,
+        Input&& input,
+        chain<Last>
+    ) noexcept(
+        noexcept(func.template operator()<typename Last::type, typename Last::format>(std::forward<Input>(input)))
+    ) {
+        return func.template operator()<
+            typename Last::type,
+            typename Last::format
+        >(
+            std::forward<Input>(input)
+        );
     }
 
     export template <typename Func, typename Input, typename First, typename... Rest>
-        requires (sizeof...(Rest) > 0)
+        requires (sizeof...(Rest) > 0) && (!is_type_format_v<First>)
     constexpr auto fold_left(
         Func&& func,
         Input&& input,
         chain<First, Rest...>
+    ) noexcept(
+       noexcept(
+           fold_left(
+               std::forward<Func>(func),
+               func.template operator()<First>(std::forward<Input>(input)),
+               chain<Rest...>{}
+           )
+       )
     ) {
-        if constexpr (is_type_format_v<First>) {
-            return fold_left(
-                std::forward<Func>(func),
-                func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
-                chain<Rest...>{}
-            );
-        } else {
-            return fold_left(
-                std::forward<Func>(func),
-                func.template operator()<First>(std::forward<Input>(input)),
-                chain<Rest...>{}
-            );
-        }
+        return fold_left(
+            std::forward<Func>(func),
+            func.template operator()<First>(std::forward<Input>(input)),
+            chain<Rest...>{}
+        );
+    }
+
+    export template <typename Func, typename Input, typename First, typename... Rest>
+        requires (sizeof...(Rest) > 0) && is_type_format_v<First>
+    constexpr auto fold_left(
+        Func&& func,
+        Input&& input,
+        chain<First, Rest...>
+    ) noexcept(
+      noexcept(
+          fold_left(
+              std::forward<Func>(func),
+              func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
+              chain<Rest...>{}
+          )
+      )
+    ) {
+        return fold_left(
+            std::forward<Func>(func),
+            func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
+            chain<Rest...>{}
+        );
     }
 }
