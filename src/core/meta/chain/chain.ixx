@@ -76,6 +76,7 @@ namespace recurseria::core::meta {
     export template <typename... Ts>
     using arg_pack = chain<Ts...>;
 
+    /*
     /// Applies `func<T>(value)` or `func<T, Fmt>(value)` for each
     /// element in the chain. Plain types pass `<T>`; `type_format<T, Fmt>`
     /// entries pass `<T, Fmt>`. Results are threaded left-to-right.
@@ -153,4 +154,5 @@ namespace recurseria::core::meta {
             chain<Rest...>{}
         );
     }
+    */
 }

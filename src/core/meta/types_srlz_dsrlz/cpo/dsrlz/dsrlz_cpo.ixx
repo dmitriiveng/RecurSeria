@@ -3,7 +3,7 @@ export module recurseria.core.meta.types_srlz_dsrlz:dsrlz;
 import std;
 
 export import recurseria.core.meta.tag_invokable;
-export import recurseria.core.meta.chain;
+// export import recurseria.core.meta.chain;
 export import recurseria.core.meta.exceptions;
 export import :deserializable;
 export import :deserializable_noexcept;
@@ -49,6 +49,7 @@ export namespace recurseria::core::meta {
             }
         }
 
+        /*
         // Chain overloads
         template<typename FormatTag, typename Output, typename Input, typename Chain>
             requires IsChain<Chain>
@@ -63,5 +64,6 @@ export namespace recurseria::core::meta {
             );
             return this->template as<FormatTag, CleanOutput>(last);
         }
+        */
     } deserialize;
 }

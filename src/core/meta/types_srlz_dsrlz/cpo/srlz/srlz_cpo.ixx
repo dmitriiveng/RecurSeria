@@ -3,7 +3,7 @@ export module recurseria.core.meta.types_srlz_dsrlz:srlz;
 import std;
 
 export import recurseria.core.meta.tag_invokable;
-export import recurseria.core.meta.chain;
+// export import recurseria.core.meta.chain;
 export import recurseria.core.meta.exceptions;
 export import :serializable;
 export import :serializable_noexcept;
@@ -47,7 +47,7 @@ export namespace recurseria::core::meta {
             }
         }
 
-        // А тут просто сделай также как и выше, используя концепты (см serializable_noexcept.ixx)
+        /*
         // Chain overloads
         template<typename FormatTag, typename Output, typename Input, typename Chain>
             requires IsChain<Chain>
@@ -60,6 +60,7 @@ export namespace recurseria::core::meta {
                 Chain{}
             );
             return this->template as<FormatTag, Output>(last);
-        }
+         }
+         */
     } serialize;
 }

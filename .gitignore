@@ -36,3 +36,6 @@ build.ninja
 *.swo
 *~
 run-analyzer.sh
+
+# Files
+TODO.md
