@@ -124,44 +124,4 @@ namespace {
         EXPECT_TRUE(ir.get_string().empty());
     }
 
-    struct Person {
-        int id;
-        double score;
-        std::string name;
-    };
-
-    // Chain overloads in the CPO are disabled (noexcept issues), skip this test
-    /*
-    TEST(YamlBridgeTest, EndToEndViaChain)
-    {
-        Person original{42, 3.14, "Alice"};
-
-        using recurseria::core::meta::type_format;
-        using recurseria::core::meta::chain;
-
-        // Serialize: Person -> StringIRTreeNode -> YAML::Node
-        using SerChain = chain<
-            type_format<StringIRTreeNode, string_intermediate_representation_format_tag>
-        >;
-
-        auto yaml = serialize.as<yaml_bridge_format_tag, YAML::Node, Person, SerChain>(original);
-
-        ASSERT_TRUE(yaml.IsSequence());
-        EXPECT_EQ(yaml[0].as<std::string>(), "42");
-        EXPECT_EQ(yaml[1].as<std::string>(), "3.140000");
-        EXPECT_EQ(yaml[2].as<std::string>(), "Alice");
-
-        // Deserialize: YAML::Node -> StringIRTreeNode -> Person
-        using DserChain = chain<
-            type_format<StringIRTreeNode, yaml_bridge_format_tag>
-        >;
-
-        Person result = deserialize.as<string_intermediate_representation_format_tag, Person, YAML::Node, DserChain>(yaml);
-
-        EXPECT_EQ(result.id, original.id);
-        EXPECT_DOUBLE_EQ(result.score, original.score);
-        EXPECT_EQ(result.name, original.name);
-    }
-    */
-
 }

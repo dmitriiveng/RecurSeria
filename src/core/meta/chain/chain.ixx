@@ -1,22 +1,9 @@
 export module recurseria.core.meta.chain;
 
 import std;
-import recurseria.core.meta.tag_invokable;
 export import :type_format;
 
 namespace recurseria::core::meta {
-    /// Type-level list of intermediate representations.
-    ///
-    /// Used with `serialize.as` / `deserialize.as` to specify a pipeline
-    /// of conversions. The chain is processed left-to-right:
-    ///
-    ///     serialize.as<FormatTag, chain<A, B>, Output>(x)
-    ///
-    /// applies `A` first, then `B`, then `Output`:
-    ///
-    ///     x -> A -> B -> Output
-    ///
-    /// @tparam Ts  intermediate types, processed in declaration order
     export template <typename... Ts>
     struct chain final {};
 
@@ -66,93 +53,6 @@ namespace recurseria::core::meta {
         requires IsChain<T>
     using chain_reverse_t = typename chain_reverse<T>::type;
 
-    /// Type-level argument pack for passing multiple CPO arguments as one type.
-    ///
-    /// Simple serialization:
-    ///     arg_pack<FormatTag, Output, Input>
-    ///
-    /// Pipeline serialization:
-    ///     arg_pack<FormatTag, Chain, Output, Input>
     export template <typename... Ts>
     using arg_pack = chain<Ts...>;
-
-    /*
-    /// Applies `func<T>(value)` or `func<T, Fmt>(value)` for each
-    /// element in the chain. Plain types pass `<T>`; `type_format<T, Fmt>`
-    /// entries pass `<T, Fmt>`. Results are threaded left-to-right.
-    export template <typename Func, typename Input, typename Last>
-        requires (!is_type_format_v<Last>)
-    constexpr auto fold_left(
-        Func&& func,
-        Input&& input,
-        chain<Last>
-    ) noexcept(
-        noexcept(func.template operator()<Last>(std::forward<Input>(input)))
-    ) {
-        return func.template operator()<Last>(
-            std::forward<Input>(input)
-        );
-    }
-
-    export template <typename Func, typename Input, typename Last>
-        requires is_type_format_v<Last>
-    constexpr auto fold_left(
-        Func&& func,
-        Input&& input,
-        chain<Last>
-    ) noexcept(
-        noexcept(func.template operator()<typename Last::type, typename Last::format>(std::forward<Input>(input)))
-    ) {
-        return func.template operator()<
-            typename Last::type,
-            typename Last::format
-        >(
-            std::forward<Input>(input)
-        );
-    }
-
-    export template <typename Func, typename Input, typename First, typename... Rest>
-        requires (sizeof...(Rest) > 0) && (!is_type_format_v<First>)
-    constexpr auto fold_left(
-        Func&& func,
-        Input&& input,
-        chain<First, Rest...>
-    ) noexcept(
-       noexcept(
-           fold_left(
-               std::forward<Func>(func),
-               func.template operator()<First>(std::forward<Input>(input)),
-               chain<Rest...>{}
-           )
-       )
-    ) {
-        return fold_left(
-            std::forward<Func>(func),
-            func.template operator()<First>(std::forward<Input>(input)),
-            chain<Rest...>{}
-        );
-    }
-
-    export template <typename Func, typename Input, typename First, typename... Rest>
-        requires (sizeof...(Rest) > 0) && is_type_format_v<First>
-    constexpr auto fold_left(
-        Func&& func,
-        Input&& input,
-        chain<First, Rest...>
-    ) noexcept(
-      noexcept(
-          fold_left(
-              std::forward<Func>(func),
-              func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
-              chain<Rest...>{}
-          )
-      )
-    ) {
-        return fold_left(
-            std::forward<Func>(func),
-            func.template operator()<typename First::type, typename First::format>(std::forward<Input>(input)),
-            chain<Rest...>{}
-        );
-    }
-    */
 }
