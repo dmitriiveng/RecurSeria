@@ -21,9 +21,6 @@ set(CMAKE_CXX_MODULE_STD ON)
 # Boost
 find_package(Boost REQUIRED)
 
-# GTest
-find_package(GTest REQUIRED)
-
 # YAML cpp
 include(FetchContent)
 FetchContent_Declare(
@@ -32,6 +29,24 @@ FetchContent_Declare(
   GIT_TAG master
 )
 FetchContent_MakeAvailable(yaml-cpp)
+
+# Boost.UT (header-only, has native .cppm module)
+FetchContent_Declare(
+  ut
+  GIT_REPOSITORY https://github.com/boost-ext/ut.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(ut)
+
+add_library(boost_ut)
+target_sources(boost_ut
+  PUBLIC
+    FILE_SET CXX_MODULES
+    BASE_DIRS ${ut_SOURCE_DIR}/include
+    FILES ${ut_SOURCE_DIR}/include/boost/ut.cppm
+)
+target_include_directories(boost_ut INTERFACE ${ut_SOURCE_DIR}/include)
+target_compile_features(boost_ut INTERFACE cxx_std_20)
 
 # --- RecurSeria library ---
 
@@ -125,13 +140,8 @@ target_link_libraries(recurseria_string_yaml_target
 
 # Tests
 
-file(GLOB_RECURSE RECURSERIA_TESTS
-  CONFIGURE_DEPENDS
-    "src/tests/*.cpp"
-)
-
 add_executable(recurseria_tests
-  ${RECURSERIA_TESTS}
+  src/tests/main.cpp
 )
 
 target_link_libraries(recurseria_tests
@@ -139,9 +149,5 @@ target_link_libraries(recurseria_tests
   recurseria_core
   recurseria_string_ir_target
   recurseria_string_yaml_target
-  GTest::gtest
-  GTest::gtest_main
+  boost_ut
 )
-
-include(GoogleTest)
-gtest_discover_tests(recurseria_tests)
