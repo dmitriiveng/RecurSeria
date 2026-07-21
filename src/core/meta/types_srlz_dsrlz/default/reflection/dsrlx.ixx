@@ -8,7 +8,6 @@ import :default_dsrlz;
 import :dsrlz;
 
 namespace recurseria::core::meta {
-    /*
 
     // local helper: looks up each reflected member by name, deserializes via CPO
     template <typename FormatTag, typename T, typename Input, std::size_t... Is>
@@ -56,5 +55,5 @@ namespace recurseria::core::meta {
 
         return obj;
     }
-    */
+
 }

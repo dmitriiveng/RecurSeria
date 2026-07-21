@@ -7,7 +7,6 @@ import recurseria.core.meta.helpers.sequence_ops;
 import :srlz;
 
 namespace recurseria::core::meta {
-    /*
 
     export template <typename FormatTag, typename Output, typename Input>
     requires ReflectionSupported<Input>
@@ -22,5 +21,4 @@ namespace recurseria::core::meta {
         return group_associatively(FormatTag{}, mp);
     }
 
-    */
 }

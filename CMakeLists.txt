@@ -3,10 +3,11 @@ cmake_minimum_required(VERSION 4.0.0)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "d0edc3af-4c50-42ea-a356-e2862fe7a444")
+set(CMAKE_CXX_STANDARD_LIBRARY "libstdc++" CACHE STRING "")
 
 project(RecurSeria LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
@@ -15,6 +16,10 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 set(CMAKE_CXX_MODULE_STD ON)
+
+# --- Reflection ---
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
 
 # --- Dependencies ---
 
@@ -30,23 +35,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(yaml-cpp)
 
-# Boost.UT (header-only, has native .cppm module)
+# Boost.UT
 FetchContent_Declare(
   ut
   GIT_REPOSITORY https://github.com/boost-ext/ut.git
-  GIT_TAG master
+  GIT_TAG v2.3.1
 )
 FetchContent_MakeAvailable(ut)
-
-add_library(boost_ut)
-target_sources(boost_ut
-  PUBLIC
-    FILE_SET CXX_MODULES
-    BASE_DIRS ${ut_SOURCE_DIR}/include
-    FILES ${ut_SOURCE_DIR}/include/boost/ut.cppm
-)
-target_include_directories(boost_ut INTERFACE ${ut_SOURCE_DIR}/include)
-target_compile_features(boost_ut INTERFACE cxx_std_20)
 
 # --- RecurSeria library ---
 
@@ -144,10 +139,21 @@ add_executable(recurseria_tests
   src/tests/main.cpp
 )
 
+target_sources(recurseria_tests
+  PRIVATE
+    FILE_SET CXX_MODULES
+    BASE_DIRS src/tests
+    FILES src/tests/boost_ut.ixx
+)
+
+target_include_directories(recurseria_tests
+  PRIVATE
+    ${ut_SOURCE_DIR}/include
+)
+
 target_link_libraries(recurseria_tests
   PRIVATE
   recurseria_core
   recurseria_string_ir_target
   recurseria_string_yaml_target
-  boost_ut
 )

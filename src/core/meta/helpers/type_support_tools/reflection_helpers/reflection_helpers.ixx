@@ -3,7 +3,6 @@ export module recurseria.core.meta.helpers.reflection_helpers;
 import std;
 
 namespace recurseria::core::meta {
-    /*
 
     consteval bool all_bases_fieldless(std::meta::info type) {
         auto ctx = std::meta::access_context::unchecked();
@@ -66,5 +65,4 @@ namespace recurseria::core::meta {
     export template <typename T, std::size_t I>
     using member_type_t = [:std::meta::type_of(get_nth_member<T, I>()):];
 
-    */
 }
