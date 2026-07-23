@@ -1,18 +1,12 @@
 export module recurseria.core.meta.types_srlz_dsrlz:tuple_types_srlz;
 
 import std;
-// helpers
 import recurseria.core.meta.helpers.sequence_ops;
-// default srlz
 import :default_srlz;
 import :srlz;
+import :tuple_concepts;
 
 export namespace recurseria::core::meta {
-    template <typename T>
-    concept TupleLike = requires {
-        typename std::tuple_size<std::remove_cvref_t<T>>::type;
-    };
-
     template <typename FormatTag, typename Output, typename InputTuple>
     requires TupleLike<InputTuple>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputTuple& input) {

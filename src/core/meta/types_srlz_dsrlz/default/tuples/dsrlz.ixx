@@ -6,13 +6,9 @@ import recurseria.core.meta.helpers.sequence_ops;
 // default dsrlz
 import :default_dsrlz;
 import :dsrlz;
+import :tuple_concepts;
 
 export namespace recurseria::core::meta {
-    template <typename T>
-    concept TupleLike = requires {
-        typename std::tuple_size<std::remove_cvref_t<T>>::type;
-    };
-
     template <typename FormatTag, typename OutputTuple, typename Input>
     requires TupleLike<OutputTuple>
     OutputTuple tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputTuple>, const Input& input) {
