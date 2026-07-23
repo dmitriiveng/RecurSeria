@@ -13,8 +13,6 @@ using recurseria::core::meta::srlz_dsrlz_round_trip;
 using recurseria::core::meta::srlz_dsrlz_round_trip_validation;
 using recurseria::core::meta::group_sequentially;
 using recurseria::core::meta::decompose_sequentially;
-using recurseria::core::meta::group_associatively;
-using recurseria::core::meta::decompose_associatively;
 using recurseria::target::string::StringIRTreeNode;
 using recurseria::target::string::string_intermediate_representation_format_tag;
 
@@ -129,55 +127,5 @@ int main() {
         expect(decomposed.empty());
     };
 
-    /*
-    "group_associatively round-trip"_test = [] {
-        std::vector<std::pair<std::string, std::string>> pairs{
-            {"k1", "v1"}, {"k2", "v2"}
-        };
-        auto grouped = group_associatively(Tag{}, pairs);
 
-        expect(grouped.is_branch());
-        auto& children = grouped.get_sequence();
-        expect(children.size() == 4u);
-        expect(children[0].get_string() == "k1");
-        expect(children[1].get_string() == "v1");
-        expect(children[2].get_string() == "k2");
-        expect(children[3].get_string() == "v2");
-    };
-
-    "decompose_associatively round-trip"_test = [] {
-        auto tree = branch({
-            leaf("k1"), leaf("v1"),
-            leaf("k2"), leaf("v2")
-        });
-
-        auto decomposed = decompose_associatively(Tag{}, tree);
-        auto it = decomposed.begin();
-        expect(it != decomposed.end());
-
-        auto [k1, v1] = *it;
-        expect(k1.get_string() == "k1");
-        expect(v1.get_string() == "v1");
-
-        ++it;
-        expect(it != decomposed.end());
-        auto [k2, v2] = *it;
-        expect(k2.get_string() == "k2");
-        expect(v2.get_string() == "v2");
-
-        ++it;
-        expect(it == decomposed.end());
-    };
-
-    "decompose_associatively odd-count throws"_test = [] {
-        auto tree = branch({leaf("a"), leaf("b"), leaf("c")});
-        bool caught = false;
-        try {
-            decompose_associatively(Tag{}, tree);
-        } catch (...) {
-            caught = true;
-        }
-        expect(caught);
-    };
-    */
 }
