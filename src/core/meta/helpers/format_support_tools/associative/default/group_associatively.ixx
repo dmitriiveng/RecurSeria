@@ -6,9 +6,12 @@ import :default_groupable;
 
 import recurseria.core.meta.helpers.sequence_ops;
 
+/*
 export namespace recurseria::core::meta {
     template <typename FormatTag, std::ranges::input_range Range>
-        requires PairLike<std::ranges::range_value_t<Range>>
+        requires
+            PairLike<std::ranges::range_value_t<Range>> &&
+            ( DefaultSequentiallyGroupable<FormatTag, Range> || SequentiallyGroupable<FormatTag, Range> )
     auto tag_invoke(FormatTag, default_group_associatively_tag, Range&& range) {
         using PairType = std::ranges::range_value_t<Range>;
         using E = std::common_type_t<
@@ -25,3 +28,4 @@ export namespace recurseria::core::meta {
         return group_sequentially(FormatTag{}, flat);
     }
 }
+*/

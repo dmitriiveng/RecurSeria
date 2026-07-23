@@ -14,7 +14,7 @@ export namespace recurseria::core::meta {
             requires AssociativelyGroupableNoexcept<FormatTag, Range>
         constexpr auto operator()(FormatTag, Range&& range) const noexcept
         {
-            if constexpr (AssociativelyGroupable<FormatTag, Range> &&
+            if constexpr (UserDefinedAssociativelyGroupable<FormatTag, Range> &&
                           noexcept(tag_invoke(FormatTag{}, group_associatively_tag{}, std::forward<Range>(range))))
             {
                 return tag_invoke(FormatTag{}, group_associatively_tag{}, std::forward<Range>(range));
@@ -24,9 +24,9 @@ export namespace recurseria::core::meta {
         }
 
         template <typename FormatTag, std::ranges::input_range Range>
-            requires AssociativelyGroupable<FormatTag, Range> || DefaultAssociativelyGroupable<FormatTag, Range>
+            requires AssociativelyGroupable<FormatTag, Range>
         constexpr auto operator()(FormatTag, Range&& range) const {
-            if constexpr (AssociativelyGroupable<FormatTag, Range>){
+            if constexpr (UserDefinedAssociativelyGroupable<FormatTag, Range>){
                 try {
                     return tag_invoke(FormatTag{}, group_associatively_tag{}, std::forward<Range>(range));
                 } catch (const std::exception& e) {

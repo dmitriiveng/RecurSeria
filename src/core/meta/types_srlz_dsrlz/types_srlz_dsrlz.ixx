@@ -8,8 +8,10 @@ export import :dsrlz;
 export import :dsrlz_pack_traits;
 
 // aggregate types
-export import :aggregate_types_dsrlz;
-export import :aggregate_types_srlz;
+// export import :aggregate_types_dsrlz;
+// export import :aggregate_types_srlz;
+export import :reflection_dsrlz;
+export import :reflection_srlz;
 
 // containers
 export import :containers_dsrlz;

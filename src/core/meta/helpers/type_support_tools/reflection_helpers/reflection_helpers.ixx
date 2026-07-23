@@ -4,25 +4,18 @@ import std;
 
 namespace recurseria::core::meta {
 
-    consteval bool all_bases_fieldless(std::meta::info type) {
-        auto ctx = std::meta::access_context::unchecked();
-        for (auto b : std::meta::bases_of(type, ctx))
-            if (!std::meta::nonstatic_data_members_of(b, ctx).empty() ||
-                !all_bases_fieldless(b))
-                return false;
-        return true;
-    }
-
-    template<typename T>
-    concept FullyPublicAndNamed = [] {
-        auto ctx = std::meta::access_context::unchecked();
-        if (!all_bases_fieldless(^^T))
-            return false;
-        for (auto m : std::meta::nonstatic_data_members_of(^^T, ctx))
-            if (!std::meta::is_public(m) || !std::meta::has_identifier(m))
-                return false;
-        return true;
-    }();
+    export template<typename T>
+    concept FullyPublicAndNamed = std::meta::is_class_type(^^T) &&
+        !requires { typename std::tuple_size<std::remove_cvref_t<T>>::type; } &&
+        [] {
+            auto ctx = std::meta::access_context::unchecked();
+            auto members = std::meta::nonstatic_data_members_of(^^T, ctx);
+            if (members.size() == 0) return false;
+            for (auto m : members)
+                if (!std::meta::is_public(m) || !std::meta::has_identifier(m))
+                    return false;
+            return true;
+        }();
 
     export template<typename T>
     concept ReflectionSupported =
@@ -40,7 +33,7 @@ namespace recurseria::core::meta {
     }
 
     export template <typename T, typename Func, std::size_t... Is>
-    constexpr void iterate_impl_nv(T& object, Func&& function, std::index_sequence<Is...>) {
+    constexpr void iterate_impl(T& object, Func&& function, std::index_sequence<Is...>) {
         ((function(
             std::meta::identifier_of(get_nth_member<T, Is>()),
             object.[:get_nth_member<T, Is>():]
@@ -49,12 +42,12 @@ namespace recurseria::core::meta {
 
     export template <typename T, typename Func>
     requires ReflectionSupported<T>
-    constexpr void iterate_through_fields_nv(T& object, Func&& function) {
+    constexpr void iterate_through_fields(T& object, Func&& function) {
         constexpr auto N = std::meta::nonstatic_data_members_of(
             ^^T, std::meta::access_context::unchecked()
         ).size();
 
-        iterate_impl_nv(object, std::forward<Func>(function), std::make_index_sequence<N>{});
+        iterate_impl(object, std::forward<Func>(function), std::make_index_sequence<N>{});
     }
 
     export template <typename T, typename Tuple, std::size_t... Is>

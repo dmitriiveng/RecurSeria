@@ -4,3 +4,4 @@ export import :grouping;
 export import :groupable_noexcept;
 export import :decomposing;
 export import :decomposable_noexcept;
+export import :sequence_ops_supported_concept;

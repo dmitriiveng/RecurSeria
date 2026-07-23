@@ -8,7 +8,7 @@ export import :default_groupable;
 export namespace recurseria::core::meta {
     template <typename FormatTag, typename Range>
     concept AssociativelyGroupableNoexcept =
-        (AssociativelyGroupable<FormatTag, Range> &&
+        (UserDefinedAssociativelyGroupable<FormatTag, Range> &&
          noexcept(tag_invoke(FormatTag{}, group_associatively_tag{}, std::declval<Range>()))) ||
         (DefaultAssociativelyGroupable<FormatTag, Range> &&
          noexcept(tag_invoke(FormatTag{}, default_group_associatively_tag{}, std::declval<Range>())));

@@ -14,7 +14,7 @@ export namespace recurseria::core::meta {
             requires SequentiallyGroupableNoexcept<FormatTag, Range>
         constexpr auto operator()(FormatTag, Range&& range) const noexcept
         {
-            if constexpr (SequentiallyGroupable<FormatTag, Range> &&
+            if constexpr (UserDefinedSequentiallyGroupable<FormatTag, Range> &&
                           noexcept(tag_invoke(FormatTag{}, group_sequentially_tag{}, std::forward<Range>(range))))
             {
                 return tag_invoke(FormatTag{}, group_sequentially_tag{}, std::forward<Range>(range));
@@ -24,9 +24,9 @@ export namespace recurseria::core::meta {
         }
 
         template <typename FormatTag, std::ranges::input_range Range>
-            requires SequentiallyGroupable<FormatTag, Range> || DefaultSequentiallyGroupable<FormatTag, Range>
+            requires SequentiallyGroupable<FormatTag, Range>
         constexpr auto operator()(FormatTag, Range&& range) const {
-            if constexpr (SequentiallyGroupable<FormatTag, Range>){
+            if constexpr (UserDefinedSequentiallyGroupable<FormatTag, Range>){
                 try {
                     return tag_invoke(FormatTag{}, group_sequentially_tag{}, std::forward<Range>(range));
                 } catch (const std::exception& e) {

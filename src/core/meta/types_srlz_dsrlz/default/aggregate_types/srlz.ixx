@@ -1,5 +1,6 @@
 export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_srlz;
 
+/*
 import std;
 
 // helpers
@@ -33,3 +34,4 @@ export namespace recurseria::core::meta {
         return group_sequentially(FormatTag{}, output_vector);
     }
 }
+*/

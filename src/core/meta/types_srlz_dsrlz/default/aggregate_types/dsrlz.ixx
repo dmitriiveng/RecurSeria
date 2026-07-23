@@ -1,5 +1,6 @@
 export module recurseria.core.meta.types_srlz_dsrlz:aggregate_types_dsrlz;
 
+/*
 import std;
 
 // helpers
@@ -31,3 +32,4 @@ export namespace recurseria::core::meta {
         );
     }
 }
+*/

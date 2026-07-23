@@ -11,8 +11,6 @@ export namespace recurseria::core::meta {
     concept DefaultSequentiallyGroupable =
         std::ranges::input_range<Range> &&
         requires(Range&& range) {
-            {
-                tag_invoke(FormatTag{}, default_group_sequentially_tag{}, std::forward<Range>(range))
-            } -> std::same_as<std::remove_cvref_t<std::ranges::range_value_t<Range>>>;
+            tag_invoke(FormatTag{}, default_group_sequentially_tag{}, std::forward<Range>(range));
         };
 }

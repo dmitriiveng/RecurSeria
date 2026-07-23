@@ -16,7 +16,7 @@ export namespace recurseria::core::meta {
             requires AssociativelyDecomposableNoexcept<FormatTag, T>
         constexpr auto operator()(FormatTag, const T& value) const noexcept
         {
-            if constexpr (AssociativelyDecomposable<FormatTag, T> &&
+            if constexpr (UserDefinedAssociativelyDecomposable<FormatTag, T> &&
                           noexcept(tag_invoke(FormatTag{}, decompose_associatively_tag{}, value)))
             {
                 return tag_invoke(FormatTag{}, decompose_associatively_tag{}, value);
@@ -26,9 +26,9 @@ export namespace recurseria::core::meta {
         }
 
         template<typename FormatTag, typename T>
-            requires AssociativelyDecomposable<FormatTag, T> || DefaultAssociativelyDecomposable<FormatTag, T>
+            requires AssociativelyDecomposable<FormatTag, T>
         constexpr auto operator()(FormatTag, const T& value) const {
-            if constexpr (AssociativelyDecomposable<FormatTag, T>){
+            if constexpr (UserDefinedAssociativelyDecomposable<FormatTag, T>){
                 try {
                     return tag_invoke(FormatTag{}, decompose_associatively_tag{}, value);
                 } catch (const std::exception& e) {

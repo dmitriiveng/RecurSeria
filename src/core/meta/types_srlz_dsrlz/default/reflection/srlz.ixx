@@ -4,21 +4,43 @@ import std;
 
 import recurseria.core.meta.helpers.reflection_helpers;
 import recurseria.core.meta.helpers.sequence_ops;
+import recurseria.core.meta.helpers.associative_ops;
 import :srlz;
 
 namespace recurseria::core::meta {
+    // TODO: Remove extra copy.
 
+    // sequence
     export template <typename FormatTag, typename Output, typename Input>
-    requires ReflectionSupported<Input>
+    requires
+        ReflectionSupported<Input> &&
+        SequenceOpsSupported<FormatTag, Output> &&
+        (!AssociativeOpsSupported<FormatTag, Output>)
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
-        std::map<Output, Output> mp{};
-        iterate_through_fields_nv(input, [&](std::string_view name, const auto& obj){
-            mp.insert(std::pair<Output, Output>(
-                serialize.as<FormatTag, Output, std::string>(name),
+        std::vector<Output> output_vector;
+        iterate_through_fields(input, [&](std::string_view name, const auto& obj){
+            output_vector.push_back(
                 serialize.as<FormatTag, Output, decltype(obj)>(obj)
-            ));
+            );
         });
-        return group_associatively(FormatTag{}, mp);
+        return group_sequentially(FormatTag{}, output_vector);
+    }
+
+    // associative
+    export template <typename FormatTag, typename Output, typename Input>
+    requires
+        ReflectionSupported<Input> &&
+        AssociativeOpsSupported<FormatTag, Output>
+    Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
+        std::map<Output, Output> output_map;
+        iterate_through_fields(input, [&](std::string_view name, const auto& obj){
+            output_map.emplace(
+                std::piecewise_construct,
+                std::forward_as_tuple(serialize.as<FormatTag, Output, std::string>(std::string(name))),
+                std::forward_as_tuple(serialize.as<FormatTag, Output, decltype(obj)>(obj))
+            );
+        });
+        return group_associatively(FormatTag{}, output_map);
     }
 
 }

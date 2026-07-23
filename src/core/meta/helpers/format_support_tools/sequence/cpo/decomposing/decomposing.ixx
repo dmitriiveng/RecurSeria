@@ -14,7 +14,7 @@ export namespace recurseria::core::meta {
             requires SequentiallyDecomposableNoexcept<FormatTag, T>
         constexpr auto operator()(FormatTag, const T& value) const noexcept
         {
-            if constexpr (SequentiallyDecomposable<FormatTag, T> &&
+            if constexpr (UserDefinedSequentiallyDecomposable<FormatTag, T> &&
                           noexcept(tag_invoke(FormatTag{}, decompose_sequentially_tag{}, value)))
             {
                 return tag_invoke(FormatTag{}, decompose_sequentially_tag{}, value);
@@ -24,9 +24,9 @@ export namespace recurseria::core::meta {
         }
 
         template<typename FormatTag, typename T>
-            requires SequentiallyDecomposable<FormatTag, T> || DefaultSequentiallyDecomposable<FormatTag, T>
+            requires SequentiallyDecomposable<FormatTag, T>
         constexpr auto operator()(FormatTag, const T& value) const {
-            if constexpr (SequentiallyDecomposable<FormatTag, T>){
+            if constexpr (UserDefinedSequentiallyDecomposable<FormatTag, T>){
                 try {
                     return tag_invoke(FormatTag{}, decompose_sequentially_tag{}, value);
                 } catch (const std::exception& e) {

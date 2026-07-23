@@ -1,11 +1,12 @@
 module;
 
-#include <boost/pfr.hpp>
+// #include <boost/pfr.hpp>
 
 // temporary (would be replaced with C++26 reflection)
 
 export module recurseria.core.meta.helpers.fields_getter;
 
+/*
 export namespace recurseria::core::meta {
     struct PfrFieldsGetter {
         template <typename Aggregate, typename Func>
@@ -24,3 +25,4 @@ export namespace recurseria::core::meta {
             );
     };
 }
+*/
