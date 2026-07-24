@@ -23,9 +23,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
 
 # --- Dependencies ---
 
-# Boost
-find_package(Boost REQUIRED)
-
 # YAML cpp
 include(FetchContent)
 FetchContent_Declare(
@@ -66,11 +63,6 @@ target_sources(recurseria_core
     FILES ${RECURSERIA_CORE_INTERFACE_UNITS}
   PRIVATE
     ${RECURSERIA_CORE_IMPLEMENTATIONS}
-)
-
-target_link_libraries(recurseria_core
-  PRIVATE
-    Boost::boost
 )
 
 # String targets
