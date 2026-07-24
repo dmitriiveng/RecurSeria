@@ -4,10 +4,37 @@ import std;
 
 export import recurseria.core.meta.helpers.output_iterator_getter;
 
+import :default_dsrlz;
+import :dsrlz;
+
+import :default_srlz;
+import :srlz;
+
 export namespace recurseria::core::meta {
     template <typename Container>
-    concept SerializableContainer = std::ranges::input_range<Container>;
+    concept SrlzSupportedContainer = std::ranges::input_range<Container>;
 
     template <typename Container>
-    concept DeserializableContainer = InsertableContainer<Container>;
+    concept DsrlzSupportedContainer = InsertableContainer<Container>;
+
+    template <typename FormatTag, typename Output, typename Container>
+    concept SerializableContainer =
+        SrlzSupportedContainer<Container> &&
+        (
+            TagInvokeSerializable<FormatTag, Output, std::ranges::range_value_t<Container>> ||
+            DefaultSerializable<FormatTag, Output, std::ranges::range_value_t<Container>>
+        );
+
+    template <typename FormatTag, typename Container, typename Input>
+    concept DeserializableContainer =
+        DsrlzSupportedContainer<Container> &&
+        (
+            TagInvokeDeserializable<FormatTag, std::ranges::range_value_t<Container>, Input> ||
+            DefaultDeserializable<FormatTag, std::ranges::range_value_t<Container>, Input>
+        );
+
+    template <typename FormatTag, typename Container, typename T>
+    concept SerializableDeserializableContainer =
+        SerializableContainer<FormatTag, T, Container> &&
+        DeserializableContainer<FormatTag, Container, T>;
 }

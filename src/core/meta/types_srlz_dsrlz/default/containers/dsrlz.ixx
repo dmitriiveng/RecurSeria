@@ -13,13 +13,7 @@ import :dsrlz;
 
 export namespace recurseria::core::meta {
     template <typename FormatTag, typename OutputContainer, typename Input>
-    requires
-        SerializableContainer<OutputContainer> &&
-        DeserializableContainer<OutputContainer> &&
-        (
-            TagInvokeDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input> ||
-            DefaultDeserializable<FormatTag, std::ranges::range_value_t<OutputContainer>, Input>
-        )
+    requires SerializableDeserializableContainer<FormatTag, OutputContainer, Input>
     OutputContainer tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputContainer>, const Input& input){
 
         auto deserialized_input = std::views::transform(decompose_sequentially(FormatTag{}, input), [](const Input& element) {

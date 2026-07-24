@@ -8,4 +8,3 @@ export namespace recurseria::core::meta {
         typename std::tuple_size<std::remove_cvref_t<T>>::type;
     };
 }
-TupleLike

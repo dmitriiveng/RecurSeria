@@ -40,6 +40,8 @@ namespace recurseria::core::meta {
         ), ...);
     }
 
+    // functions
+
     // Sequence + Aggregate
     template <typename FormatTag, typename Output, typename Input>
     requires
