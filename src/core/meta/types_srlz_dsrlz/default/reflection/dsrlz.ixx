@@ -5,6 +5,7 @@ import std;
 import recurseria.core.meta.helpers.reflection_helpers;
 import recurseria.core.meta.helpers.sequence_ops;
 import recurseria.core.meta.helpers.associative_ops;
+import :reflection_concepts;
 import :default_dsrlz;
 import :dsrlz;
 
@@ -45,7 +46,7 @@ namespace recurseria::core::meta {
     // Sequence + Aggregate
     template <typename FormatTag, typename Output, typename Input>
     requires
-        ReflectionSupported<Output> &&
+        ReflectionSerializableDeserializable<FormatTag, Output, Input> &&
         std::is_aggregate_v<Output> &&
         SequentiallyDecomposable<FormatTag, Input> &&
         (!AssociativelyDecomposable<FormatTag, Input>)
@@ -64,7 +65,7 @@ namespace recurseria::core::meta {
     // Sequence + Non-aggregate
     template <typename FormatTag, typename Output, typename Input>
     requires
-        ReflectionSupported<Output> &&
+        ReflectionSerializableDeserializable<FormatTag, Output, Input> &&
         (!std::is_aggregate_v<Output>) &&
         SequentiallyDecomposable<FormatTag, Input> &&
         (!AssociativelyDecomposable<FormatTag, Input>)
@@ -82,7 +83,7 @@ namespace recurseria::core::meta {
     // Associative + Aggregate
     template <typename FormatTag, typename Output, typename Input>
     requires
-        ReflectionSupported<Output> &&
+        ReflectionSerializableDeserializable<FormatTag, Output, Input> &&
         std::is_aggregate_v<Output> &&
         AssociativelyDecomposable<FormatTag, Input>
     Output tag_invoke(FormatTag, default_deserialize_tag, type_tag<Output>, const Input& input) {
@@ -106,7 +107,7 @@ namespace recurseria::core::meta {
     // Associative + Non-aggregate
     template <typename FormatTag, typename Output, typename Input>
     requires
-        ReflectionSupported<Output> &&
+        ReflectionSerializableDeserializable<FormatTag, Output, Input> &&
         (!std::is_aggregate_v<Output>) &&
         AssociativelyDecomposable<FormatTag, Input>
     Output tag_invoke(FormatTag, default_deserialize_tag, type_tag<Output>, const Input& input) {

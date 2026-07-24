@@ -5,6 +5,7 @@ import std;
 import recurseria.core.meta.helpers.reflection_helpers;
 import recurseria.core.meta.helpers.sequence_ops;
 import recurseria.core.meta.helpers.associative_ops;
+import :reflection_concepts;
 import :srlz;
 
 namespace recurseria::core::meta {
@@ -12,8 +13,7 @@ namespace recurseria::core::meta {
 
     // sequence
     export template <typename FormatTag, typename Output, typename Input>
-    requires
-        ReflectionSupported<Input> &&
+    requires ReflectionSerializableDeserializable<FormatTag, Input, Output> &&
         SequenceOpsSupported<FormatTag, Output> &&
         (!AssociativeOpsSupported<FormatTag, Output>)
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
@@ -28,8 +28,7 @@ namespace recurseria::core::meta {
 
     // associative
     export template <typename FormatTag, typename Output, typename Input>
-    requires
-        ReflectionSupported<Input> &&
+    requires ReflectionSerializableDeserializable<FormatTag, Input, Output> &&
         AssociativeOpsSupported<FormatTag, Output>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
         std::map<Output, Output> output_map;

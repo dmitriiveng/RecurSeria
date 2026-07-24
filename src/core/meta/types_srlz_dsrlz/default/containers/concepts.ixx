@@ -20,18 +20,12 @@ export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename Container>
     concept SerializableContainer =
         SrlzSupportedContainer<Container> &&
-        (
-            TagInvokeSerializable<FormatTag, Output, std::ranges::range_value_t<Container>> ||
-            DefaultSerializable<FormatTag, Output, std::ranges::range_value_t<Container>>
-        );
+        Serializable<FormatTag, Output, std::ranges::range_value_t<Container>>;
 
     template <typename FormatTag, typename Container, typename Input>
     concept DeserializableContainer =
         DsrlzSupportedContainer<Container> &&
-        (
-            TagInvokeDeserializable<FormatTag, std::ranges::range_value_t<Container>, Input> ||
-            DefaultDeserializable<FormatTag, std::ranges::range_value_t<Container>, Input>
-        );
+        Deserializable<FormatTag, std::ranges::range_value_t<Container>, Input>;
 
     template <typename FormatTag, typename Container, typename T>
     concept SerializableDeserializableContainer =

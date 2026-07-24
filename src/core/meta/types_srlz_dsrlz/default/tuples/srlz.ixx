@@ -4,11 +4,11 @@ import std;
 import recurseria.core.meta.helpers.sequence_ops;
 import :default_srlz;
 import :srlz;
-import :tuple_concepts;
+import :types_support_concept;
 
 export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename InputTuple>
-    requires TupleLike<InputTuple>
+    requires SerializableDeserializableTuple<FormatTag, InputTuple, Output>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputTuple& input) {
         //TODO rewrite without vector
         constexpr std::size_t N = std::tuple_size_v<std::remove_cvref_t<InputTuple>>;
