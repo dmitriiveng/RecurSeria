@@ -1,0 +1,61 @@
+export module recurseria.core.meta.types_srlz_dsrlz:associative_containers_concepts;
+
+import std;
+
+export import recurseria.core.meta.helpers.output_iterator_getter;
+
+import :containers_concepts;
+import recurseria.core.meta.helpers.associative_ops;
+
+import :default_dsrlz;
+import :dsrlz;
+
+import :default_srlz;
+import :srlz;
+
+export namespace recurseria::core::meta {
+    template<typename Container>
+    concept AssociativeContainer = requires {
+        typename Container::key_type;
+        typename Container::value_type;
+    }
+    && (
+        requires {
+            typename Container::key_compare;
+        }
+        || requires {
+            typename Container::hasher;
+        }
+    )
+    && requires(Container container, const typename Container::key_type& key) {
+        { container.find(key) } -> std::same_as<typename Container::const_iterator>;
+        { container.contains(key) } -> std::convertible_to<bool>;
+    };
+
+    template <typename Container>
+    concept SrlzSupportedAssociativeContainer =
+        std::ranges::input_range<Container>
+        && AssociativeContainer<Container>;
+
+    template <typename Container>
+    concept DsrlzSupportedAssociativeContainer =
+        std::ranges::input_range<Container>
+        && AssociativeContainer<Container>;
+
+    template <typename FormatTag, typename Output, typename Container>
+    concept SerializableAssociativeContainer =
+        SrlzSupportedAssociativeContainer<Container> &&
+        AssociativeOpsSupported<FormatTag, Output> &&
+        Serializable<FormatTag, Output, std::ranges::range_value_t<Container>>;
+
+    template <typename FormatTag, typename Container, typename Input>
+    concept DeserializableAssociativeContainer =
+        DsrlzSupportedAssociativeContainer<Container> &&
+        AssociativeOpsSupported<FormatTag, Input> &&
+        Deserializable<FormatTag, std::ranges::range_value_t<Container>, Input>;
+
+    template <typename FormatTag, typename Container, typename T>
+    concept SerializableDeserializableAssociativeContainer =
+        SerializableAssociativeContainer<FormatTag, T, Container> &&
+        DeserializableAssociativeContainer<FormatTag, Container, T>;
+}

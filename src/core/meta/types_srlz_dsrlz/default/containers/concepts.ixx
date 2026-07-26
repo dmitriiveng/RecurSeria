@@ -4,6 +4,8 @@ import std;
 
 export import recurseria.core.meta.helpers.output_iterator_getter;
 
+import recurseria.core.meta.helpers.sequence_ops;
+
 import :default_dsrlz;
 import :dsrlz;
 
@@ -20,11 +22,13 @@ export namespace recurseria::core::meta {
     template <typename FormatTag, typename Output, typename Container>
     concept SerializableContainer =
         SrlzSupportedContainer<Container> &&
+        SequenceOpsSupported<FormatTag, Output> &&
         Serializable<FormatTag, Output, std::ranges::range_value_t<Container>>;
 
     template <typename FormatTag, typename Container, typename Input>
     concept DeserializableContainer =
         DsrlzSupportedContainer<Container> &&
+        SequenceOpsSupported<FormatTag, Input> &&
         Deserializable<FormatTag, std::ranges::range_value_t<Container>, Input>;
 
     template <typename FormatTag, typename Container, typename T>
