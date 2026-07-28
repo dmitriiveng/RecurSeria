@@ -65,63 +65,33 @@ target_sources(recurseria_core
     ${RECURSERIA_CORE_IMPLEMENTATIONS}
 )
 
-# String targets
+# YAML target
 
-# IR
-file(GLOB_RECURSE RECURSERIA_STRING_IR_TARGET_INTERFACE_UNITS
+file(GLOB_RECURSE RECURSERIA_YAML_TARGET_INTERFACE_UNITS
   CONFIGURE_DEPENDS
-  "src/targets/string/IR/*.ixx"
-  "src/targets/string/IR/*.cppm"
+  "src/targets/YAML/*.ixx"
+  "src/targets/YAML/*.cppm"
 )
 
-file(GLOB_RECURSE RECURSERIA_STRING_IR_TARGET_IMPLEMENTATIONS
+file(GLOB_RECURSE RECURSERIA_YAML_TARGET_IMPLEMENTATIONS
   CONFIGURE_DEPENDS
-  "src/targets/string/IR/*.cpp"
+  "src/targets/YAML/*.cpp"
 )
 
-add_library(recurseria_string_ir_target)
+add_library(recurseria_yaml_target)
 
-target_sources(recurseria_string_ir_target
+target_sources(recurseria_yaml_target
   PUBLIC
     FILE_SET CXX_MODULES
-    BASE_DIRS src/targets/string/IR/
-    FILES ${RECURSERIA_STRING_IR_TARGET_INTERFACE_UNITS}
+    BASE_DIRS src/targets/YAML/
+    FILES ${RECURSERIA_YAML_TARGET_INTERFACE_UNITS}
   PRIVATE
-    ${RECURSERIA_STRING_IR_TARGET_IMPLEMENTATIONS}
+    ${RECURSERIA_YAML_TARGET_IMPLEMENTATIONS}
 )
 
-target_link_libraries(recurseria_string_ir_target
+target_link_libraries(recurseria_yaml_target
   PUBLIC
     recurseria_core
-)
-
-# YAML
-file(GLOB_RECURSE RECURSERIA_STRING_YAML_TARGET_INTERFACE_UNITS
-  CONFIGURE_DEPENDS
-  "src/targets/string/YAML/*.ixx"
-  "src/targets/string/YAML/*.cppm"
-)
-
-file(GLOB_RECURSE RECURSERIA_STRING_YAML_TARGET_IMPLEMENTATIONS
-  CONFIGURE_DEPENDS
-  "src/targets/string/YAML/*.cpp"
-)
-
-add_library(recurseria_string_yaml_target)
-
-target_sources(recurseria_string_yaml_target
-  PUBLIC
-    FILE_SET CXX_MODULES
-    BASE_DIRS src/targets/string/YAML/
-    FILES ${RECURSERIA_STRING_YAML_TARGET_INTERFACE_UNITS}
-  PRIVATE
-    ${RECURSERIA_STRING_YAML_TARGET_IMPLEMENTATIONS}
-)
-
-target_link_libraries(recurseria_string_yaml_target
-  PUBLIC
-    recurseria_core
-    recurseria_string_ir_target
     yaml-cpp::yaml-cpp
 )
 
@@ -146,6 +116,5 @@ target_include_directories(recurseria_tests
 target_link_libraries(recurseria_tests
   PRIVATE
   recurseria_core
-  recurseria_string_ir_target
-  recurseria_string_yaml_target
+  recurseria_yaml_target
 )

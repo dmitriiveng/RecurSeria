@@ -12,6 +12,8 @@ import :dsrlz;
 import :default_srlz;
 import :srlz;
 
+import :associative_containers_concepts;
+
 export namespace recurseria::core::meta {
     template <typename Container>
     concept SrlzSupportedContainer = std::ranges::input_range<Container>;
@@ -33,6 +35,7 @@ export namespace recurseria::core::meta {
 
     template <typename FormatTag, typename Container, typename T>
     concept SerializableDeserializableContainer =
+        (!SerializableDeserializableAssociativeContainer<FormatTag, Container, T>) &&
         SerializableContainer<FormatTag, T, Container> &&
         DeserializableContainer<FormatTag, Container, T>;
 }

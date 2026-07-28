@@ -9,6 +9,10 @@ export import :reflection_concepts;
 export import :reflection_dsrlz;
 export import :reflection_srlz;
 
+export import :associative_containers_concepts;
+export import :associative_containers_dsrlz;
+export import :associative_containers_srlz;
+
 export import :containers_concepts;
 export import :containers_dsrlz;
 export import :containers_srlz;

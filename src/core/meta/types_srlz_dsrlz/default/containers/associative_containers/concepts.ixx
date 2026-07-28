@@ -4,7 +4,7 @@ import std;
 
 export import recurseria.core.meta.helpers.output_iterator_getter;
 
-import :containers_concepts;
+//import :containers_concepts;
 import recurseria.core.meta.helpers.associative_ops;
 
 import :default_dsrlz;
@@ -15,20 +15,19 @@ import :srlz;
 
 export namespace recurseria::core::meta {
     template<typename Container>
+    concept HasKeyCompare = requires { typename Container::key_compare; };
+
+    template<typename Container>
+    concept HasHasher = requires { typename Container::hasher; };
+
+    template<typename Container>
     concept AssociativeContainer = requires {
         typename Container::key_type;
         typename Container::value_type;
     }
-    && (
-        requires {
-            typename Container::key_compare;
-        }
-        || requires {
-            typename Container::hasher;
-        }
-    )
+    && (HasKeyCompare<Container> || HasHasher<Container>)
     && requires(Container container, const typename Container::key_type& key) {
-        { container.find(key) } -> std::same_as<typename Container::const_iterator>;
+        { container.find(key) } -> std::same_as<typename Container::iterator>;
         { container.contains(key) } -> std::convertible_to<bool>;
     };
 
@@ -39,7 +38,7 @@ export namespace recurseria::core::meta {
 
     template <typename Container>
     concept DsrlzSupportedAssociativeContainer =
-        std::ranges::input_range<Container>
+        InsertableContainer<Container>
         && AssociativeContainer<Container>;
 
     template <typename FormatTag, typename Output, typename Container>

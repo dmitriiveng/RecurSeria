@@ -5,6 +5,12 @@ export module yaml_cpp;
 export {
     namespace YAML {
         using YAML::Node;
+        using YAML::Emitter;
+        using YAML::iterator;
+        using YAML::const_iterator;
+        using YAML::Dump;
+
+        using YAML::operator<<;
 
         namespace NodeType {
             using YAML::NodeType::value;

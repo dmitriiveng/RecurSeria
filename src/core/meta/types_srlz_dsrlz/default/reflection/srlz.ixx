@@ -31,15 +31,14 @@ namespace recurseria::core::meta {
     requires ReflectionSerializableDeserializable<FormatTag, Input, Output> &&
         AssociativeOpsSupported<FormatTag, Output>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const Input& input){
-        std::map<Output, Output> output_map;
+        std::vector<std::pair<Output, Output>> output_pairs;
         iterate_through_fields(input, [&](std::string_view name, const auto& obj){
-            output_map.emplace(
-                std::piecewise_construct,
-                std::forward_as_tuple(serialize.as<FormatTag, Output, std::string>(std::string(name))),
-                std::forward_as_tuple(serialize.as<FormatTag, Output, decltype(obj)>(obj))
+            output_pairs.emplace_back(
+                serialize.as<FormatTag, Output, std::string>(std::string(name)),
+                serialize.as<FormatTag, Output, decltype(obj)>(obj)
             );
         });
-        return group_associatively(FormatTag{}, output_map);
+        return group_associatively(FormatTag{}, output_pairs);
     }
 
 }
