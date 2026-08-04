@@ -95,6 +95,35 @@ target_link_libraries(recurseria_yaml_target
     yaml-cpp::yaml-cpp
 )
 
+# Binary target
+
+file(GLOB_RECURSE RECURSERIA_BINARY_TARGET_INTERFACE_UNITS
+  CONFIGURE_DEPENDS
+  "src/targets/binary/*.ixx"
+  "src/targets/binary/*.cppm"
+)
+
+file(GLOB_RECURSE RECURSERIA_BINARY_TARGET_IMPLEMENTATIONS
+  CONFIGURE_DEPENDS
+  "src/targets/binary/*.cpp"
+)
+
+add_library(recurseria_binary_target)
+
+target_sources(recurseria_binary_target
+  PUBLIC
+    FILE_SET CXX_MODULES
+    BASE_DIRS src/targets/binary/
+    FILES ${RECURSERIA_BINARY_TARGET_INTERFACE_UNITS}
+  PRIVATE
+    ${RECURSERIA_BINARY_TARGET_IMPLEMENTATIONS}
+)
+
+target_link_libraries(recurseria_binary_target
+  PUBLIC
+    recurseria_core
+)
+
 # Tests
 
 add_executable(recurseria_tests
@@ -117,4 +146,5 @@ target_link_libraries(recurseria_tests
   PRIVATE
   recurseria_core
   recurseria_yaml_target
+  recurseria_binary_target
 )
