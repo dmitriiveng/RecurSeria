@@ -28,14 +28,18 @@ build.ninja
 *.out
 
 # IDE
+# Obsidian
+*.obsidian
+*.trash
+# clangd
 *.clangd
+# code editors
 *.zed
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-run-analyzer.sh
 
 # Files
 TODO.md
