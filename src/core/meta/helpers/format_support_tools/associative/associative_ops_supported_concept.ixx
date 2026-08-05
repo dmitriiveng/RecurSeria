@@ -4,7 +4,7 @@ import std;
 import :groupable;
 import :decomposable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename T>
     concept AssociativeOpsSupported =
         AssociativelyGroupable<FormatTag, std::map<T, T>> &&

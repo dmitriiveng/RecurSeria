@@ -8,7 +8,7 @@ import :le_bytes;
 
 // helpers
 
-namespace recurseria::target::binary {
+namespace recurseria::binary {
 
     static_assert(sizeof(int) == 4, "binary: int must be 32-bit for the canonical wire format");
     static_assert(sizeof(long) == 4 || sizeof(long) == 8, "binary: unsupported long width");
@@ -62,12 +62,12 @@ namespace recurseria::target::binary {
 
 // functions
 
-export namespace recurseria::target::binary {
-    using serialize_tag = recurseria::core::meta::serialize_tag;
-    using deserialize_tag = recurseria::core::meta::deserialize_tag;
+export namespace recurseria::binary {
+    using serialize_tag = recurseria::serialize_tag;
+    using deserialize_tag = recurseria::deserialize_tag;
 
     template<typename T>
-    using type_tag = recurseria::core::meta::type_tag<T>;
+    using type_tag = recurseria::type_tag<T>;
 
     // serialize
 

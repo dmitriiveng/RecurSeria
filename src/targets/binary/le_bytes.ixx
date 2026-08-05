@@ -2,7 +2,7 @@ module recurseria.target.binary:le_bytes;
 
 import std;
 
-namespace recurseria::target::binary {
+namespace recurseria::binary {
 
     template <std::unsigned_integral U>
     constexpr std::vector<std::byte> to_le_bytes(U value) {

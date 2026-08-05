@@ -2,7 +2,7 @@ export module recurseria.core.meta.helpers.reflection_helpers;
 
 import std;
 
-namespace recurseria::core::meta {
+namespace recurseria {
 
     export template<typename T>
     concept FullyPublicAndNamed = std::meta::is_class_type(^^T) &&

@@ -5,7 +5,7 @@ import std;
 export import recurseria.core.meta.tag_invokable;
 export import :default_cpo;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     struct get_output_iterator_tag {};
 
     template <typename Container>

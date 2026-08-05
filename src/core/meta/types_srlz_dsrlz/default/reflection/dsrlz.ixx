@@ -9,7 +9,7 @@ import :reflection_concepts;
 import :default_dsrlz;
 import :dsrlz;
 
-namespace recurseria::core::meta {
+namespace recurseria {
     // helpers
 
     // Span-based lookup for sequence variants.

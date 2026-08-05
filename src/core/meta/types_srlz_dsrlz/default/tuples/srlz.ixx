@@ -6,7 +6,7 @@ import :default_srlz;
 import :srlz;
 import :types_support_concept;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename Output, typename InputTuple>
     requires SerializableDeserializableTuple<FormatTag, InputTuple, Output>
     Output tag_invoke(FormatTag, default_serialize_tag, type_tag<Output>, const InputTuple& input) {

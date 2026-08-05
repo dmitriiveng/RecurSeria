@@ -2,7 +2,7 @@ export module recurseria.core.meta.exceptions:tag_invoke_exception;
 
 import std;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     /// Exception thrown when a `tag_invoke` call fails inside a CPO.
     ///
     /// Contains the CPO tag name (e.g. "serialize", "decompose_sequentially"),

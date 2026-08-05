@@ -2,7 +2,7 @@ export module recurseria.core.meta.tag_invokable;
 
 import std;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     void tag_invoke();
 
     template <typename T>

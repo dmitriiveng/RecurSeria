@@ -24,14 +24,14 @@ namespace recurseria::tests::binary_target{
         std::vector<int> tags;
     };
 
-    using recurseria::core::meta::srlz_dsrlz_round_trip;
-    using recurseria::core::meta::srlz_dsrlz_round_trip_validation;
-    using recurseria::core::meta::group_sequentially;
-    using recurseria::core::meta::decompose_sequentially;
-    using recurseria::core::meta::serialize;
-    using recurseria::core::meta::deserialize;
+    using recurseria::srlz_dsrlz_round_trip;
+    using recurseria::srlz_dsrlz_round_trip_validation;
+    using recurseria::group_sequentially;
+    using recurseria::decompose_sequentially;
+    using recurseria::serialize;
+    using recurseria::deserialize;
 
-    using recurseria::target::binary::binary_format_tag;
+    using recurseria::binary::binary_format_tag;
     using BinTag = binary_format_tag;
     using BinOut = std::vector<std::byte>;
 

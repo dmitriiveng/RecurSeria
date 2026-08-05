@@ -7,7 +7,7 @@ export import recurseria.core.meta.exceptions;
 export import :serializable;
 export import :serializable_noexcept;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     inline constexpr struct serialize_fn {
         template<typename FormatTag, typename Output, typename Input>
             requires SerializableNoexcept<FormatTag, Output, Input>

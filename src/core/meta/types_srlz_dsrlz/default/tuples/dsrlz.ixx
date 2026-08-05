@@ -8,7 +8,7 @@ import :default_dsrlz;
 import :dsrlz;
 import :types_support_concept;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename OutputTuple, typename Input>
     requires SerializableDeserializableTuple<FormatTag, OutputTuple, Input>
     OutputTuple tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputTuple>, const Input& input) {

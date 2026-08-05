@@ -7,7 +7,7 @@ export import recurseria.core.meta.exceptions;
 export import :gettable;
 export import :gettable_noexcept;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     inline constexpr struct get_output_iterator_fn {
         template<typename Container>
             requires InsertableContainerNoexcept<Container>

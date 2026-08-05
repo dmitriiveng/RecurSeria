@@ -14,7 +14,7 @@ import :srlz;
 
 import :associative_containers_concepts;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename Container>
     concept SrlzSupportedContainer = std::ranges::input_range<Container>;
 

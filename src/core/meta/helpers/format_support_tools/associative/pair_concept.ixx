@@ -2,7 +2,7 @@ export module recurseria.core.meta.helpers.associative_ops:pair_concept;
 
 import std;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename T>
     concept PairLike = requires {
         typename std::tuple_size<std::remove_cvref_t<T>>::type;

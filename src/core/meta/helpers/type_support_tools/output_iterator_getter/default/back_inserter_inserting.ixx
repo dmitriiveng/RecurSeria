@@ -5,7 +5,7 @@ import std;
 import :cpo;
 import :default_cpo;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
 
     template <typename Container>
     concept HasPushBack =

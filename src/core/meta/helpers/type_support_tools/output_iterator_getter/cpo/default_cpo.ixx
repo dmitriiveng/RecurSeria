@@ -4,7 +4,7 @@ import std;
 
 export import recurseria.core.meta.tag_invokable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     //default
     struct default_get_output_iterator_tag{};
 

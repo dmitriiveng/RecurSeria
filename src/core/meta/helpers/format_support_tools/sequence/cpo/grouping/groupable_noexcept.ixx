@@ -5,7 +5,7 @@ import std;
 export import :groupable;
 export import :default_groupable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename Range>
     concept SequentiallyGroupableNoexcept =
         (UserDefinedSequentiallyGroupable<FormatTag, Range> &&

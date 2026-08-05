@@ -10,7 +10,7 @@ import recurseria.core.meta.helpers.associative_ops;
 import :serializable;
 import :deserializable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     // ReflectionSupported concept defined in reflection_helpers.ixx
 
     template <typename FormatTag, typename Output, typename Input, std::size_t... Is>

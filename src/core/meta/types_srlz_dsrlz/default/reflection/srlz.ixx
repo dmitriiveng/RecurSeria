@@ -8,7 +8,7 @@ import recurseria.core.meta.helpers.associative_ops;
 import :reflection_concepts;
 import :srlz;
 
-namespace recurseria::core::meta {
+namespace recurseria {
     // TODO: Remove extra copy.
 
     // sequence

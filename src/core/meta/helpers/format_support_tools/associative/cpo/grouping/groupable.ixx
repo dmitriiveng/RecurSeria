@@ -5,7 +5,7 @@ import std;
 export import recurseria.core.meta.tag_invokable;
 export import :default_groupable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     struct group_associatively_tag {};
 
     template <typename FormatTag, typename Range>

@@ -1,5 +1,5 @@
 export module recurseria.target.yaml:format_tag;
 
-export namespace recurseria::target::yaml {
+export namespace recurseria::yaml {
     struct yaml_format_tag {};
 }

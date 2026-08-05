@@ -8,7 +8,7 @@ export import :groupable_noexcept;
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     inline constexpr struct group_associatively_fn {
         template <typename FormatTag, std::ranges::input_range Range>
             requires AssociativelyGroupableNoexcept<FormatTag, Range>

@@ -4,7 +4,7 @@ import std;
 
 import recurseria.core.meta.types_srlz_dsrlz;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename OriginalType, typename SerializationType>
     OriginalType srlz_dsrlz_round_trip(OriginalType& object){
         return deserialize.as<FormatTag, OriginalType, SerializationType>(

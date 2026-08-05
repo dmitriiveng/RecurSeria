@@ -13,7 +13,7 @@ import :dsrlz;
 import :default_srlz;
 import :srlz;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template<typename Container>
     concept HasKeyCompare = requires { typename Container::key_compare; };
 

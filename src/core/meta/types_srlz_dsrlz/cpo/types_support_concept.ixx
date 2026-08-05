@@ -5,7 +5,7 @@ import std;
 import :serializable;
 import :deserializable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     // For now made by tuple
 
     // TODO: replace TupleLike with concept from std later

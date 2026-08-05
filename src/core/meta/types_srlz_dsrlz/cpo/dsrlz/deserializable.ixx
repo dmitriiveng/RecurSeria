@@ -5,7 +5,7 @@ import std;
 export import recurseria.core.meta.tag_invokable;
 export import :default_dsrlz;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     struct deserialize_tag {};
 
     template <typename FormatTag, typename Output, typename Input>

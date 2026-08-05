@@ -11,7 +11,7 @@ export import :containers_concepts;
 import :default_dsrlz;
 import :dsrlz;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename OutputContainer, typename Input>
     requires SerializableDeserializableContainer<FormatTag, OutputContainer, Input>
     OutputContainer tag_invoke(FormatTag, default_deserialize_tag, type_tag<OutputContainer>, const Input& input){

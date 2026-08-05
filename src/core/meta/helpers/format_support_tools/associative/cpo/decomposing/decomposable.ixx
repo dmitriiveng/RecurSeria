@@ -6,7 +6,7 @@ import :pair_concept;
 
 export import recurseria.core.meta.tag_invokable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     struct decompose_associatively_tag {};
 
     template <typename FormatTag, typename T>

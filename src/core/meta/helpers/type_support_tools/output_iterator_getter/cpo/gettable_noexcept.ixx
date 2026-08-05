@@ -4,7 +4,7 @@ import std;
 
 export import :gettable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename Container>
     concept InsertableContainerNoexcept =
         (CustomInsertableContainer<Container> &&

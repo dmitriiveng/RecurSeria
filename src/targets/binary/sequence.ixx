@@ -5,7 +5,7 @@ import std;
 import recurseria.core.meta.helpers.sequence_ops;
 import :format_tag;
 
-namespace recurseria::target::binary {
+namespace recurseria::binary {
     void append_frame_u64(std::vector<std::byte>& output, std::uint64_t value) {
         for (std::size_t i = 0; i < sizeof(std::uint64_t); ++i) {
             output.push_back(static_cast<std::byte>(static_cast<std::uint8_t>(value >> (8 * i))));
@@ -24,9 +24,9 @@ namespace recurseria::target::binary {
     }
 }
 
-export namespace recurseria::target::binary {
-    using group_sequentially_tag = recurseria::core::meta::group_sequentially_tag;
-    using decompose_sequentially_tag = recurseria::core::meta::decompose_sequentially_tag;
+export namespace recurseria::binary {
+    using group_sequentially_tag = recurseria::group_sequentially_tag;
+    using decompose_sequentially_tag = recurseria::decompose_sequentially_tag;
 
     auto tag_invoke(
         binary_format_tag,
@@ -136,4 +136,4 @@ export namespace recurseria::target::binary {
 }
 
 template<>
-inline constexpr bool std::ranges::enable_view<recurseria::target::binary::binary_seq_view> = true;
+inline constexpr bool std::ranges::enable_view<recurseria::binary::binary_seq_view> = true;

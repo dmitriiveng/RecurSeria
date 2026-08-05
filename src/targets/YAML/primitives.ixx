@@ -6,12 +6,12 @@ import yaml_cpp;
 import recurseria.core.meta.types_srlz_dsrlz;
 import :format_tag;
 
-export namespace recurseria::target::yaml {
-    using serialize_tag = recurseria::core::meta::serialize_tag;
-    using deserialize_tag = recurseria::core::meta::deserialize_tag;
+export namespace recurseria::yaml {
+    using serialize_tag = recurseria::serialize_tag;
+    using deserialize_tag = recurseria::deserialize_tag;
 
     template<typename T>
-    using type_tag = recurseria::core::meta::type_tag<T>;
+    using type_tag = recurseria::type_tag<T>;
 
     // serialize
 

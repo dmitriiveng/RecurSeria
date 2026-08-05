@@ -8,7 +8,7 @@ export import :decomposable_noexcept;
 export import recurseria.core.meta.tag_invokable;
 export import recurseria.core.meta.exceptions;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     inline constexpr struct decompose_sequentially_fn {
         template<typename FormatTag, typename T>
             requires SequentiallyDecomposableNoexcept<FormatTag, T>

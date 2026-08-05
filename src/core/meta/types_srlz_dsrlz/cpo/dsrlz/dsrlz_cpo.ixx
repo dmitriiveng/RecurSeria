@@ -7,7 +7,7 @@ export import recurseria.core.meta.exceptions;
 export import :deserializable;
 export import :deserializable_noexcept;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     inline constexpr struct deserialize_fn {
         template<typename FormatTag, typename Output, typename Input>
             requires DeserializableNoexcept<FormatTag, std::remove_cvref_t<Output>, Input>

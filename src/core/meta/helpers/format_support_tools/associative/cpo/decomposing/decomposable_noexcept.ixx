@@ -5,7 +5,7 @@ import std;
 export import :decomposable;
 export import :default_decomposable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename T>
     concept AssociativelyDecomposableNoexcept =
         (UserDefinedAssociativelyDecomposable<FormatTag, T> &&

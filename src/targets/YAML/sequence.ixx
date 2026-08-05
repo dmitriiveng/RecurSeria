@@ -6,9 +6,9 @@ import yaml_cpp;
 import recurseria.core.meta.helpers.sequence_ops;
 import :format_tag;
 
-export namespace recurseria::target::yaml {
-    using group_sequentially_tag = recurseria::core::meta::group_sequentially_tag;
-    using decompose_sequentially_tag = recurseria::core::meta::decompose_sequentially_tag;
+export namespace recurseria::yaml {
+    using group_sequentially_tag = recurseria::group_sequentially_tag;
+    using decompose_sequentially_tag = recurseria::decompose_sequentially_tag;
 
     auto tag_invoke(
         yaml_format_tag,
@@ -89,4 +89,4 @@ export namespace recurseria::target::yaml {
 }
 
 template<>
-inline constexpr bool std::ranges::enable_view<recurseria::target::yaml::yaml_seq_view> = true;
+inline constexpr bool std::ranges::enable_view<recurseria::yaml::yaml_seq_view> = true;

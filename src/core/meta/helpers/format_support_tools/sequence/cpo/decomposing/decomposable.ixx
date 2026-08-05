@@ -5,7 +5,7 @@ import std;
 export import recurseria.core.meta.tag_invokable;
 export import :default_decomposable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     struct decompose_sequentially_tag {};
 
     template <typename FormatTag, typename T>

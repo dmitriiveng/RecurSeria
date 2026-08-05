@@ -25,14 +25,14 @@ namespace recurseria::tests::yaml_target{
         std::vector<int> tags;
     };
 
-    using recurseria::core::meta::srlz_dsrlz_round_trip;
-    using recurseria::core::meta::srlz_dsrlz_round_trip_validation;
-    using recurseria::core::meta::group_sequentially;
-    using recurseria::core::meta::decompose_sequentially;
-    using recurseria::core::meta::serialize;
-    using recurseria::core::meta::deserialize;
+    using recurseria::srlz_dsrlz_round_trip;
+    using recurseria::srlz_dsrlz_round_trip_validation;
+    using recurseria::group_sequentially;
+    using recurseria::decompose_sequentially;
+    using recurseria::serialize;
+    using recurseria::deserialize;
 
-    using recurseria::target::yaml::yaml_format_tag;
+    using recurseria::yaml::yaml_format_tag;
     using Tag = yaml_format_tag;
 
     template <typename T>

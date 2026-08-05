@@ -4,7 +4,7 @@ import std;
 
 export import :deserializable;
 
-export namespace recurseria::core::meta {
+export namespace recurseria {
     template <typename FormatTag, typename Output, typename Input>
     concept DeserializableNoexcept =
         (TagInvokeDeserializable<FormatTag, Output, Input> &&
