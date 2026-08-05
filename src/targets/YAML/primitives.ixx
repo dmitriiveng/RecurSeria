@@ -1,9 +1,9 @@
-export module recurseria.target.yaml:primitives;
+export module recurseria.yaml:primitives;
 
 import std;
 import yaml_cpp;
 
-import recurseria.core.meta.types_srlz_dsrlz;
+import recurseria.srlz_dsrlz;
 import :format_tag;
 
 export namespace recurseria::yaml {

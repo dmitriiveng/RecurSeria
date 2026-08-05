@@ -1,9 +1,9 @@
-export module recurseria.target.yaml:sequence;
+export module recurseria.yaml:sequence;
 
 import std;
 import yaml_cpp;
 
-import recurseria.core.meta.helpers.sequence_ops;
+import recurseria.helpers.sequence_ops;
 import :format_tag;
 
 export namespace recurseria::yaml {

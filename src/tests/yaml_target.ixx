@@ -3,9 +3,8 @@ export module recurseria.tests.yaml_target;
 import std;
 import yaml_cpp;
 import boost_ut;
-import recurseria.core;
-import recurseria.target.yaml;
-import recurseria.core.meta.types_srlz_dsrlz;
+import recurseria;
+import recurseria.yaml;
 
 namespace recurseria::tests::yaml_target{
     struct Person {

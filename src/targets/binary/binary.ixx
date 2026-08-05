@@ -1,4 +1,4 @@
-export module recurseria.target.binary;
+export module recurseria.binary;
 
 export import :format_tag;
 export import :primitives;

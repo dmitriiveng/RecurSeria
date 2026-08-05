@@ -2,9 +2,8 @@ export module recurseria.tests.binary_target;
 
 import std;
 import boost_ut;
-import recurseria.core;
-import recurseria.target.binary;
-import recurseria.core.meta.types_srlz_dsrlz;
+import recurseria;
+import recurseria.binary;
 
 namespace recurseria::tests::binary_target{
     struct Person {

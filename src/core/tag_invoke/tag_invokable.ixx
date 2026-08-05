@@ -1,0 +1,20 @@
+export module recurseria.tag_invokable;
+
+import std;
+
+export namespace recurseria {
+    void tag_invoke();
+
+    template <typename T>
+    struct type_tag {
+        using type = T;
+    };
+
+    template<class Tag, class... Args>
+    concept TagInvokable = requires(Tag tag, Args&&... args) {
+        tag_invoke(tag, std::forward<Args>(args)...);
+    };
+
+    template<class Tag, class... Args>
+    using tag_invoke_result_t = decltype(tag_invoke(std::declval<Tag>(), std::declval<Args>()...));
+}

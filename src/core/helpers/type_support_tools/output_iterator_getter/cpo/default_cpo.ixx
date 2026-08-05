@@ -1,0 +1,20 @@
+export module recurseria.helpers.output_iterator_getter:default_cpo;
+
+import std;
+
+export import recurseria.tag_invokable;
+
+export namespace recurseria {
+    //default
+    struct default_get_output_iterator_tag{};
+
+    template <typename Container>
+    concept DefaultInsertableContainer =
+        requires(Container& c) {
+            tag_invoke(default_get_output_iterator_tag{}, c);
+            requires std::output_iterator<
+                decltype(tag_invoke(default_get_output_iterator_tag{}, c)),
+                std::ranges::range_value_t<Container>
+            >;
+        };
+}

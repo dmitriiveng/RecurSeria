@@ -1,8 +1,8 @@
-export module recurseria.target.binary:primitives;
+export module recurseria.binary:primitives;
 
 import std;
 
-import recurseria.core.meta.types_srlz_dsrlz;
+import recurseria.srlz_dsrlz;
 import :format_tag;
 import :le_bytes;
 

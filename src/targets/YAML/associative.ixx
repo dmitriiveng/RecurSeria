@@ -1,9 +1,9 @@
-export module recurseria.target.yaml:associative;
+export module recurseria.yaml:associative;
 
 import std;
 import yaml_cpp;
 
-import recurseria.core.meta.helpers.associative_ops;
+import recurseria.helpers.associative_ops;
 import :format_tag;
 
 export namespace recurseria::yaml {

@@ -1,4 +1,4 @@
-module recurseria.target.binary:le_bytes;
+module recurseria.binary:le_bytes;
 
 import std;
 

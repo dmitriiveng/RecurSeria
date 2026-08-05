@@ -1,8 +1,8 @@
-export module recurseria.target.binary:sequence;
+export module recurseria.binary:sequence;
 
 import std;
 
-import recurseria.core.meta.helpers.sequence_ops;
+import recurseria.helpers.sequence_ops;
 import :format_tag;
 
 namespace recurseria::binary {
