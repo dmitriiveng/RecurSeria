@@ -12,6 +12,8 @@ export module boost_ut;
 
 export using boost::ut::operator""_test;
 export using boost::ut::expect;
+export using boost::ut::throws;
+export using boost::ut::nothrow;
 
 // Explicit template instantiations (same as original .cppm)
 template class boost::ut::reporter_junit<boost::ut::printer>;

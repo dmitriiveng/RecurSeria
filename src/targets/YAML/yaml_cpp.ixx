@@ -9,6 +9,7 @@ export {
         using YAML::iterator;
         using YAML::const_iterator;
         using YAML::Dump;
+        using YAML::Load;
 
         using YAML::operator<<;
 
