@@ -126,6 +126,17 @@ target_link_libraries(recurseria_binary_target
 
 # Tests
 
+file(GLOB_RECURSE RECURSERIA_TESTS_INTERFACE_UNITS
+  CONFIGURE_DEPENDS
+  "src/tests/*.ixx"
+  "src/tests/*.cppm"
+)
+
+file(GLOB_RECURSE RECURSERIA_TESTS_IMPLEMENTATIONS
+  CONFIGURE_DEPENDS
+  "src/tests/*.cpp"
+)
+
 add_executable(recurseria_tests
   src/tests/main.cpp
 )
@@ -134,7 +145,7 @@ target_sources(recurseria_tests
   PRIVATE
     FILE_SET CXX_MODULES
     BASE_DIRS src/tests
-    FILES src/tests/boost_ut.ixx
+    FILES ${RECURSERIA_TESTS_INTERFACE_UNITS}
 )
 
 target_include_directories(recurseria_tests
