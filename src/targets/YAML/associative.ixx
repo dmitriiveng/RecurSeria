@@ -3,7 +3,7 @@ export module recurseria.yaml:associative;
 import std;
 import yaml_cpp;
 
-import recurseria.helpers.associative_ops;
+export import recurseria;
 import :format_tag;
 
 export namespace recurseria::yaml {

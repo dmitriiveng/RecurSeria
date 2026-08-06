@@ -2,7 +2,7 @@ export module recurseria.binary:sequence;
 
 import std;
 
-import recurseria.helpers.sequence_ops;
+export import recurseria;
 import :format_tag;
 
 namespace recurseria::binary {

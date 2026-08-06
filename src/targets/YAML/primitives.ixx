@@ -3,7 +3,7 @@ export module recurseria.yaml:primitives;
 import std;
 import yaml_cpp;
 
-import recurseria.srlz_dsrlz;
+export import recurseria;
 import :format_tag;
 
 export namespace recurseria::yaml {

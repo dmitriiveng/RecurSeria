@@ -2,7 +2,7 @@ export module recurseria.binary:primitives;
 
 import std;
 
-import recurseria.srlz_dsrlz;
+export import recurseria;
 import :format_tag;
 import :le_bytes;
 

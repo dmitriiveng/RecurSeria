@@ -3,7 +3,7 @@ export module recurseria.yaml:sequence;
 import std;
 import yaml_cpp;
 
-import recurseria.helpers.sequence_ops;
+export import recurseria;
 import :format_tag;
 
 export namespace recurseria::yaml {

@@ -82,7 +82,7 @@ struct A{
 	std::vector<int> vector_field;
 	std::map<float, std::string> map_field;
 	double double_field;
-}
+};
 
 int main(){
 	A object{
@@ -129,7 +129,7 @@ struct A{
 	std::vector<int> vector_field;
 	std::map<float, std::string> map_field;
 	double double_field;
-}
+};
 
 int main(){
 	A object{
@@ -180,7 +180,7 @@ requires(Container& c) {
 ```cpp
 template <typename Container>
 auto tag_invoke(recurseria::get_output_iterator_tag, Container& container){
-    // Insertion ligic.
+    // Insertion logic.
 }
 ```
 
@@ -206,16 +206,16 @@ namespace my_ns{
 		
 		SomeNewType(int a, double b) : a(a), b(b) {};
 		
-		int get_a() { return a; }
-		set_a(int new_value) { a = new_value; }
+		const int get_a() { return a; }
+		void set_a(int new_value) { a = new_value; }
 		
-		double get_b() { return b; }
-		set_b(double new_value) { b = new_value; }
+		const double get_b() { return b; }
+		void set_b(double new_value) { b = new_value; }
 	};
 	
 	// Serialization
 	
-	template <typename FormatTag, typename Output, typename Input>
+	template <typename FormatTag, typename Output>
 	requires 
 		// Do not forget to check if you can use group_sequentially 
 		// and decompose_sequentially.
@@ -235,10 +235,10 @@ namespace my_ns{
 	) {
         std::vector<Output> fields{
 	        recurseria::serialize.as<FormatTag, Output>(
-		        recurseria::input.get_a()
+		        input.get_a()
 	        ),
 	        recurseria::serialize.as<FormatTag, Output>(
-		        recurseria::input.get_b()
+		        input.get_b()
 	        ),
         }; // It is not zero copy so far :( .
         
@@ -247,7 +247,7 @@ namespace my_ns{
     
     // Deserialization
     
-    template <typename FormatTag, typename Output, typename Input>
+    template <typename FormatTag, typename Input>
 	requires 
 		SequenceOpsSupported<FormatTag, Output> &&
 		SerializableDeserializableTuple<
@@ -255,11 +255,11 @@ namespace my_ns{
 				std::tuple<int, double>, 
 				Output
 		>
-	Output tag_invoke(
+	SomeNewType tag_invoke(
 		FormatTag, 
 		recurseria::deserialize_tag, 
-		recurseria::type_tag<Output>, 
-		const SomeNewType& input
+		recurseria::type_tag<SomeNewType>,
+		const Input& input
 	) {
 		// Here fields are view btw :) .
         auto fields = recurseria::decompose_sequentially(FormatTag{}, input);
@@ -289,6 +289,9 @@ You also need to create functions for serializing / deserializing primitives (an
 ```cpp
 export module new_format:primitives;
 
+import std;
+import recurseria;
+
 import :format_tag;
 
 export namespace new_format {
@@ -296,9 +299,9 @@ export namespace new_format {
 	// Serialization
 	
 	TypeOfSerializedValue tag_invoke(
-	    your_format_tag, 
+	    format_tag, 
 		recurseria::serialize_tag, 
-	    type_tag<YAML::Node>, 
+	    recurseria::type_tag<int>, 
 		int input
 	) {
 	    // serialization logic
@@ -308,9 +311,9 @@ export namespace new_format {
 	// Deserialization
 	
 	int tag_invoke(
-		your_format_tag, 
+		format_tag, 
 		recurseria::deserialize_tag, 
-		type_tag<int>, 
+		recurseria::type_tag<int>, 
 		const TypeOfSerializedValue& input
 	) {
 	    // deserialization logic
@@ -323,6 +326,9 @@ Now you need to define grouping and decomposing operations for  `TypeOfSerialize
 
 ```cpp
 export module new_format:sequence_ops_support;
+
+import std;
+import recurseria;
 
 import :format_tag;
 
@@ -363,6 +369,9 @@ If you format has associative types you can also specify functions to work with 
 
 ```cpp
 export module new_format:associative_ops_support;
+
+import std;
+import recurseria;
 
 import :format_tag;
 
