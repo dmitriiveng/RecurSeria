@@ -197,9 +197,6 @@ import recurseria;
 
 namespace my_ns{
 	
-	using recurseria::SequenceOpsSupported;
-	using recurseria::SerializableDeserializableTuple;
-	
 	struct SomeNewType{
 		private:
 		
@@ -223,10 +220,10 @@ namespace my_ns{
 	requires 
 		// Do not forget to check if you can use group_sequentially 
 		// and decompose_sequentially.
-		SequenceOpsSupported<FormatTag, Output> &&
+		recurseria::SequenceOpsSupported<FormatTag, Output> &&
 		// As well as support for fields, you can do it via 
 		// SerializableDeserializableTuple concept.
-		SerializableDeserializableTuple<
+		recurseria::SerializableDeserializableTuple<
 			FormatTag, 
 			std::tuple<int, double>, 
 			Output
@@ -253,8 +250,8 @@ namespace my_ns{
 	
 	template <typename FormatTag, typename Input>
 	requires 
-		SequenceOpsSupported<FormatTag, Input> &&
-		SerializableDeserializableTuple<
+		recurseria::SequenceOpsSupported<FormatTag, Input> &&
+		recurseria::SerializableDeserializableTuple<
 			FormatTag, 
 			std::tuple<int, double>, 
 			Input
