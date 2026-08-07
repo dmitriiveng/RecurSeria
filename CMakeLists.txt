@@ -89,6 +89,11 @@ target_sources(recurseria_yaml_target
     ${RECURSERIA_YAML_TARGET_IMPLEMENTATIONS}
 )
 
+target_compile_options(recurseria_yaml_target
+  PUBLIC
+    -Wno-expose-global-module-tu-local
+)
+
 target_link_libraries(recurseria_yaml_target
   PUBLIC
     recurseria_core
