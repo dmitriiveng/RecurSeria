@@ -1,17 +1,33 @@
 # RecurSeria
 
-|  [Idea](#idea)  |  [Fetch](#fetch)  |  [Build](#build)  |  [Tutorial](#tutorial)  |
-
 RecurSeria is a C++26 macro-free serialization library that uses modules and reflection.
 
 > [!NOTE]
 > Work in progress: the project is still raw and not thoroughly tested.
 
-# Idea
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
 
-The core idea of the library is to simplify adding support for new types and formats by introducing an abstraction layer between them.
+- [Idea](#idea)
+- [Fetch](#fetch)
+- [Build](#build)
+- [Tutorial](#tutorial)
+  - [Import the library](#import-the-library)
+  - [Serialize an object](#serialize-an-object)
+  - [Deserialize an object](#deserialize-an-object)
+  - [Add a new type](#add-a-new-type)
+    - [Containers](#containers)
+    - [Other types](#other-types)
+  - [Add a new format](#add-a-new-format)
 
-The library maps each type to a format. Adding a new format only requires writing the conversion logic for primitives into that format and providing the tools for working with it. Currently, there are two such tools:
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Idea
+
+The goal of the library is to simplify adding support for new types and formats by introducing an abstraction layer between them.
+
+The library maps each type to a format. Adding a new format only requires writing the conversion logic for primitives into that format and providing the following tools for working with it:
 
 1. concatenation of a sequence of objects of the type mapped to the format into a single object of the same type, and vice versa;
 
@@ -21,35 +37,38 @@ Functions for working with specific types (or generic functions for working with
 
 Thus, when writing code to support a new type, there is no need to write separate support for each format individually. See the [Tutorial](#tutorial) for details.
 
-# Fetch
+## Fetch
 
 No release yet.
 
-# Build
+## Build
 
 **GCC 16.1** or later is required.
 
-```
+```sh
 git clone https://github.com/dmitriiveng/RecurSeria.git
+
+cd RecurSeria
 
 cmake -B build -G Ninja .
 
 ninja -C build
 ```
 
-# Tutorial
+## Tutorial
 
-Out of the box:
+Out of the box support:
 
 Types:
 - STL containers (`std::vector`, `std::map`, ...);
 - tuples and `std::pair`;
 - aggregates (via reflection).
+
 Formats:
 - YAML (via yaml-cpp)
 - Binary (minimal implementation)
 
-### How to import library
+### Import the library
 
 The library can be imported using modules
 ```cpp
@@ -60,18 +79,17 @@ import recurseria.yaml;
 // binary
 import recurseria.binary;
 ```
-### How to serialize object
+### Serialize an object
 
-**Use**
 ```cpp
-recurseria::serialize.as<FormatTag, Output, Input>(value);
+Output result = recurseria::serialize.as<FormatTag, Output, Input>(value);
 ```
 
-- *FormatTag* is a tag of the format (just a type).
-- *Output* is an output type (type mapped to format).
-- *Input* is a type of input. It is deduced from *value*, so you only need to specify *FormatTag* and *Output*.
-- *value* is an object of ```Input``` type (the object you want to serialize).
-- *Return value* is serialized object of type ```Output```
+- `FormatTag` is a tag of the format (e.g. `recurseria::yaml::yaml_format_tag`).
+- `Output` is the output/return type
+- `Input` is a type of input. It is deduced from `value`, so usually it can be omitted.
+- `value` is an instance of `Input` type (the object to serialize).
+- `result` is a *serialized* object of type `Output`
 
 **Example**
 ```cpp
@@ -107,18 +125,17 @@ int main(){
 }
 ```
 
-### How to deserialize object
+### Deserialize an object
 
-**Use**
 ```cpp
 recurseria::deserialize.as<FormatTag, Output, Input>(value);
 ```
 
-- *FormatTag* is a tag of the format (just a type).
-- *Output* is an output type (type of deserialized object).
-- *Input* is a type of input (type mapped to format). It is deduced from *value*, so you only need to specify *FormatTag* and *Output*.
-- *value* is an object of ```Input``` type (the object you want to deserialize).
-- *Return value* is deserialized object of type ```Output```
+- `FormatTag` is a tag of the format (e.g. `recurseria::yaml::yaml_format_tag`).
+- `Output` is the output/return type
+- `Input` is a type of input. It is deduced from `value`, so usually it can be omitted.
+- `value` is an instance of `Input` type (the object to deserialize).
+- `result` is a *deserialized* object of type `Output`
 
 **Example**
 ```cpp
@@ -160,24 +177,25 @@ int main(){
 }
 ```
 
-### How to add a new type
+### Add a new type
 
 #### Containers
 
 A container should satisfy `std::ranges::input_range`, and there should be a way to insert elements into it:
-- You can add a `push_back` function.
+
+- a `push_back` function,
 ```cpp
 requires(Container& c) {
     c.push_back(std::ranges::range_value_t<Container>{});
 }
 ```
-- You can add an `insert` function.
+- an `insert` function,
 ```cpp
 requires(Container& c) {
     c.insert(c.end(), std::ranges::range_value_t<Container>{});
 }
 ```
-- You can specify a standalone `tag_invoke` function with insertion logic:
+- or a standalone `tag_invoke` function with insertion logic,
 ```cpp
 template <typename Container>
 auto tag_invoke(recurseria::get_output_iterator_tag, Container& container){
@@ -187,7 +205,7 @@ auto tag_invoke(recurseria::get_output_iterator_tag, Container& container){
 
 #### Other types
 
-You need to specify two functions, one for serialization, and one for deserialization:
+Two functions need to be defined: one for *serialization*, and one for *deserialization*:
 
 ```cpp
 export module some_module;
@@ -218,11 +236,10 @@ namespace my_ns{
 	
 	template <typename FormatTag, typename Output>
 	requires 
-		// Do not forget to check if you can use group_sequentially 
-		// and decompose_sequentially.
+		// Ensure requirements of group_sequentially 
+		// and decompose_sequentially are met:
 		recurseria::SequenceOpsSupported<FormatTag, Output> &&
-		// As well as support for fields, you can do it via 
-		// SerializableDeserializableTuple concept.
+		// Ensure requirements for the support of fields are met:
 		recurseria::SerializableDeserializableTuple<
 			FormatTag, 
 			std::tuple<int, double>, 
@@ -276,11 +293,11 @@ namespace my_ns{
 }
 ```
 
-We only used the tools for working with the format (group_sequentially, decompose_sequentially) and serialize.as<>(), so these two functions give support for all formats in which group_sequentially and decompose_sequentially are specified (see the next section).
+We only used the tools for working with the format (group_sequentially, decompose_sequentially) and `serialize.as<>()`, so these two functions give support for all formats in which group_sequentially and decompose_sequentially are specified (see the next section).
 
-### How to add a new format
+### Add a new format
 
-Firstly, you need to create a module for your format that re-exports its partitions:
+Firstly, create a module for the new format that re-exports its partitions:
 
 ```cpp
 export module new_format;
@@ -290,9 +307,10 @@ export import :primitives;
 export import :sequence_ops_support;
 ```
 
-(If your format has associative types, add `export import :associative_ops_support;` as well.)
+> [!NOTE]
+> If the format has associative types, add `export import :associative_ops_support;` as well.
 
-Now create a tag for your format in your namespace:
+Now create a namespace containing a tag for the format:
 
 ```cpp
 export module new_format:format_tag;
@@ -303,7 +321,9 @@ export namespace new_format {
 
 ```
 
-You also need to create functions for serializing / deserializing primitives (and some other types that need to be processed in a special way — for example, `std::string`, because if you did not specify it here, it would be processed as an STL container of chars).
+Then, define functions for serializing / deserializing primitives and other
+types that need to be processed in a special way (e.g. `std::string`, by
+default it's processed as an STL container of `char`s).
 
 ```cpp
 export module new_format:primitives;
@@ -315,7 +335,7 @@ import :format_tag;
 
 export namespace new_format {
 
-	// Serialization
+	// Serialization.
 	
 	TypeOfSerializedValue tag_invoke(
 		format_tag, 
@@ -323,11 +343,11 @@ export namespace new_format {
 		recurseria::type_tag<TypeOfSerializedValue>, 
 		const int& input
 	) {
-		// serialization logic
+		// Serialization logic.
 	}
 	// And so on...
 	
-	// Deserialization
+	// Deserialization.
 	
 	int tag_invoke(
 		format_tag, 
@@ -335,13 +355,13 @@ export namespace new_format {
 		recurseria::type_tag<int>, 
 		const TypeOfSerializedValue& input
 	) {
-		// deserialization logic
+		// Deserialization logic.
 	}
 	// And so on...
 }
 ```
 
-Now you need to define grouping and decomposing operations for `TypeOfSerializedValue`, which is the type mapped to your format (like `YAML::Node` in the built-in YAML target).
+Finally, define grouping and decomposing operations for `TypeOfSerializedValue`, which is the type mapped to the new format (like `YAML::Node` in the built-in YAML target).
 
 ```cpp
 export module new_format:sequence_ops_support;
@@ -365,26 +385,26 @@ export namespace new_format {
 			TypeOfSerializedValue
 		>		
 	{
-		// Logic.
+		// Grouping logic.
 	}
 	
 	// Decomposing.
 	
 	// decompose_sequentially should return a view, so create one.
-	struct your_view ...
+	struct my_view ...
 	
 	auto tag_invoke(
 		format_tag,
 		recurseria::decompose_sequentially_tag,
 		const TypeOfSerializedValue& input
-	) -> your_view {
-		// Logic.
+	) -> my_view {
+		// Decomposing logic.
 	}
 
 }
 ```
 
-If your format has associative types, you can also specify functions to work with them (again grouping and decomposing). Associative containers and aggregates will work even with formats where associative operations are not specified; they will just use the sequential ones (like in the built-in binary target).
+To support associative types, functions to work with them can be defined (once again: grouping and decomposing). Associative containers and aggregates will work even with formats without associative operations defined; however, they will use the sequential ones (like in the built-in binary target).
 
 ```cpp
 export module new_format:associative_ops_support;
@@ -403,23 +423,23 @@ export namespace new_format {
 		recurseria::group_associatively_tag,
 		std::ranges::input_range auto&& input
 	) -> TypeOfSerializedValue {
-		// Logic.
+		// Grouping logic.
 	}
 	
 	// Decomposing.
 	
 	// decompose_associatively should also return a view, so create one.
-	struct your_assoc_view ...
+	struct my_assoc_view ...
 	
 	auto tag_invoke(
 		format_tag,
 		recurseria::decompose_associatively_tag,
 		const TypeOfSerializedValue& input
-	) -> your_assoc_view {
-		// Logic.
+	) -> my_assoc_view {
+		// Decomposing logic.
 	}
 
 }
 ```
 
-See the built-in YAML target for reference.
+See the [built-in YAML target](./src/targets/YAML/) for reference.
