@@ -149,8 +149,8 @@ add_executable(recurseria_tests
 target_sources(recurseria_tests
   PRIVATE
     FILE_SET CXX_MODULES
-    BASE_DIRS src/tests
-    FILES ${RECURSERIA_TESTS_INTERFACE_UNITS}
+    BASE_DIRS src/tests ${ut_SOURCE_DIR}/include
+    FILES ${RECURSERIA_TESTS_INTERFACE_UNITS} ${ut_SOURCE_DIR}/include/boost/ut.cppm
 )
 
 target_include_directories(recurseria_tests

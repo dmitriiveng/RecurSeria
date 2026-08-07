@@ -1,7 +1,7 @@
 export module recurseria.tests.binary_target;
 
 import std;
-import boost_ut;
+import boost.ut;
 import recurseria;
 import recurseria.binary;
 
@@ -41,6 +41,8 @@ namespace recurseria::tests::binary_target{
 }
 
 export namespace recurseria::tests::binary_target{
+    using namespace boost::ut;
+
     void test_primitives(){
         "binary scalar int round-trip"_test = [] {
             int original = 42;

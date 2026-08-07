@@ -2,7 +2,7 @@ export module recurseria.tests.yaml_target;
 
 import std;
 import yaml_cpp;
-import boost_ut;
+import boost.ut;
 import recurseria;
 import recurseria.yaml;
 
@@ -41,6 +41,8 @@ namespace recurseria::tests::yaml_target{
 }
 
 export namespace recurseria::tests::yaml_target{
+    using namespace boost::ut;
+
     void test_primitives(){
         "scalar int round-trip"_test = [] {
             int original = 42;
