@@ -43,7 +43,7 @@ No release yet.
 
 ## Build
 
-**GCC 16.1** or later is required.
+**GCC 16.2** or later is required.
 
 ```sh
 git clone https://github.com/dmitriiveng/RecurSeria.git
