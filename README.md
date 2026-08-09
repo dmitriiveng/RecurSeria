@@ -39,11 +39,63 @@ Thus, when writing code to support a new type, there is no need to write separat
 
 ## Fetch
 
-No release yet.
+The library is distributed as source modules, so consumers build it themselves. Two ways are supported:
+
+**1. `FetchContent`** — fetch and use directly:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+  recur_seria
+  GIT_REPOSITORY https://github.com/dmitriiveng/RecurSeria.git
+  GIT_TAG        v0.1.0
+)
+FetchContent_MakeAvailable(recur_seria)
+
+add_executable(app main.cpp)
+target_link_libraries(app PRIVATE RecurSeria::yaml)
+```
+
+**2. `find_package`** — after installing (see [Install](#install)):
+
+```cmake
+find_package(RecurSeria CONFIG REQUIRED)
+
+add_executable(app main.cpp)
+target_link_libraries(app PRIVATE RecurSeria::yaml)
+```
+
+> [!NOTE]
+> `import std` support is still experimental in both GCC and CMake. The
+> consuming project must enable it and must build the std module with
+> `-freflection` (otherwise the reflection facilities of `std::meta` are not
+> visible to RecurSeria's modules). A minimal consuming `CMakeLists.txt` looks
+> like this:
+>
+> ```cmake
+> cmake_minimum_required(VERSION 4.0.3)
+>
+> set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+> set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "d0edc3af-4c50-42ea-a356-e2862fe7a444")
+> set(CMAKE_CXX_MODULE_STD ON)
+>
+> project(app LANGUAGES CXX)
+>
+> set(CMAKE_CXX_STANDARD 26)
+> set(CMAKE_CXX_STANDARD_REQUIRED ON)
+> set(CMAKE_CXX_EXTENSIONS OFF)
+> set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
+>
+> find_package(RecurSeria CONFIG REQUIRED)
+>
+> add_executable(app main.cpp)
+> target_link_libraries(app PRIVATE RecurSeria::yaml)
+> ```
 
 ## Build
 
-**GCC 16.2** or later is required.
+**GCC 16.2** or later, **CMake 4.0.3** or later, and **Ninja** are required.
 
 ```sh
 git clone https://github.com/dmitriiveng/RecurSeria.git
@@ -53,7 +105,31 @@ cd RecurSeria
 cmake -B build -G Ninja .
 
 ninja -C build
+
+./build/recurseria_tests
 ```
+
+## Install
+
+```sh
+git clone https://github.com/dmitriiveng/RecurSeria.git
+
+cd RecurSeria
+
+cmake -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release .
+
+ninja -C build-release
+
+cmake --install build-release --prefix /path/to/prefix
+```
+
+Installed layout:
+
+- `include/recurseria/{core,yaml,binary}/` — the library modules (`.ixx`);
+- `lib*/cmake/RecurSeria/` — `RecurSeriaConfig.cmake` + exported targets;
+- `share/licenses/RecurSeria/` — licenses.
+
+Then point consumers at the prefix with `-DCMAKE_PREFIX_PATH=/path/to/prefix`.
 
 ## Tutorial
 

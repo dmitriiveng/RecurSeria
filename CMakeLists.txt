@@ -1,16 +1,26 @@
-cmake_minimum_required(VERSION 4.0.0)
+cmake_minimum_required(VERSION 4.0.3)
 
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "d0edc3af-4c50-42ea-a356-e2862fe7a444")
-set(CMAKE_CXX_STANDARD_LIBRARY "libstdc++" CACHE STRING "")
 
-project(RecurSeria LANGUAGES CXX)
+project(RecurSeria VERSION 0.1.0 LANGUAGES CXX)
+
+# Compiler check.
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(FATAL_ERROR
+    "RecurSeria requires GCC (C++26 reflection, P2996); compiler is ${CMAKE_CXX_COMPILER_ID}")
+endif()
+
+if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.2)
+  message(FATAL_ERROR
+    "RecurSeria requires GCC >= 16.2 (got ${CMAKE_CXX_COMPILER_VERSION}); "
+    "the reflection machinery used by this project is only reliable since GCC 16.2")
+endif()
 
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 # --- Modules ---
 
@@ -18,21 +28,19 @@ set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 set(CMAKE_CXX_MODULE_STD ON)
 
 # --- Reflection ---
-
+# -freflection must be in CMAKE_CXX_FLAGS (not only per-target): CMake compiles
+# the synthesized `import std` module with the global flags only, and without
+# -freflection GCC hides the reflection facilities of std::meta.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
 
 # --- Dependencies ---
 
 # YAML cpp
-include(FetchContent)
-FetchContent_Declare(
-  yaml-cpp
-  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
-  GIT_TAG yaml-cpp-0.9.0
-)
-FetchContent_MakeAvailable(yaml-cpp)
+
+find_package(yaml-cpp 0.9.0 REQUIRED)
 
 # Boost.UT
+include(FetchContent)
 FetchContent_Declare(
   ut
   GIT_REPOSITORY https://github.com/boost-ext/ut.git
@@ -87,11 +95,6 @@ target_sources(recurseria_yaml_target
     FILES ${RECURSERIA_YAML_TARGET_INTERFACE_UNITS}
   PRIVATE
     ${RECURSERIA_YAML_TARGET_IMPLEMENTATIONS}
-)
-
-target_compile_options(recurseria_yaml_target
-  PUBLIC
-    -Wno-expose-global-module-tu-local
 )
 
 target_link_libraries(recurseria_yaml_target
@@ -163,4 +166,75 @@ target_link_libraries(recurseria_tests
   recurseria_core
   recurseria_yaml_target
   recurseria_binary_target
+)
+
+# --- Installation / packaging ---
+
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+set_target_properties(recurseria_core PROPERTIES EXPORT_NAME core)
+set_target_properties(recurseria_yaml_target PROPERTIES EXPORT_NAME yaml)
+set_target_properties(recurseria_binary_target PROPERTIES EXPORT_NAME binary)
+
+# Each target is installed into its own subdirectory.
+
+# Core.
+install(
+  TARGETS recurseria_core
+  EXPORT RecurSeriaTargets
+  FILE_SET CXX_MODULES
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/core
+)
+
+# YAML.
+install(
+  TARGETS recurseria_yaml_target
+  EXPORT RecurSeriaTargets
+  FILE_SET CXX_MODULES
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/yaml
+)
+
+# Binary.
+install(
+  TARGETS recurseria_binary_target
+  EXPORT RecurSeriaTargets
+  FILE_SET CXX_MODULES
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/binary
+)
+
+# Generate cmake script.
+install(
+  EXPORT RecurSeriaTargets
+  FILE RecurSeriaTargets.cmake
+  NAMESPACE RecurSeria::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+)
+
+# Generate config file using template.
+configure_package_config_file(
+  cmake/RecurSeriaConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+)
+
+# Generate version file.
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMinorVersion
+)
+
+# Install config and version files.
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+)
+
+# Add licenses.
+install(
+  FILES LICENSE THIRD_PARTY_LICENSES.md
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/RecurSeria
 )

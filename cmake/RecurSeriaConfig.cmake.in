@@ -1,0 +1,35 @@
+@PACKAGE_INIT@
+
+# RecurSeria depends on yaml-cpp library.
+include(CMakeFindDependencyMacro)
+find_dependency(yaml-cpp 0.9.0)
+
+# RecurSeria requires GCC with C++26 reflection support (P2996).
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(FATAL_ERROR
+    "RecurSeria requires GCC (C++26 reflection, P2996); compiler is ${CMAKE_CXX_COMPILER_ID}")
+endif()
+
+if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16.2)
+  message(FATAL_ERROR
+    "RecurSeria requires GCC >= 16.2 (got ${CMAKE_CXX_COMPILER_VERSION}); "
+    "the reflection machinery used by RecurSeria is only reliable since GCC 16.2")
+endif()
+
+# RecurSeria uses import std.
+if(NOT CMAKE_CXX_COMPILER_IMPORT_STD MATCHES "26")
+  message(FATAL_ERROR
+    "import std not active: set CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "
+    "(correct GUID for your CMake version) BEFORE project()")
+endif()
+
+# The synthesized `import std` module is compiled with the global flags only,
+# so -freflection must be present in CMAKE_CXX_FLAGS of the consuming project.
+if(NOT CMAKE_CXX_FLAGS MATCHES "-freflection")
+  message(FATAL_ERROR
+    "RecurSeria needs `-freflection` in CMAKE_CXX_FLAGS "
+    "(it is required to build the `import std` module used by RecurSeria). "
+    "Add: set(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -freflection\")")
+endif()
+
+check_required_components(RecurSeria)

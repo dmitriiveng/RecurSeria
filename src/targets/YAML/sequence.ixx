@@ -22,10 +22,10 @@ export namespace recurseria::yaml {
     }
 
     struct yaml_seq_view : std::ranges::view_interface<yaml_seq_view> {
-        const YAML::Node* node;
+        YAML::Node node;
 
         yaml_seq_view() = default;
-        explicit yaml_seq_view(const YAML::Node& n) : node(&n) {}
+        explicit yaml_seq_view(const YAML::Node& n) : node(n) {}
 
         struct iterator {
             const YAML::Node* parent;
@@ -71,11 +71,11 @@ export namespace recurseria::yaml {
             }
         };
 
-        iterator begin() const { return {node, {}, 0}; }
-        iterator end() const { return {node, {}, node->size()}; }
+        iterator begin() const { return {&node, {}, 0}; }
+        iterator end() const { return {&node, {}, node.size()}; }
 
         YAML::Node operator[](std::ptrdiff_t n) const {
-            return (*node)[static_cast<int>(n)];
+            return node[static_cast<int>(n)];
         }
     };
 

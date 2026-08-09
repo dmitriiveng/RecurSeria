@@ -22,10 +22,10 @@ export namespace recurseria::yaml {
     }
 
     struct yaml_assoc_view : std::ranges::view_interface<yaml_assoc_view> {
-        const YAML::Node* node;
+        YAML::Node node;
 
         yaml_assoc_view() = default;
-        explicit yaml_assoc_view(const YAML::Node& n) : node(&n) {}
+        explicit yaml_assoc_view(const YAML::Node& n) : node(n) {}
 
         struct iterator {
             YAML::const_iterator it;
@@ -46,8 +46,8 @@ export namespace recurseria::yaml {
             bool operator==(const iterator& other) const { return it == other.it; }
         };
 
-        iterator begin() const { return {node->begin()}; }
-        iterator end() const { return {node->end()}; }
+        iterator begin() const { return {node.begin()}; }
+        iterator end() const { return {node.end()}; }
     };
 
     auto tag_invoke(
