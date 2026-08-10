@@ -12,6 +12,7 @@ RecurSeria is a C++26 macro-free serialization library that uses modules and ref
 - [Idea](#idea)
 - [Fetch](#fetch)
 - [Build](#build)
+- [Install](#install)
 - [Tutorial](#tutorial)
   - [Import the library](#import-the-library)
   - [Serialize an object](#serialize-an-object)
@@ -87,6 +88,15 @@ target_link_libraries(app PRIVATE RecurSeria::yaml)
 > set(CMAKE_CXX_EXTENSIONS OFF)
 > set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
 >
+> include(FetchContent)
+>
+> FetchContent_Declare(
+>   yaml-cpp
+>   GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+>   GIT_TAG yaml-cpp-0.9.0
+> )
+> FetchContent_MakeAvailable(yaml-cpp)
+>
 > find_package(RecurSeria CONFIG REQUIRED)
 >
 > add_executable(app main.cpp)
@@ -106,7 +116,7 @@ cmake -B build -G Ninja .
 
 ninja -C build
 
-./build/recurseria_tests
+ctest --test-dir build/
 ```
 
 ## Install
@@ -120,8 +130,12 @@ cmake -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release .
 
 ninja -C build-release
 
+ctest --test-dir build-release/
+
 cmake --install build-release --prefix /path/to/prefix
 ```
+
+> Note: Use `-DBUILD_TESTING=OFF` to disable tests.
 
 Installed layout:
 

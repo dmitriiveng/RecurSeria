@@ -8,6 +8,8 @@ compile_commands.json
 .ninja_deps
 .ninja_log
 build.ninja
+test_prefix/
+smoke/
 
 # Cache
 .cache/

@@ -24,29 +24,44 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # --- Modules ---
 
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 set(CMAKE_CXX_MODULE_STD ON)
 
 # --- Reflection ---
-# -freflection must be in CMAKE_CXX_FLAGS (not only per-target): CMake compiles
-# the synthesized `import std` module with the global flags only, and without
-# -freflection GCC hides the reflection facilities of std::meta.
+
+# -freflection must be in CMAKE_CXX_FLAGS (not only per-target).
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
 
 # --- Dependencies ---
 
 # YAML cpp
 
-find_package(yaml-cpp 0.9.0 REQUIRED)
+if(NOT TARGET yaml-cpp::yaml-cpp)
+  find_package(yaml-cpp 0.9.0 REQUIRED)
+endif()
 
+# Tests
+include(CTest)
 # Boost.UT
-include(FetchContent)
-FetchContent_Declare(
-  ut
-  GIT_REPOSITORY https://github.com/boost-ext/ut.git
-  GIT_TAG v2.3.1
-)
-FetchContent_MakeAvailable(ut)
+
+if(BUILD_TESTING)
+
+  include(FetchContent)
+  FetchContent_Declare(
+    ut
+    GIT_REPOSITORY https://github.com/boost-ext/ut.git
+    GIT_TAG v2.3.1
+    EXCLUDE_FROM_ALL
+  )
+  FetchContent_MakeAvailable(ut)
+
+  # Compile module for Boost.UT
+  add_library(ut_module)
+  target_sources(ut_module PUBLIC
+    FILE_SET CXX_MODULES
+    FILES ${ut_SOURCE_DIR}/include/boost/ut.cppm)
+  target_compile_features(ut_module PUBLIC cxx_std_26)
+
+endif()
 
 # --- RecurSeria library ---
 
@@ -72,6 +87,8 @@ target_sources(recurseria_core
   PRIVATE
     ${RECURSERIA_CORE_IMPLEMENTATIONS}
 )
+
+target_compile_features(recurseria_core PUBLIC cxx_std_26)
 
 # YAML target
 
@@ -103,6 +120,8 @@ target_link_libraries(recurseria_yaml_target
     yaml-cpp::yaml-cpp
 )
 
+target_compile_features(recurseria_yaml_target PUBLIC cxx_std_26)
+
 # Binary target
 
 file(GLOB_RECURSE RECURSERIA_BINARY_TARGET_INTERFACE_UNITS
@@ -132,109 +151,123 @@ target_link_libraries(recurseria_binary_target
     recurseria_core
 )
 
+target_compile_features(recurseria_binary_target PUBLIC cxx_std_26)
+
 # Tests
 
-file(GLOB_RECURSE RECURSERIA_TESTS_INTERFACE_UNITS
-  CONFIGURE_DEPENDS
-  "src/tests/*.ixx"
-  "src/tests/*.cppm"
-)
+if(BUILD_TESTING)
 
-file(GLOB_RECURSE RECURSERIA_TESTS_IMPLEMENTATIONS
-  CONFIGURE_DEPENDS
-  "src/tests/*.cpp"
-)
+  file(GLOB_RECURSE RECURSERIA_TESTS_INTERFACE_UNITS
+    CONFIGURE_DEPENDS
+    "src/tests/*.ixx"
+    "src/tests/*.cppm"
+  )
 
-add_executable(recurseria_tests
-  src/tests/main.cpp
-)
+  file(GLOB_RECURSE RECURSERIA_TESTS_IMPLEMENTATIONS
+    CONFIGURE_DEPENDS
+    "src/tests/*.cpp"
+  )
 
-target_sources(recurseria_tests
-  PRIVATE
-    FILE_SET CXX_MODULES
-    BASE_DIRS src/tests ${ut_SOURCE_DIR}/include
-    FILES ${RECURSERIA_TESTS_INTERFACE_UNITS} ${ut_SOURCE_DIR}/include/boost/ut.cppm
-)
+  add_executable(recurseria_tests src/tests/main.cpp)
+  target_sources(recurseria_tests
+    PRIVATE
+      FILE_SET CXX_MODULES
+      BASE_DIRS src/tests
+      FILES ${RECURSERIA_TESTS_INTERFACE_UNITS}
+  )
 
-target_include_directories(recurseria_tests
-  PRIVATE
-    ${ut_SOURCE_DIR}/include
-)
+  target_link_libraries(recurseria_tests
+    PRIVATE
+      ut_module
+      recurseria_core
+      recurseria_yaml_target
+      recurseria_binary_target
+  )
 
-target_link_libraries(recurseria_tests
-  PRIVATE
-  recurseria_core
-  recurseria_yaml_target
-  recurseria_binary_target
-)
+  add_test(
+    NAME "All Tests"
+    COMMAND recurseria_tests
+  )
+
+endif()
 
 # --- Installation / packaging ---
 
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
+# Aliases for FetchContent path
+add_library(RecurSeria::core   ALIAS recurseria_core)
+add_library(RecurSeria::yaml   ALIAS recurseria_yaml_target)
+add_library(RecurSeria::binary ALIAS recurseria_binary_target)
 
-set_target_properties(recurseria_core PROPERTIES EXPORT_NAME core)
-set_target_properties(recurseria_yaml_target PROPERTIES EXPORT_NAME yaml)
-set_target_properties(recurseria_binary_target PROPERTIES EXPORT_NAME binary)
+if(PROJECT_IS_TOP_LEVEL)
 
-# Each target is installed into its own subdirectory.
+  # Installation
+  include(GNUInstallDirs)
+  include(CMakePackageConfigHelpers)
 
-# Core.
-install(
-  TARGETS recurseria_core
-  EXPORT RecurSeriaTargets
-  FILE_SET CXX_MODULES
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/core
-)
+  set_target_properties(recurseria_core PROPERTIES EXPORT_NAME core)
+  set_target_properties(recurseria_yaml_target PROPERTIES EXPORT_NAME yaml)
+  set_target_properties(recurseria_binary_target PROPERTIES EXPORT_NAME binary)
 
-# YAML.
-install(
-  TARGETS recurseria_yaml_target
-  EXPORT RecurSeriaTargets
-  FILE_SET CXX_MODULES
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/yaml
-)
+  # Each target is installed into its own subdirectory.
 
-# Binary.
-install(
-  TARGETS recurseria_binary_target
-  EXPORT RecurSeriaTargets
-  FILE_SET CXX_MODULES
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/binary
-)
+  # Core.
+  install(
+    TARGETS recurseria_core
+    EXPORT RecurSeriaTargets
+    FILE_SET CXX_MODULES
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/core
+  )
 
-# Generate cmake script.
-install(
-  EXPORT RecurSeriaTargets
-  FILE RecurSeriaTargets.cmake
-  NAMESPACE RecurSeria::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
-)
+  # YAML.
+  install(
+    TARGETS recurseria_yaml_target
+    EXPORT RecurSeriaTargets
+    FILE_SET CXX_MODULES
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/yaml
+  )
 
-# Generate config file using template.
-configure_package_config_file(
-  cmake/RecurSeriaConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfig.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
-)
+  # Binary.
+  install(
+    TARGETS recurseria_binary_target
+    EXPORT RecurSeriaTargets
+    FILE_SET CXX_MODULES
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/recurseria/binary
+  )
 
-# Generate version file.
-write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY SameMinorVersion
-)
+  # Generate cmake script.
+  install(
+    EXPORT RecurSeriaTargets
+    FILE RecurSeriaTargets.cmake
+    NAMESPACE RecurSeria::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+  )
 
-# Install config and version files.
-install(
-  FILES
+  # Generate config file using template.
+  configure_package_config_file(
+    cmake/RecurSeriaConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
-)
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+  )
 
-# Add licenses.
-install(
-  FILES LICENSE THIRD_PARTY_LICENSES.md
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/RecurSeria
-)
+  # Generate version file.
+  write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMinorVersion
+  )
+
+  # Install config and version files.
+  install(
+    FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfig.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/RecurSeriaConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/RecurSeria
+  )
+
+  # Add licenses.
+  install(
+    FILES LICENSE THIRD_PARTY_LICENSES.md
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/RecurSeria
+  )
+
+endif()
