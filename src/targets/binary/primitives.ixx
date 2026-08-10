@@ -71,35 +71,35 @@ export namespace recurseria::binary {
 
     // serialize
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const int& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, int input) {
         return to_le_bytes(static_cast<std::int32_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const long& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, long input) {
         return to_le_bytes(static_cast<std::int64_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const long long& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, long long input) {
         return to_le_bytes(static_cast<std::int64_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const unsigned int& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, unsigned int input) {
         return to_le_bytes(static_cast<std::uint32_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const unsigned long& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, unsigned long input) {
         return to_le_bytes(static_cast<std::uint64_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const unsigned long long& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, unsigned long long input) {
         return to_le_bytes(static_cast<std::uint64_t>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const float& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, float input) {
         return float_to_le_bytes<float, std::uint32_t>(input);
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const double& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, double input) {
         return float_to_le_bytes<double, std::uint64_t>(input);
     }
 
@@ -107,11 +107,11 @@ export namespace recurseria::binary {
         return float_to_le_bytes<double, std::uint64_t>(static_cast<double>(input));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const bool& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, bool input) {
         return to_le_bytes(static_cast<std::uint8_t>(input ? 1 : 0));
     }
 
-    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, const char& input) {
+    std::vector<std::byte> tag_invoke(binary_format_tag, serialize_tag, type_tag<std::vector<std::byte>>, char input) {
         return to_le_bytes(static_cast<std::uint8_t>(input));
     }
 

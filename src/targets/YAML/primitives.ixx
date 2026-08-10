@@ -15,47 +15,47 @@ export namespace recurseria::yaml {
 
     // serialize
 
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const int& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const long& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const long long& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const unsigned int& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const unsigned long& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const unsigned long long& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const float& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const double& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const long double& input) {
-        return YAML::Node(std::to_string(input));
-    }
-
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const bool& input) {
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, int input) {
         return YAML::Node(input);
     }
 
-    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const char& input) {
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, long input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, long long input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, unsigned int input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, unsigned long input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, unsigned long long input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, float input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, double input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, const long double& input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, bool input) {
+        return YAML::Node(input);
+    }
+
+    YAML::Node tag_invoke(yaml_format_tag, serialize_tag, type_tag<YAML::Node>, char input) {
         return YAML::Node(std::string(1, input));
     }
 
@@ -106,11 +106,7 @@ export namespace recurseria::yaml {
     }
 
     char tag_invoke(yaml_format_tag, deserialize_tag, type_tag<char>, const YAML::Node& input) {
-        auto s = input.as<std::string>();
-        if (s.size() != 1) {
-            throw std::invalid_argument(std::string("Invalid char value: ") + s);
-        }
-        return s[0];
+        return input.as<char>();
     }
 
     std::string tag_invoke(yaml_format_tag, deserialize_tag, type_tag<std::string>, const YAML::Node& input) {

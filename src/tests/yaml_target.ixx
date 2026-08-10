@@ -98,8 +98,7 @@ export namespace recurseria::tests::yaml_target{
         "yaml long double round-trip"_test = [] {
             long double v = 3.14159265358979323846L;
             long double result = srlz_dsrlz_round_trip<Tag, long double, YAML::Node>(v);
-            long double expected = static_cast<long double>(std::strtold(std::to_string(v).c_str(), nullptr));
-            expect(std::abs(result - expected) < 1e-12L);
+            expect(std::abs(result - v) < 1e-12L);
         };
 
         "scalar bool round-trip"_test = [] {
