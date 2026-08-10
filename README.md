@@ -73,7 +73,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(recur_seria)
 
 add_executable(app main.cpp)
-target_link_libraries(app PRIVATE RecurSeria::yaml)
+target_link_libraries(app PRIVATE RecurSeria::core RecurSeria::yaml)
 ```
 
 ### find_package
@@ -82,7 +82,7 @@ target_link_libraries(app PRIVATE RecurSeria::yaml)
 find_package(RecurSeria CONFIG REQUIRED)
 
 add_executable(app main.cpp)
-target_link_libraries(app PRIVATE RecurSeria::yaml)
+target_link_libraries(app PRIVATE RecurSeria::core RecurSeria::yaml)
 ```
 
 > [!NOTE]
@@ -109,7 +109,7 @@ target_link_libraries(app PRIVATE RecurSeria::yaml)
 > find_package(RecurSeria CONFIG REQUIRED)
 >
 > add_executable(app main.cpp)
-> target_link_libraries(app PRIVATE RecurSeria::yaml)
+> target_link_libraries(app PRIVATE RecurSeria::core RecurSeria::yaml)
 > ```
 
 ## Build
