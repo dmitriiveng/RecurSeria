@@ -11,6 +11,10 @@ RecurSeria is a C++26 macro-free serialization library that uses modules and ref
 
 - [Idea](#idea)
 - [Fetch](#fetch)
+  - [Dependencies](#dependencies)
+    - [yaml-cpp](#yaml-cpp)
+  - [FetchContent](#fetchcontent)
+  - [find_package](#find_package)
 - [Build](#build)
 - [Install](#install)
 - [Tutorial](#tutorial)
@@ -40,9 +44,23 @@ Thus, when writing code to support a new type, there is no need to write separat
 
 ## Fetch
 
-The library is distributed as source modules, so consumers build it themselves. Two ways are supported:
+### Dependencies
 
-**1. `FetchContent`** — fetch and use directly:
+#### yaml-cpp
+
+The project depends on yaml-cpp 0.9.0, so this library must either be installed or fetched:
+
+```CMake
+include(FetchContent)
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG yaml-cpp-0.9.0
+)
+FetchContent_MakeAvailable(yaml-cpp)
+``` 
+
+### FetchContent
 
 ```cmake
 include(FetchContent)
@@ -58,7 +76,7 @@ add_executable(app main.cpp)
 target_link_libraries(app PRIVATE RecurSeria::yaml)
 ```
 
-**2. `find_package`** — after installing (see [Install](#install)):
+### find_package
 
 ```cmake
 find_package(RecurSeria CONFIG REQUIRED)
@@ -87,15 +105,6 @@ target_link_libraries(app PRIVATE RecurSeria::yaml)
 > set(CMAKE_CXX_STANDARD_REQUIRED ON)
 > set(CMAKE_CXX_EXTENSIONS OFF)
 > set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freflection")
->
-> include(FetchContent)
->
-> FetchContent_Declare(
->   yaml-cpp
->   GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
->   GIT_TAG yaml-cpp-0.9.0
-> )
-> FetchContent_MakeAvailable(yaml-cpp)
 >
 > find_package(RecurSeria CONFIG REQUIRED)
 >
