@@ -40,10 +40,13 @@ if(NOT TARGET yaml-cpp::yaml-cpp)
 endif()
 
 # Tests
-include(CTest)
+option(RECURSERIA_BUILD_TESTS "Build RecurSeria tests" ${PROJECT_IS_TOP_LEVEL})
+
 # Boost.UT
 
-if(BUILD_TESTING)
+if(RECURSERIA_BUILD_TESTS)
+
+  include(CTest)
 
   include(FetchContent)
   FetchContent_Declare(
@@ -155,7 +158,7 @@ target_compile_features(recurseria_binary_target PUBLIC cxx_std_26)
 
 # Tests
 
-if(BUILD_TESTING)
+if(RECURSERIA_BUILD_TESTS)
 
   file(GLOB_RECURSE RECURSERIA_TESTS_INTERFACE_UNITS
     CONFIGURE_DEPENDS
